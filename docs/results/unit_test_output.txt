@@ -1,0 +1,71 @@
+test_16_counter_reset_then_recovers (tests.test_adapter_service.TestAdapter.test_16_counter_reset_then_recovers) ... ok
+test_17_stale_interval (tests.test_adapter_service.TestAdapter.test_17_stale_interval) ... ok
+test_bad_args (tests.test_adapter_service.TestAdapter.test_bad_args) ... ok
+test_first_sample_invalid (tests.test_adapter_service.TestAdapter.test_first_sample_invalid) ... ok
+test_forget_switch (tests.test_adapter_service.TestAdapter.test_forget_switch) ... ok
+test_rx_direction (tests.test_adapter_service.TestAdapter.test_rx_direction) ... ok
+test_unknown_capacity_not_guessed (tests.test_adapter_service.TestAdapter.test_unknown_capacity_not_guessed) ... ok
+test_utilization_math (tests.test_adapter_service.TestAdapter.test_utilization_math) ... ok
+test_zero_and_negative_interval (tests.test_adapter_service.TestAdapter.test_zero_and_negative_interval) ... ok
+test_bad_config_rejected (tests.test_adapter_service.TestService.test_bad_config_rejected) ... ok
+test_consumer_exception_does_not_break_pipeline (tests.test_adapter_service.TestService.test_consumer_exception_does_not_break_pipeline) ... invalid sample (1, 1): FIRST_SAMPLE
+congestion event consumer failed for (1, 1)
+Traceback (most recent call last):
+  File "/home/claude/sdn_congestion/congestion_detection/controller_bridge.py", line 53, in ingest_port_stats
+    self.on_event(d)
+  File "/home/claude/sdn_congestion/tests/test_adapter_service.py", line 102, in boom
+    def boom(_): raise RuntimeError("consumer bug")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: consumer bug
+ok
+test_decision_log_jsonl (tests.test_adapter_service.TestService.test_decision_log_jsonl) ... invalid sample (1, 1): FIRST_SAMPLE
+ok
+test_delayed_poll_and_missing_reply_safe (tests.test_adapter_service.TestService.test_delayed_poll_and_missing_reply_safe) ... invalid sample (1, 1): FIRST_SAMPLE
+invalid sample (1, 1): STALE_INTERVAL
+ok
+test_per_port_isolation_and_event_once (tests.test_adapter_service.TestService.test_per_port_isolation_and_event_once) ... invalid sample (1, 1): FIRST_SAMPLE
+invalid sample (1, 2): FIRST_SAMPLE
+ok
+test_reserved_and_unmonitored_ports_skipped (tests.test_adapter_service.TestService.test_reserved_and_unmonitored_ports_skipped) ... invalid sample (1, 1): FIRST_SAMPLE
+ok
+test_switch_disconnect_resets_state (tests.test_adapter_service.TestService.test_switch_disconnect_resets_state) ... invalid sample (1, 1): FIRST_SAMPLE
+invalid sample (1, 1): FIRST_SAMPLE
+ok
+test_03_baseline_initialised_after_warmup (tests.test_detector.TestBaselineAndThreshold.test_03_baseline_initialised_after_warmup) ... ok
+test_04_baseline_ewma_update (tests.test_detector.TestBaselineAndThreshold.test_04_baseline_ewma_update) ... ok
+test_05_threshold_formula_and_clamps (tests.test_detector.TestBaselineAndThreshold.test_05_threshold_formula_and_clamps) ... ok
+test_baseline_frozen_while_not_normal (tests.test_detector.TestBaselineAndThreshold.test_baseline_frozen_while_not_normal) ... ok
+test_01_valid_default_and_custom (tests.test_detector.TestConfig.test_01_valid_default_and_custom) ... ok
+test_02_invalid_configs_rejected (tests.test_detector.TestConfig.test_02_invalid_configs_rejected) ... ok
+test_unknown_key_rejected (tests.test_detector.TestConfig.test_unknown_key_rejected) ... ok
+test_10_between_thresholds_holds_congested (tests.test_detector.TestHysteresisAndRecovery.test_10_between_thresholds_holds_congested) ... ok
+test_11_recovery_not_immediate (tests.test_detector.TestHysteresisAndRecovery.test_11_recovery_not_immediate) ... ok
+test_12_spike_during_recovery_resets (tests.test_detector.TestHysteresisAndRecovery.test_12_spike_during_recovery_resets) ... ok
+test_13_sustained_recovery_reseeds_baseline (tests.test_detector.TestHysteresisAndRecovery.test_13_sustained_recovery_reseeds_baseline) ... ok
+test_band_value_during_recovery_interrupts (tests.test_detector.TestHysteresisAndRecovery.test_band_value_during_recovery_interrupts) ... ok
+test_recovery_event_once (tests.test_detector.TestHysteresisAndRecovery.test_recovery_event_once) ... ok
+test_14_missing_sample_is_neutral (tests.test_detector.TestInvalidSamples.test_14_missing_sample_is_neutral) ... ok
+test_14b_long_gap_resets_pending (tests.test_detector.TestInvalidSamples.test_14b_long_gap_resets_pending) ... ok
+test_15_invalid_values_rejected (tests.test_detector.TestInvalidSamples.test_15_invalid_values_rejected) ... ok
+test_17_out_of_order_and_duplicate_timestamps (tests.test_detector.TestInvalidSamples.test_17_out_of_order_and_duplicate_timestamps) ... ok
+test_invalid_in_congested_keeps_congested (tests.test_detector.TestInvalidSamples.test_invalid_in_congested_keeps_congested) ... ok
+test_invalid_never_creates_recovery (tests.test_detector.TestInvalidSamples.test_invalid_never_creates_recovery) ... ok
+test_irregular_intervals_are_sample_based (tests.test_detector.TestInvalidSamples.test_irregular_intervals_are_sample_based) ... ok
+test_19_independent_entities (tests.test_detector.TestMultiEntityAndDeterminism.test_19_independent_entities) ... ok
+test_deterministic (tests.test_detector.TestMultiEntityAndDeterminism.test_deterministic) ... ok
+test_06_isolated_spike_rejected (tests.test_detector.TestPersistence.test_06_isolated_spike_rejected) ... ok
+test_07_sustained_triggers_exactly_at_n (tests.test_detector.TestPersistence.test_07_sustained_triggers_exactly_at_n) ... ok
+test_08_repeated_boundary_crossing_no_event (tests.test_detector.TestPersistence.test_08_repeated_boundary_crossing_no_event) ... ok
+test_09_values_near_threshold (tests.test_detector.TestPersistence.test_09_values_near_threshold) ... ok
+test_20_events_not_duplicated (tests.test_detector.TestPersistence.test_20_events_not_duplicated) ... ok
+test_enter_persistence_one (tests.test_detector.TestPersistence.test_enter_persistence_one) ... ok
+test_startup_already_congested (tests.test_detector.TestPersistence.test_startup_already_congested) ... ok
+test_delay_false_trigger_flap_and_miss (tests.test_evaluation.TestEvaluate.test_delay_false_trigger_flap_and_miss) ... ok
+test_recovery_delay (tests.test_evaluation.TestEvaluate.test_recovery_delay) ... ok
+test_events_published_only_on_transitions (tests.test_ryu_app_stubbed.TestStubbedRyuApp.test_events_published_only_on_transitions) ... invalid sample (1, 3): FIRST_SAMPLE
+ok
+
+----------------------------------------------------------------------
+Ran 48 tests in 0.024s
+
+OK

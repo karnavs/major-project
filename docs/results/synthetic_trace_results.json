@@ -1,0 +1,548 @@
+{
+  "config": {
+    "alpha": 0.1,
+    "k": 3.0,
+    "min_variation": 0.02,
+    "warmup_samples": 10,
+    "threshold_min": 0.4,
+    "threshold_max": 0.85,
+    "hysteresis_margin": 0.1,
+    "enter_persistence": 3,
+    "exit_persistence": 5,
+    "max_invalid_streak": 5,
+    "max_valid_value": 2.0
+  },
+  "dt_s": 1.0,
+  "detector_update_us": 3.9502899994840845,
+  "results": [
+    {
+      "scenario": "stable_normal",
+      "samples": {
+        "('s1', 1)": 80
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 0,
+          "invalid_samples": 0,
+          "samples": 80
+        }
+      },
+      "events": {
+        "('s1', 1)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "gradual_increase",
+      "samples": {
+        "('s1', 1)": 140
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            108.0,
+            140.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 0,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            null
+          ],
+          "missed_recoveries": 1,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 2,
+          "invalid_samples": 0,
+          "samples": 140
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            110.0,
+            "CONGESTION_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "single_burst",
+      "samples": {
+        "('s1', 1)": 42
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 2,
+          "invalid_samples": 0,
+          "samples": 42
+        }
+      },
+      "events": {
+        "('s1', 1)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "repeated_short_bursts",
+      "samples": {
+        "('s1', 1)": 50
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 12,
+          "invalid_samples": 0,
+          "samples": 50
+        }
+      },
+      "events": {
+        "('s1', 1)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "sustained_congestion",
+      "samples": {
+        "('s1', 1)": 70
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            50.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            4.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 0,
+          "samples": 70
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            22.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            54.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "gradual_recovery",
+      "samples": {
+        "('s1', 1)": 100
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            57.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            18.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 0,
+          "samples": 100
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            22.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            75.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "brief_improvement_then_congestion",
+      "samples": {
+        "('s1', 1)": 73
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            53.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            4.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 6,
+          "invalid_samples": 0,
+          "samples": 73
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            22.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            57.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "highly_variable_noncongested",
+      "samples": {
+        "('s1', 1)": 200
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 0,
+          "invalid_samples": 0,
+          "samples": 200
+        }
+      },
+      "events": {
+        "('s1', 1)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "congestion_with_dropped_samples",
+      "samples": {
+        "('s1', 1)": 70
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            50.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            3.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            4.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 9,
+          "samples": 70
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            23.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            54.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "stale_gap_breaks_pending",
+      "samples": {
+        "('s1', 1)": 48
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 5,
+          "samples": 48
+        }
+      },
+      "events": {
+        "('s1', 1)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "outage_never_infers_recovery",
+      "samples": {
+        "('s1', 1)": 55
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            55.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 0,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            null
+          ],
+          "missed_recoveries": 1,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 2,
+          "invalid_samples": 25,
+          "samples": 55
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            22.0,
+            "CONGESTION_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "two_links_independent",
+      "samples": {
+        "('s1', 1)": 70,
+        "('s1', 2)": 70
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            20.0,
+            50.0
+          ]
+        ],
+        "('s1', 2)": []
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            4.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 0,
+          "samples": 70
+        },
+        "('s1', 2)": {
+          "congestion_events": 0,
+          "recovery_events": 0,
+          "detection_delays_s": [],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 0,
+          "invalid_samples": 0,
+          "samples": 70
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            22.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            54.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ],
+        "('s1', 2)": []
+      },
+      "pass": true,
+      "failures": []
+    },
+    {
+      "scenario": "startup_already_congested",
+      "samples": {
+        "('s1', 1)": 50
+      },
+      "ground_truth_intervals_s": {
+        "('s1', 1)": [
+          [
+            0.0,
+            30.0
+          ]
+        ]
+      },
+      "metrics": {
+        "('s1', 1)": {
+          "congestion_events": 1,
+          "recovery_events": 1,
+          "detection_delays_s": [
+            2.0
+          ],
+          "missed_detections": 0,
+          "false_triggers": 0,
+          "recovery_delays_s": [
+            4.0
+          ],
+          "missed_recoveries": 0,
+          "flap_extra_congestion_events": 0,
+          "state_transitions": 4,
+          "invalid_samples": 0,
+          "samples": 50
+        }
+      },
+      "events": {
+        "('s1', 1)": [
+          [
+            2.0,
+            "CONGESTION_CONFIRMED"
+          ],
+          [
+            34.0,
+            "RECOVERY_CONFIRMED"
+          ]
+        ]
+      },
+      "pass": true,
+      "failures": []
+    }
+  ]
+}
