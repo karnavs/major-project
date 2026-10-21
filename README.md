@@ -1,5 +1,7 @@
 # Adaptive Congestion Detection & Traffic Rerouting in SDN
+## Introduction
 
+This project develops an adaptive congestion-aware traffic management system for Software-Defined Networking (SDN). It uses an adaptive-threshold congestion detector with persistence, hysteresis, and recovery mechanisms to identify overloaded network links reliably. Integrated with a Ryu SDN controller and a dynamic Dijkstra-based routing engine, the system reroutes traffic through alternative paths and distributes network load to improve traffic flow, reduce congestion, and maintain network performance. The solution supports dependency-free simulation and testing, along with real network experimentation using Mininet and OpenFlow 1.3.
 Adaptive-threshold + persistence + hysteresis + recovery congestion detector, paired with a dynamic Dijkstra routing engine and Ryu OpenFlow 1.3 controller for congestion-aware traffic rerouting and load distribution.
 
 ## Quick Start (Dependency-free on any OS)
