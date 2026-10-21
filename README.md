@@ -28,7 +28,6 @@ sudo python3 mininet/reroute_scenario.py
 
 ## Documentation
 - `docs/CONGESTION_DETECTOR_SPEC.md` — Algorithm specifications, state machine table, parameter definitions.
-- `docs/INTEGRATION.md` — Integration contract between OpenFlow port stats and routing callbacks.
 - `docs/TEST_REPORT.md` — Empirical test results, detector delay, hysteresis benchmarks.
 - `docs/REPORT_AND_VIVA.md` — Project report summary and viva Q&A cheat-sheet.
-- `PROJECT_CONTEXT.md` & `CHANGELOG.md` — Session handoffs, git state, and component verification.
+
