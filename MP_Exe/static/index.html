@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
@@ -16,8 +16,25 @@
 
   <style>
     /* -------------------------------------------------------------
-       Hallmark & Unslop Pro Studio Design System (Obsidian & Cobalt)
+       Typography & Design System:
+       - Main Headings: The Awesome Serif Family (fallback: Playfair Display, Georgia)
+       - Subtexts: Santa Monica (fallback: Plus Jakarta Sans)
+       - Packet Flow & Control Panel: Courier ('Courier New', Courier, monospace)
     -------------------------------------------------------------- */
+    @font-face {
+      font-family: 'The Awesome Serif';
+      src: local('The Awesome Serif'), local('Awesome Serif'), local('TheAwesomeSerif'), local('AwesomeSerif-Regular');
+      font-weight: 400 700;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Santa Monica';
+      src: local('Santa Monica'), local('SantaMonica'), local('Santa Monica Regular');
+      font-weight: 400 700;
+      font-style: normal;
+    }
+
     :root {
       --bg-base: #08090d;
       --bg-surface: #0e1117;
@@ -46,8 +63,12 @@
       --radius-md: 10px;
       --radius-lg: 14px;
 
-      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      /* Font Family Tokens */
+      --font-heading: 'The Awesome Serif', 'Awesome Serif', 'Playfair Display', Georgia, serif;
+      --font-subtext: 'Santa Monica', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-courier: 'Courier New', Courier, 'Liberation Mono', monospace;
+      --font-sans: var(--font-subtext);
+      --font-mono: var(--font-courier);
     }
 
     * {
@@ -60,7 +81,7 @@
       overflow-x: clip;
       background-color: var(--bg-base);
       color: var(--text-primary);
-      font-family: var(--font-sans);
+      font-family: var(--font-subtext);
       font-size: 13px;
       line-height: 1.45;
       -webkit-font-smoothing: antialiased;
@@ -99,7 +120,7 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-logo {
@@ -118,29 +139,31 @@
       height: 17px;
     }
 
+    /* Main Heading: The Awesome Serif Family */
     .brand-title {
-      font-size: 13px;
-      font-weight: 600;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 700;
       color: var(--text-primary);
-      letter-spacing: -0.01em;
+      letter-spacing: 0.01em;
     }
 
+    /* Subtext: Santa Monica */
     .brand-tag {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      padding: 2px 6px;
+      font-family: var(--font-subtext);
+      font-size: 10.5px;
+      padding: 2px 7px;
       border-radius: 4px;
       background: var(--bg-surface-elevated);
       color: var(--text-secondary);
       border: 1px solid var(--border-quiet);
+      letter-spacing: 0.02em;
     }
 
     .header-status {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 11px;
     }
 
     .engine-capsule {
@@ -149,9 +172,9 @@
       gap: 7px;
       padding: 3px 10px;
       border-radius: 16px;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 600;
+      font-family: var(--font-courier);
+      font-size: 10.5px;
+      font-weight: 700;
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
       transition: background 0.2s, border-color 0.2s, color 0.2s;
@@ -192,6 +215,8 @@
       border-radius: var(--radius-sm);
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
+      font-family: var(--font-courier);
+      font-size: 11px;
       color: var(--text-secondary);
     }
 
@@ -232,6 +257,7 @@
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
+    /* Main Heading on Stage */
     .stage-header {
       padding: 10px 18px;
       border-bottom: 1px solid var(--border-quiet);
@@ -243,12 +269,14 @@
     }
 
     .stage-title {
-      font-size: 13px;
-      font-weight: 600;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 700;
       color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: 0.01em;
     }
 
     /* Architecture Toggle Switcher on Stage */
@@ -263,8 +291,8 @@
     .arch-segment-btn {
       padding: 5px 12px;
       font-size: 11px;
-      font-weight: 600;
-      font-family: var(--font-sans);
+      font-weight: 700;
+      font-family: var(--font-courier);
       color: var(--text-muted);
       background: transparent;
       border: none;
@@ -292,11 +320,12 @@
       border: 1px solid rgba(244, 63, 94, 0.4);
     }
 
-    /* Live Route Notification Strip */
+    /* Live Route Notification Strip: Courier Font */
     .route-banner {
       padding: 7px 18px;
-      font-family: var(--font-mono);
-      font-size: 11px;
+      font-family: var(--font-courier);
+      font-size: 11.5px;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -341,7 +370,7 @@
       display: block;
     }
 
-    /* High-Visibility SVG Topology Styling */
+    /* All Topology Texts -> Courier Font */
     .link-line {
       stroke: #252e42;
       stroke-width: 4;
@@ -377,15 +406,14 @@
     }
 
     .link-label-text {
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       fill: #f1f5f9;
       text-anchor: middle;
       dominant-baseline: middle;
     }
 
-    /* High-Visibility Node Styling */
     .node-box {
       fill: #0d121c;
       stroke: #334155;
@@ -411,24 +439,27 @@
       filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
     }
 
+    /* Node Titles & Subtitles: Courier */
     .node-title {
-      font-family: var(--font-sans);
+      font-family: var(--font-courier);
       font-size: 11.5px;
       font-weight: 700;
       fill: #ffffff;
       text-anchor: middle;
       dominant-baseline: middle;
+      letter-spacing: -0.01em;
     }
 
     .node-subtitle {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
+      font-family: var(--font-courier);
+      font-size: 10px;
+      font-weight: 500;
       fill: #94a3b8;
       text-anchor: middle;
       dominant-baseline: middle;
     }
 
-    /* Stage Bottom HUD Telemetry Strip */
+    /* Stage Bottom HUD Telemetry Strip: Courier */
     .stage-hud-bar {
       border-top: 1px solid var(--border-quiet);
       background: var(--bg-surface);
@@ -448,22 +479,24 @@
       justify-content: space-between;
     }
 
+    /* Subtext: Santa Monica */
     .hud-chip-label {
       font-size: 10px;
       font-weight: 600;
       color: var(--text-muted);
-      font-family: var(--font-sans);
+      font-family: var(--font-subtext);
+      letter-spacing: 0.02em;
     }
 
     .hud-chip-val {
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 11.5px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-primary);
     }
 
     .hud-status-tag {
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 9.5px;
       font-weight: 700;
       padding: 2px 6px;
@@ -490,7 +523,7 @@
       color: #94a3b8;
     }
 
-    /* ---------------- WORKSTATION CONSOLE (Right Column) ---------------- */
+    /* ---------------- WORKSTATION CONSOLE (Right Column): All Courier Texts ---------------- */
     .workstation-console {
       display: flex;
       flex-direction: column;
@@ -513,18 +546,20 @@
       justify-content: space-between;
     }
 
+    /* Main Heading on Workstation: The Awesome Serif */
     .ws-title {
-      font-size: 11px;
+      font-size: 12.5px;
       font-weight: 700;
-      font-family: var(--font-sans);
+      font-family: var(--font-heading);
       color: var(--text-secondary);
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }
 
     .ws-badge {
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 10px;
+      font-weight: 700;
       color: var(--cyan);
       background: var(--cyan-tint);
       padding: 2px 6px;
@@ -542,7 +577,7 @@
       padding: 0;
     }
 
-    /* Creative Turbine Engine Control */
+    /* Creative Turbine Engine Control: Courier */
     .engine-action-row {
       display: grid;
       grid-template-columns: 1fr auto auto;
@@ -559,7 +594,7 @@
       border-radius: var(--radius-sm);
       font-size: 11.5px;
       font-weight: 700;
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       cursor: pointer;
       border: 1px solid var(--border-subtle);
       transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
@@ -607,6 +642,7 @@
       to { transform: rotate(360deg); }
     }
 
+    /* All Buttons in Control Panel: Courier */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -616,8 +652,8 @@
       padding: 0 12px;
       border-radius: var(--radius-sm);
       font-size: 11.5px;
-      font-weight: 500;
-      font-family: var(--font-sans);
+      font-weight: 600;
+      font-family: var(--font-courier);
       cursor: pointer;
       border: 1px solid var(--border-quiet);
       background: var(--bg-surface-raised);
@@ -646,7 +682,8 @@
       background: rgba(244, 63, 94, 0.14);
       border-color: rgba(244, 63, 94, 0.4);
       color: #fda4af;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: var(--font-courier);
     }
     .btn-surge:hover {
       background: rgba(244, 63, 94, 0.25);
@@ -658,7 +695,8 @@
       background: rgba(16, 185, 129, 0.14);
       border-color: rgba(16, 185, 129, 0.4);
       color: #6ee7b7;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: var(--font-courier);
     }
     .btn-relieve:hover {
       background: rgba(16, 185, 129, 0.25);
@@ -682,15 +720,17 @@
       justify-content: space-between;
     }
 
+    /* Subtext: Santa Monica */
     .slider-title {
       font-size: 11px;
       font-weight: 500;
+      font-family: var(--font-subtext);
       color: var(--text-secondary);
     }
 
     .slider-val {
-      font-family: var(--font-mono);
-      font-size: 12px;
+      font-family: var(--font-courier);
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--cyan);
     }
@@ -734,8 +774,8 @@
     .speed-btn {
       padding: 4px 8px;
       font-size: 10.5px;
-      font-family: var(--font-mono);
-      font-weight: 600;
+      font-family: var(--font-courier);
+      font-weight: 700;
       background: transparent;
       border: none;
       color: var(--text-muted);
@@ -758,13 +798,15 @@
       height: 28px;
       padding: 0 10px;
       font-size: 11px;
+      font-family: var(--font-courier);
     }
 
-    /* ---------------- SECTION 2: LIVE ARCHITECTURE BENCHMARK MATRIX ---------------- */
+    /* ---------------- SECTION 2: LIVE ARCHITECTURE BENCHMARK MATRIX (Courier) ---------------- */
     .matrix-table {
       width: 100%;
       display: flex;
       flex-direction: column;
+      font-family: var(--font-courier);
     }
 
     .matrix-row-head {
@@ -775,6 +817,7 @@
       border-bottom: 1px solid var(--border-quiet);
       font-size: 10px;
       font-weight: 700;
+      font-family: var(--font-courier);
       color: var(--text-muted);
       letter-spacing: 0.04em;
     }
@@ -786,6 +829,7 @@
       border-bottom: 1px solid var(--border-quiet);
       align-items: center;
       transition: background 0.15s;
+      font-family: var(--font-courier);
     }
 
     .matrix-row:last-child {
@@ -798,14 +842,15 @@
 
     .matrix-label {
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
+      font-family: var(--font-courier);
       color: var(--text-secondary);
     }
 
     .matrix-val {
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 11.5px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .matrix-val .unit {
@@ -834,8 +879,8 @@
     .matrix-badge {
       display: inline-block;
       font-size: 9.5px;
-      font-family: var(--font-mono);
-      font-weight: 600;
+      font-family: var(--font-courier);
+      font-weight: 700;
       padding: 1px 5px;
       border-radius: 3px;
     }
@@ -867,13 +912,14 @@
       padding: 2px 4px 0;
     }
 
+    /* Subtext: Santa Monica */
     .legend-chip {
       display: flex;
       align-items: center;
       gap: 5px;
       font-size: 10px;
       color: var(--text-muted);
-      font-family: var(--font-mono);
+      font-family: var(--font-subtext);
     }
 
     .legend-line-sample {
@@ -911,13 +957,16 @@
       justify-content: space-between;
     }
 
+    /* Main Heading: The Awesome Serif */
     .panel-title {
-      font-size: 11.5px;
-      font-weight: 600;
+      font-size: 12.5px;
+      font-weight: 700;
+      font-family: var(--font-heading);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 6px;
+      letter-spacing: 0.02em;
     }
 
     .table-container {
@@ -928,7 +977,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-family: var(--font-mono);
+      font-family: var(--font-courier);
       font-size: 11px;
     }
 
@@ -939,7 +988,8 @@
       color: var(--text-muted);
       border-bottom: 1px solid var(--border-quiet);
       font-size: 10px;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: var(--font-courier);
       text-transform: uppercase;
     }
 
@@ -947,6 +997,7 @@
       padding: 6px 12px;
       border-bottom: 1px solid var(--border-quiet);
       color: var(--text-primary);
+      font-family: var(--font-courier);
     }
 
     tr:last-child td {
@@ -956,8 +1007,8 @@
     .log-item {
       padding: 6px 12px;
       border-bottom: 1px solid var(--border-quiet);
-      font-family: var(--font-mono);
-      font-size: 10.5px;
+      font-family: var(--font-courier);
+      font-size: 11px;
       display: flex;
       gap: 8px;
     }
@@ -968,7 +1019,7 @@
 
     .log-time {
       color: var(--text-muted);
-      min-width: 44px;
+      min-width: 48px;
     }
 
     .log-msg {
@@ -1003,7 +1054,9 @@
           <line x1="8.5" y1="16.5" x2="15.5" y2="13.5"/>
         </svg>
       </div>
+      <!-- Main Heading: The Awesome Serif Family -->
       <div class="brand-title">Adaptive Congestion Detection & Dynamic Rerouting</div>
+      <!-- Subtext: Santa Monica -->
       <span class="brand-tag">SDN Flow Studio</span>
     </div>
 
@@ -1016,7 +1069,7 @@
 
       <div class="sim-clock-pill">
         <span style="color:var(--text-muted);">TIME:</span>
-        <span id="sim-time" style="color:var(--text-primary); font-weight:600;">0.0s</span>
+        <span id="sim-time" style="color:var(--text-primary); font-weight:700;">0.0s</span>
       </div>
     </div>
   </header>
@@ -1028,6 +1081,7 @@
       <!-- LEFT DOMINANT HERO: Packet Streaming Topology Stage -->
       <div class="hero-stage">
         <div class="stage-header">
+          <!-- Main Heading: The Awesome Serif -->
           <div class="stage-title">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
               <rect x="2" y="2" width="6" height="6" rx="1"/>
@@ -1050,13 +1104,13 @@
           </div>
         </div>
 
-        <!-- Dynamic Route Banner Strip -->
+        <!-- Dynamic Route Banner Strip (Courier) -->
         <div class="route-banner normal" id="route-banner">
           <span id="route-banner-text">PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2</span>
           <span id="route-banner-sub">Packet Loss: 0.0%</span>
         </div>
 
-        <!-- Expansive Vector Topology Canvas -->
+        <!-- Expansive Vector Topology Canvas (All texts: Courier) -->
         <div class="stage-canvas-area" id="topology-container">
           <svg id="topology-svg" viewBox="0 0 800 390" preserveAspectRatio="xMidYMid meet">
             <defs>
@@ -1083,7 +1137,7 @@
               </filter>
             </defs>
 
-            <!-- Topology Wires & Node Badges (High Visibility) -->
+            <!-- Topology Wires & Node Badges (High Visibility, Courier Text) -->
             <g id="topology-base-layer"></g>
 
             <!-- Native SVG Packets (Zero-Drift Vector Geometry) -->
@@ -1113,12 +1167,13 @@
         </div>
       </div>
 
-      <!-- RIGHT WORKSTATION CONSOLE -->
+      <!-- RIGHT WORKSTATION CONSOLE (All Texts: Courier) -->
       <div class="workstation-console">
         
         <!-- Section 1: Execution & Flow Workstation Deck -->
         <div class="workstation-card">
           <div class="ws-header">
+            <!-- Main Heading: The Awesome Serif -->
             <span class="ws-title">MISSION CONTROL DECK</span>
             <span class="ws-badge" id="ws-sim-status">ONLINE</span>
           </div>
@@ -1151,6 +1206,7 @@
             <!-- Offered Load Precision Slider -->
             <div class="slider-box">
               <div class="slider-meta">
+                <!-- Subtext: Santa Monica -->
                 <span class="slider-title">Offered Load Level</span>
                 <span class="slider-val" id="load-val-text">10%</span>
               </div>
@@ -1170,11 +1226,12 @@
           </div>
         </div>
 
-        <!-- Section 2: Live Architecture Comparison Matrix -->
+        <!-- Section 2: Live Architecture Comparison Matrix (Courier) -->
         <div class="workstation-card">
           <div class="ws-header">
+            <!-- Main Heading: The Awesome Serif -->
             <span class="ws-title">LIVE ARCHITECTURE BENCHMARK</span>
-            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);" id="adaptive-path-text">[s1, s2]</span>
+            <span style="font-family:var(--font-courier); font-size:10px; color:var(--text-muted);" id="adaptive-path-text">[s1, s2]</span>
           </div>
           <div class="ws-body p-0">
             <div class="matrix-table">
@@ -1214,12 +1271,14 @@
         <!-- Section 3: Telemetry & EWMA Sparkline -->
         <div class="workstation-card">
           <div class="ws-header">
+            <!-- Main Heading: The Awesome Serif -->
             <span class="ws-title">DETECTOR TELEMETRY</span>
-            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);" id="detector-state-badge">STATE: NORMAL</span>
+            <span style="font-family:var(--font-courier); font-size:10px; color:var(--text-muted);" id="detector-state-badge">STATE: NORMAL</span>
           </div>
           <div class="ws-body">
             <canvas id="chart-canvas"></canvas>
             <div class="chart-legend-compact">
+              <!-- Subtext: Santa Monica -->
               <div class="legend-chip">
                 <span class="legend-line-sample" style="background:#38bdf8;"></span> Offered Load
               </div>
@@ -1241,6 +1300,7 @@
       <!-- OpenFlow Flow Tables -->
       <div class="panel">
         <div class="panel-header">
+          <!-- Main Heading: The Awesome Serif -->
           <div class="panel-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="8" y1="6" x2="21" y2="6"/>
@@ -1265,13 +1325,13 @@
             </thead>
             <tbody id="flow-table-body">
               <tr>
-                <td style="color:#38bdf8; font-weight:600;">s1 (0001)</td>
+                <td style="color:#38bdf8; font-weight:700;">s1 (0001)</td>
                 <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">100</span></td>
                 <td>in_port=1, eth_dst=10.0.0.3</td>
                 <td style="color:#34d399;">OUTPUT: port 3 (Primary s1->s2)</td>
               </tr>
               <tr>
-                <td style="color:#38bdf8; font-weight:600;">s2 (0002)</td>
+                <td style="color:#38bdf8; font-weight:700;">s2 (0002)</td>
                 <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">100</span></td>
                 <td>in_port=3, eth_dst=10.0.0.3</td>
                 <td style="color:#34d399;">OUTPUT: port 1 (Deliver to h3)</td>
@@ -1284,6 +1344,7 @@
       <!-- Real-Time Decision & Audit Log -->
       <div class="panel">
         <div class="panel-header">
+          <!-- Main Heading: The Awesome Serif -->
           <div class="panel-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -1454,9 +1515,9 @@
       const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       text.textContent = 'DROP ✕';
       text.setAttribute('fill', '#f43f5e');
-      text.setAttribute('font-size', '10');
+      text.setAttribute('font-size', '10.5');
       text.setAttribute('font-weight', '700');
-      text.setAttribute('font-family', 'JetBrains Mono, monospace');
+      text.setAttribute('font-family', '"Courier New", Courier, monospace');
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('dominant-baseline', 'middle');
 
@@ -1498,7 +1559,7 @@
       }
     }
 
-    // ---------------- Telemetry Sparkline Chart ----------------
+    // ---------------- Telemetry Sparkline Chart (Courier Labels) ----------------
     const chartCanvas = document.getElementById('chart-canvas');
     const chartCtx = chartCanvas.getContext('2d');
 
@@ -1522,7 +1583,7 @@
       // Grid Lines
       chartCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
       chartCtx.lineWidth = 1;
-      const padding = { top: 12, bottom: 18, left: 28, right: 10 };
+      const padding = { top: 12, bottom: 18, left: 32, right: 10 };
       const plotW = w - padding.left - padding.right;
       const plotH = h - padding.top - padding.bottom;
 
@@ -1533,8 +1594,8 @@
         chartCtx.lineTo(w - padding.right, y);
         chartCtx.stroke();
 
-        chartCtx.fillStyle = '#475569';
-        chartCtx.font = '9px JetBrains Mono, monospace';
+        chartCtx.fillStyle = '#64748b';
+        chartCtx.font = '10px "Courier New", Courier, monospace';
         chartCtx.textAlign = 'right';
         chartCtx.fillText(`${Math.round(level * 100)}%`, padding.left - 4, y + 3);
       });
@@ -1561,7 +1622,7 @@
       drawSeries('offered_util', '#38bdf8', false);
     }
 
-    // ---------------- Topology SVG Base Renderer (High Visibility) ----------------
+    // ---------------- Topology SVG Base Renderer (High Visibility & Courier Fonts) ----------------
     function renderTopologySVG(topology, archView) {
       const baseLayer = document.getElementById('topology-base-layer');
       if (!baseLayer) return;
@@ -1595,70 +1656,70 @@
         <line x1="620" y1="180" x2="740" y2="130" class="link-line active" />
         <line x1="620" y1="180" x2="740" y2="230" class="link-line" />
 
-        <!-- Primary Link Capacity Badge -->
+        <!-- Primary Link Capacity Badge (Courier) -->
         <g transform="translate(400, 150)">
-          <rect x="-70" y="-12" width="140" height="24" class="link-label-rect" />
+          <rect x="-75" y="-12" width="150" height="24" class="link-label-rect" />
           <text x="0" y="0" class="link-label-text">
             Primary: ${pUtil}M (${pPct}%)
           </text>
         </g>
 
-        <!-- Bypass Link 1 Badge -->
+        <!-- Bypass Link 1 Badge (Courier) -->
         <g transform="translate(270, 275)">
-          <rect x="-65" y="-12" width="130" height="24" class="link-label-rect" />
+          <rect x="-70" y="-12" width="140" height="24" class="link-label-rect" />
           <text x="0" y="0" class="link-label-text">
             Bypass: ${bUtil1}M (${bPct1}%)
           </text>
         </g>
 
-        <!-- Bypass Link 2 Badge -->
+        <!-- Bypass Link 2 Badge (Courier) -->
         <g transform="translate(530, 275)">
-          <rect x="-65" y="-12" width="130" height="24" class="link-label-rect" />
+          <rect x="-70" y="-12" width="140" height="24" class="link-label-rect" />
           <text x="0" y="0" class="link-label-text">
             Bypass: ${bUtil2}M (${bPct2}%)
           </text>
         </g>
 
-        <!-- Hosts (High-Visibility Outlined Nodes) -->
+        <!-- Hosts (Courier Text) -->
         <g transform="translate(60, 130)">
-          <rect x="-44" y="-18" width="88" height="36" class="node-box host-node" />
+          <rect x="-46" y="-18" width="92" height="36" class="node-box host-node" />
           <text x="0" y="-4" class="node-title">h1 (Sender)</text>
           <text x="0" y="8" class="node-subtitle">10.0.0.1</text>
         </g>
 
         <g transform="translate(60, 230)">
-          <rect x="-44" y="-18" width="88" height="36" class="node-box host-node" />
+          <rect x="-46" y="-18" width="92" height="36" class="node-box host-node" />
           <text x="0" y="-4" class="node-title">h2</text>
           <text x="0" y="8" class="node-subtitle">10.0.0.2</text>
         </g>
 
         <g transform="translate(740, 130)">
-          <rect x="-44" y="-18" width="88" height="36" class="node-box host-node" />
+          <rect x="-46" y="-18" width="92" height="36" class="node-box host-node" />
           <text x="0" y="-4" class="node-title">h3 (Target)</text>
           <text x="0" y="8" class="node-subtitle">10.0.0.3</text>
         </g>
 
         <g transform="translate(740, 230)">
-          <rect x="-44" y="-18" width="88" height="36" class="node-box host-node" />
+          <rect x="-46" y="-18" width="92" height="36" class="node-box host-node" />
           <text x="0" y="-4" class="node-title">h4</text>
           <text x="0" y="8" class="node-subtitle">10.0.0.4</text>
         </g>
 
-        <!-- Switches (Glow Outline & DPID Badges) -->
+        <!-- Switches (Courier Text) -->
         <g transform="translate(180, 180)">
-          <rect x="-50" y="-25" width="100" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
+          <rect x="-52" y="-25" width="104" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
           <text x="0" y="-5" class="node-title">s1 (Ingress)</text>
           <text x="0" y="10" class="node-subtitle">DPID: 0001 | OF1.3</text>
         </g>
 
         <g transform="translate(620, 180)">
-          <rect x="-50" y="-25" width="100" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
+          <rect x="-52" y="-25" width="104" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
           <text x="0" y="-5" class="node-title">s2 (Egress)</text>
           <text x="0" y="10" class="node-subtitle">DPID: 0002 | OF1.3</text>
         </g>
 
         <g transform="translate(400, 330)">
-          <rect x="-50" y="-25" width="100" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
+          <rect x="-52" y="-25" width="104" height="50" class="node-box switch-node ${isBypass ? 'switch-bypass-active' : ''}" />
           <text x="0" y="-5" class="node-title">s3 (Bypass)</text>
           <text x="0" y="10" class="node-subtitle">DPID: 0003 | OF1.3</text>
         </g>
@@ -1862,7 +1923,7 @@
       if (flowEntries.length > 0) {
         flowTbody.innerHTML = flowEntries.map(f => `
           <tr>
-            <td style="color:#38bdf8; font-weight:600;">${f.sw || f.switch}</td>
+            <td style="color:#38bdf8; font-weight:700;">${f.sw || f.switch}</td>
             <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">${f.priority || 100}</span></td>
             <td>${f.match || 'eth_dst=10.0.0.3'}</td>
             <td style="color:#34d399;">${f.action || 'OUTPUT'}</td>
