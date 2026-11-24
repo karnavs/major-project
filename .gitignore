@@ -13,3 +13,6 @@ venv/
 # Large decision logs
 decisions.jsonl
 decisions_rerouting_evidence.jsonl
+*.backup
+*.pre_cleanup*
+scratch_state.json
