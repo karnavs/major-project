@@ -390,7 +390,13 @@
 
     .link-primary.congested {
       stroke: #f43f5e !important;
-      filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.65)) !important;
+      filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.75)) !important;
+      animation: wireChokePulse 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes wireChokePulse {
+      0% { stroke-width: 4.5; filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.5)); }
+      100% { stroke-width: 6; filter: drop-shadow(0 0 14px rgba(244, 63, 94, 0.95)); }
     }
 
     .link-bypass.active {
@@ -1400,7 +1406,6 @@
     const PARTICLE_COUNT = 24;
     const particles = [];
     const packetElements = [];
-    let droppedBursts = [];
 
     const packetsLayer = document.getElementById('packets-layer');
     const dropsLayer = document.getElementById('drops-layer');
@@ -1470,13 +1475,13 @@
 
           const el = packetElements[idx];
 
-          // Simulate packet drop under congestion in Standard Static SDN
-          const isDropPacket = (isStaticMode && isCongested && (idx % 3 === 0));
+          // Simulate packet drop under congestion in Standard Static SDN (dramatic queue choke)
+          const isDropPacket = (isStaticMode && isCongested && (idx % 2 === 0));
 
-          if (isDropPacket && currentSegment === 1 && segmentProgress > 0.40) {
+          if (isDropPacket && currentSegment === 1 && segmentProgress > 0.38) {
             if (!p.droppedFired) {
               p.droppedFired = true;
-              createDropBurst(curX, curY);
+              createDramaticDropBurst(curX, curY);
             }
             el.setAttribute('cx', '-100');
             el.setAttribute('cy', '-100');
@@ -1501,62 +1506,124 @@
             el.setAttribute('r', '4');
           }
         });
-
-        updateDropBursts();
       }
 
       requestAnimationFrame(renderAnimation);
     }
 
-    function createDropBurst(x, y) {
+    // ---------------- Dramatic Physics-Based Packet Drop Burst (GSAP Powered) ----------------
+    function createDramaticDropBurst(x, y) {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
       g.setAttribute('transform', `translate(${x}, ${y})`);
-
-      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      text.textContent = 'DROP ✕';
-      text.setAttribute('fill', '#f43f5e');
-      text.setAttribute('font-size', '10.5');
-      text.setAttribute('font-weight', '700');
-      text.setAttribute('font-family', '"Courier New", Courier, monospace');
-      text.setAttribute('text-anchor', 'middle');
-      text.setAttribute('dominant-baseline', 'middle');
-
-      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      ring.setAttribute('r', '3');
-      ring.setAttribute('fill', 'none');
-      ring.setAttribute('stroke', '#f43f5e');
-      ring.setAttribute('stroke-width', '1.5');
-
-      g.appendChild(ring);
-      g.appendChild(text);
       dropsLayer.appendChild(g);
 
-      droppedBursts.push({
-        el: g,
-        ring: ring,
-        text: text,
-        age: 0,
-        maxAge: 40
+      // 1. Expanding Shockwave Halo Ring
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('r', '4');
+      ring.setAttribute('fill', 'none');
+      ring.setAttribute('stroke', '#f43f5e');
+      ring.setAttribute('stroke-width', '2.5');
+      ring.setAttribute('filter', 'url(#packet-glow-red)');
+      g.appendChild(ring);
+
+      gsap.to(ring, {
+        attr: { r: 36, 'stroke-width': 0.4 },
+        opacity: 0,
+        duration: 0.65,
+        ease: 'power2.out'
       });
-    }
 
-    function updateDropBursts() {
-      for (let i = droppedBursts.length - 1; i >= 0; i--) {
-        const b = droppedBursts[i];
-        b.age++;
-        const pct = b.age / b.maxAge;
-        const opacity = Math.max(0, 1 - pct);
-        const yOff = -pct * 24;
+      // 2. White-Hot Flash Impact Core
+      const core = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      core.setAttribute('r', '5.5');
+      core.setAttribute('fill', '#ffffff');
+      core.setAttribute('filter', 'url(#packet-glow-red)');
+      g.appendChild(core);
 
-        b.ring.setAttribute('r', `${3 + pct * 14}`);
-        b.el.setAttribute('opacity', `${opacity}`);
-        b.text.setAttribute('y', `${yOff}`);
+      gsap.to(core, {
+        scale: 0.2,
+        opacity: 0,
+        duration: 0.22,
+        ease: 'power1.out'
+      });
 
-        if (b.age >= b.maxAge) {
-          dropsLayer.removeChild(b.el);
-          droppedBursts.splice(i, 1);
+      // 3. Falling & Deflecting Debris Shards (Explode outward, then pull down with gravity)
+      const angles = [-140, -90, -40, 45, 90, 135];
+      angles.forEach((angle, i) => {
+        const shard = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        shard.setAttribute('r', (Math.random() * 1.8 + 1.2).toFixed(1));
+        shard.setAttribute('fill', i % 2 === 0 ? '#f43f5e' : '#fda4af');
+        g.appendChild(shard);
+
+        const rad = (angle * Math.PI) / 180;
+        const dist = 16 + Math.random() * 18;
+        const targetX = Math.cos(rad) * dist;
+        const targetY = Math.sin(rad) * dist + (18 + Math.random() * 14); // Gravitational downward deflection
+
+        gsap.to(shard, {
+          x: targetX,
+          y: targetY,
+          opacity: 0,
+          scale: 0.3,
+          duration: 0.55 + Math.random() * 0.2,
+          ease: 'power3.out'
+        });
+      });
+
+      // 4. Dramatic Spring-Loaded "DROP ✕" Pill Badge
+      const badgeG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+      const badgeBg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      badgeBg.setAttribute('x', '-35');
+      badgeBg.setAttribute('y', '-10');
+      badgeBg.setAttribute('width', '70');
+      badgeBg.setAttribute('height', '20');
+      badgeBg.setAttribute('rx', '4');
+      badgeBg.setAttribute('fill', '#1c0e14');
+      badgeBg.setAttribute('stroke', '#f43f5e');
+      badgeBg.setAttribute('stroke-width', '1.2');
+      badgeBg.setAttribute('filter', 'url(#packet-glow-red)');
+
+      const badgeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      badgeText.textContent = 'DROP ✕';
+      badgeText.setAttribute('x', '0');
+      badgeText.setAttribute('y', '0');
+      badgeText.setAttribute('fill', '#fda4af');
+      badgeText.setAttribute('font-size', '10');
+      badgeText.setAttribute('font-weight', '700');
+      badgeText.setAttribute('font-family', '"Courier New", Courier, monospace');
+      badgeText.setAttribute('text-anchor', 'middle');
+      badgeText.setAttribute('dominant-baseline', 'central');
+
+      badgeG.appendChild(badgeBg);
+      badgeG.appendChild(badgeText);
+      g.appendChild(badgeG);
+
+      // GSAP Spring Pop and Smooth Upward Glide
+      gsap.fromTo(badgeG,
+        { scale: 0.2, y: 0, opacity: 0 },
+        {
+          scale: 1,
+          y: -24,
+          opacity: 1,
+          duration: 0.28,
+          ease: 'back.out(2.4)',
+          onComplete: () => {
+            gsap.to(badgeG, {
+              y: -42,
+              opacity: 0,
+              duration: 0.42,
+              delay: 0.22,
+              ease: 'power2.in',
+              onComplete: () => {
+                if (g.parentNode) {
+                  dropsLayer.removeChild(g);
+                }
+              }
+            });
+          }
         }
-      }
+      );
     }
 
     // ---------------- Telemetry Sparkline Chart (Courier Labels) ----------------
