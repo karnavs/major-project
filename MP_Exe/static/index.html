@@ -206,23 +206,23 @@
     }
 
     .btn-danger {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.5);
       color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.3);
       border-color: #ef4444;
       color: #fff;
     }
 
     .btn-success {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.18);
+      border-color: rgba(16, 185, 129, 0.5);
       color: #6ee7b7;
     }
     .btn-success:hover {
-      background: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.3);
       border-color: #10b981;
       color: #fff;
     }
@@ -398,6 +398,40 @@
       position: relative;
     }
 
+    /* ---------------- Route Alert Banner ---------------- */
+    .route-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--border-quiet);
+      transition: all 0.25s ease;
+    }
+
+    .route-banner.normal {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .route-banner.pending {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .route-banner.bypass {
+      background: rgba(2, 132, 199, 0.15);
+      border-color: rgba(2, 132, 199, 0.5);
+      color: #38bdf8;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.25);
+    }
+
     /* ---------------- Interactive Topology Canvas ---------------- */
     #topology-container {
       position: relative;
@@ -443,7 +477,7 @@
     }
     .link-primary.congested {
       stroke: #ef4444;
-      stroke-width: 4px;
+      stroke-width: 5px;
       stroke-dasharray: 6 3;
     }
 
@@ -453,7 +487,7 @@
     }
     .link-bypass.active {
       stroke: #0284c7;
-      stroke-width: 4px;
+      stroke-width: 5px;
       stroke-dasharray: none;
     }
 
@@ -467,11 +501,11 @@
     }
     .node-switch.active {
       stroke: #0284c7;
-      filter: drop-shadow(0 0 6px rgba(2, 132, 199, 0.4));
+      filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.4));
     }
     .node-switch.congested {
       stroke: #ef4444;
-      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.6));
     }
 
     .node-host {
@@ -499,13 +533,6 @@
       dominant-baseline: central;
     }
 
-    .link-badge {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      fill: #cbd5e1;
-      background: #0f172a;
-    }
-
     /* ---------------- Telemetry Chart ---------------- */
     #chart-canvas {
       width: 100%;
@@ -522,6 +549,7 @@
       margin-top: 10px;
       font-family: var(--font-mono);
       font-size: 11px;
+      flex-wrap: wrap;
     }
 
     .legend-item {
@@ -643,11 +671,11 @@
     <div class="control-bar">
       <div class="controls-left">
         <button class="btn btn-primary" id="btn-play" onclick="togglePlay()">
-          <span id="play-icon">▶</span> <span id="play-text">Start Auto-Run</span>
+          <span id="play-icon">⏸</span> <span id="play-text">Pause Auto-Run</span>
         </button>
         <button class="btn" onclick="stepSimulation()">Step (+1s)</button>
-        <button class="btn btn-danger" onclick="injectCongestion()">⚡ Inject Congestion (95%)</button>
-        <button class="btn btn-success" onclick="relieveCongestion()">✓ Relieve Congestion (10%)</button>
+        <button class="btn btn-danger" onclick="injectCongestion()">⚡ Inject Congestion (95% Surge)</button>
+        <button class="btn btn-success" onclick="relieveCongestion()">✓ Relieve Congestion (10% Normal)</button>
         <button class="btn" onclick="resetSimulation()">Reset</button>
       </div>
 
@@ -686,7 +714,7 @@
           <div class="metric-item">
             <div class="metric-label">Packet Drop Rate</div>
             <div class="metric-value" id="static-drop" style="color:#f87171;">0.0%</div>
-            <div class="metric-sub" id="static-drop-sub">Buffer normal</div>
+            <div class="metric-sub" id="static-drop-sub">Buffer status</div>
           </div>
           <div class="metric-item">
             <div class="metric-label">Latency / Bufferbloat</div>
@@ -755,6 +783,12 @@
           </div>
         </div>
         <div class="panel-body">
+          <!-- Dynamic Route Status Banner -->
+          <div class="route-banner normal" id="route-banner">
+            <span id="route-banner-text">✓ PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2</span>
+            <span id="route-banner-sub">Packet Loss: 0.0%</span>
+          </div>
+
           <div id="topology-container">
             <svg id="topology-svg" viewBox="0 0 800 380"></svg>
             <canvas id="topology-canvas"></canvas>
@@ -855,7 +889,7 @@
     -------------------------------------------------------------- */
     let ws = null;
     let currentState = null;
-    let isPlaying = false;
+    let isPlaying = true;
     let simSpeed = 1.0;
     let currentMode = 'sandbox';
 
@@ -863,7 +897,7 @@
     const canvas = document.getElementById('topology-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const PARTICLE_COUNT = 18;
+    const PARTICLE_COUNT = 24;
 
     function resizeCanvas() {
       const container = document.getElementById('topology-container');
@@ -872,7 +906,6 @@
     }
     window.addEventListener('resize', resizeCanvas);
 
-    // Particle Class
     class PacketParticle {
       constructor() {
         this.reset();
@@ -880,7 +913,7 @@
       }
       reset() {
         this.progress = 0;
-        this.speed = 0.006 + Math.random() * 0.004;
+        this.speed = 0.007 + Math.random() * 0.005;
       }
       update() {
         this.progress += this.speed;
@@ -903,14 +936,9 @@
         const scaleX = canvas.width / 800;
         const scaleY = canvas.height / 380;
 
-        // Path waypoints in 800x380 coords:
-        // h1: (60, 140)
-        // s1: (180, 180)
-        // s2: (620, 180)
-        // s3: (400, 340)
-        // h3: (740, 140)
         let waypoints = [];
         if (!isBypass) {
+          // Normal: h1 -> s1 -> s2 -> h3
           waypoints = [
             {x: 60, y: 140},
             {x: 180, y: 180},
@@ -918,6 +946,7 @@
             {x: 740, y: 140}
           ];
         } else {
+          // Bypass: h1 -> s1 -> s3 -> s2 -> h3
           waypoints = [
             {x: 60, y: 140},
             {x: 180, y: 180},
@@ -927,7 +956,6 @@
           ];
         }
 
-        // Draw animated packet dots
         particles.forEach(p => {
           p.update();
           const totalSegments = waypoints.length - 1;
@@ -941,10 +969,10 @@
           const curY = (p1.y + (p2.y - p1.y) * segmentProgress) * scaleY;
 
           ctx.beginPath();
-          ctx.arc(curX, curY, 3.5, 0, Math.PI * 2);
+          ctx.arc(curX, curY, isBypass ? 4.0 : 3.5, 0, Math.PI * 2);
           ctx.fillStyle = isBypass ? '#38bdf8' : '#10b981';
           ctx.shadowColor = isBypass ? '#0284c7' : '#10b981';
-          ctx.shadowBlur = 6;
+          ctx.shadowBlur = isBypass ? 10 : 6;
           ctx.fill();
         });
       }
@@ -964,14 +992,12 @@
 
       chartCtx.clearRect(0, 0, w, h);
 
-      // Grid lines
       chartCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
       chartCtx.lineWidth = 1;
       const padding = {top: 20, right: 20, bottom: 25, left: 40};
       const plotW = w - padding.left - padding.right;
       const plotH = h - padding.top - padding.bottom;
 
-      // Horizontal grid lines (0%, 25%, 50%, 75%, 100%)
       chartCtx.fillStyle = '#64748b';
       chartCtx.font = '10px JetBrains Mono';
       chartCtx.textAlign = 'right';
@@ -1008,7 +1034,6 @@
         chartCtx.stroke();
       }
 
-      // Draw series in proper order
       drawSeries('baseline', '#64748b', true);
       drawSeries('t_exit', '#f59e0b', false);
       drawSeries('t_enter', '#ef4444', false);
@@ -1026,7 +1051,7 @@
       svg.innerHTML = `
         <!-- Links -->
         <!-- Link s1 -> s2 (Primary) -->
-        <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" id="svg-link-1-2" />
+        <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" />
         
         <!-- Link s1 -> s3 (Bypass A) -->
         <line x1="180" y1="180" x2="400" y2="340" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
@@ -1041,54 +1066,47 @@
         <line x1="620" y1="180" x2="740" y2="220" stroke="#334155" stroke-width="1.5" />
 
         <!-- Link Labels -->
-        <rect x="350" y="158" width="100" height="20" rx="4" fill="#0f172a" stroke="#334155" />
-        <text x="400" y="172" fill="${s1_s2_congested ? '#ef4444' : '#cbd5e1'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
+        <rect x="345" y="156" width="110" height="22" rx="4" fill="#0f172a" stroke="${s1_s2_congested ? '#ef4444' : '#334155'}" />
+        <text x="400" y="171" fill="${s1_s2_congested ? '#ef4444' : '#cbd5e1'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
           Primary: ${topology.links[0].mbps}M (${Math.round(topology.links[0].util * 100)}%)
         </text>
 
-        <rect x="235" y="270" width="90" height="18" rx="4" fill="#0f172a" stroke="#334155" />
-        <text x="280" y="283" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
+        <rect x="230" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0284c7' : '#334155'}" />
+        <text x="277" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
           Bypass: ${topology.links[1].mbps}M
         </text>
 
-        <rect x="475" y="270" width="90" height="18" rx="4" fill="#0f172a" stroke="#334155" />
-        <text x="520" y="283" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
+        <rect x="475" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0284c7' : '#334155'}" />
+        <text x="522" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
           Bypass: ${topology.links[2].mbps}M
         </text>
 
         <!-- Hosts -->
-        <!-- h1 -->
         <rect x="15" y="122" width="75" height="36" class="node-host" />
         <text x="52" y="137" class="node-text-title">h1 (Sender)</text>
         <text x="52" y="149" class="node-text-sub">10.0.0.1</text>
 
-        <!-- h2 -->
         <rect x="15" y="202" width="75" height="36" class="node-host" />
         <text x="52" y="217" class="node-text-title">h2</text>
         <text x="52" y="229" class="node-text-sub">10.0.0.2</text>
 
-        <!-- h3 -->
         <rect x="710" y="122" width="75" height="36" class="node-host" />
         <text x="747" y="137" class="node-text-title">h3 (Target)</text>
         <text x="747" y="149" class="node-text-sub">10.0.0.3</text>
 
-        <!-- h4 -->
         <rect x="710" y="202" width="75" height="36" class="node-host" />
         <text x="747" y="217" class="node-text-title">h4</text>
         <text x="747" y="229" class="node-text-sub">10.0.0.4</text>
 
         <!-- Switches -->
-        <!-- s1 Ingress -->
         <rect x="130" y="152" width="100" height="56" class="node-switch ${s1_s2_congested ? 'congested' : 'active'}" />
         <text x="180" y="174" class="node-text-title">s1 (Ingress)</text>
         <text x="180" y="190" class="node-text-sub">DPID: 0001 | OF1.3</text>
 
-        <!-- s2 Egress -->
         <rect x="570" y="152" width="100" height="56" class="node-switch active" />
         <text x="620" y="174" class="node-text-title">s2 (Egress)</text>
         <text x="620" y="190" class="node-text-sub">DPID: 0002 | OF1.3</text>
 
-        <!-- s3 Bypass -->
         <rect x="350" y="312" width="100" height="56" class="node-switch ${isBypass ? 'active' : ''}" />
         <text x="400" y="334" class="node-text-title">s3 (Bypass)</text>
         <text x="400" y="350" class="node-text-sub">DPID: 0003 | OF1.3</text>
@@ -1108,12 +1126,27 @@
       if (state.detector.state === 'CONGESTED') dot.classList.add('critical');
       else if (state.detector.state === 'CONGESTION_PENDING') dot.classList.add('warning');
 
+      // Sync play/pause button with backend state
+      isPlaying = state.is_running;
+      const btn = document.getElementById('btn-play');
+      const text = document.getElementById('play-text');
+      const icon = document.getElementById('play-icon');
+      if (isPlaying) {
+        text.textContent = 'Pause Auto-Run';
+        icon.textContent = '⏸';
+        btn.classList.add('btn-danger');
+      } else {
+        text.textContent = 'Start Auto-Run';
+        icon.textContent = '▶';
+        btn.classList.remove('btn-danger');
+      }
+
       // Sliders sync
       const loadPercent = Math.round(state.offered_util * 100);
       document.getElementById('load-slider').value = loadPercent;
       document.getElementById('load-val-text').textContent = `${loadPercent}%`;
 
-      // Static vs Adaptive Comparison Cards
+      // Comparison Cards
       const staticComp = state.comparison.static;
       const adaptiveComp = state.comparison.adaptive;
 
@@ -1127,6 +1160,26 @@
       document.getElementById('adaptive-lat').innerHTML = `${adaptiveComp.latency_ms.toFixed(1)} <span style="font-size:12px;">ms</span>`;
       document.getElementById('adaptive-path-text').textContent = JSON.stringify(adaptiveComp.path);
       document.getElementById('adaptive-status-badge').textContent = adaptiveComp.status;
+
+      // Dynamic Route Banner
+      const isBypass = state.topology.is_rerouted;
+      const banner = document.getElementById('route-banner');
+      const bannerText = document.getElementById('route-banner-text');
+      const bannerSub = document.getElementById('route-banner-sub');
+
+      if (isBypass) {
+        banner.className = 'route-banner bypass';
+        bannerText.textContent = '⚡ DYNAMIC REROUTE ACTIVE: TRAFFIC DIVERTED OVER BYPASS SWITCH s3 [1, 3, 2]';
+        bannerSub.textContent = 'Delivered: 100% | Packet Loss: 0.0%';
+      } else if (state.detector.state === 'CONGESTION_PENDING') {
+        banner.className = 'route-banner pending';
+        bannerText.textContent = `⚠ TRAFFIC SURGE DETECTED (${Math.round(state.offered_util*100)}%): VERIFYING PERSISTENCE`;
+        bannerSub.textContent = 'Testing threshold stability...';
+      } else {
+        banner.className = 'route-banner normal';
+        bannerText.textContent = '✓ PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2 [1, 2]';
+        bannerSub.textContent = 'Normal Load: 10 Mbps Cap';
+      }
 
       // Path Description
       const pathStr = state.topology.active_path.join(' -> s');
@@ -1189,51 +1242,49 @@
     }
 
     async function stepSimulation() {
-      await fetch('/api/step', { method: 'POST' });
+      const res = await fetch('/api/step', { method: 'POST' });
+      const data = await res.json();
+      updateUI(data);
     }
 
     async function togglePlay() {
-      isPlaying = !isPlaying;
-      const btn = document.getElementById('btn-play');
-      const text = document.getElementById('play-text');
-      const icon = document.getElementById('play-icon');
-
       if (isPlaying) {
+        await fetch('/api/pause', { method: 'POST' });
+        isPlaying = false;
+      } else {
         await fetch('/api/play', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({speed: simSpeed})
         });
-        text.textContent = 'Pause Auto-Run';
-        icon.textContent = '⏸';
-        btn.classList.add('btn-danger');
-      } else {
-        await fetch('/api/pause', { method: 'POST' });
-        text.textContent = 'Start Auto-Run';
-        icon.textContent = '▶';
-        btn.classList.remove('btn-danger');
+        isPlaying = true;
       }
     }
 
     async function injectCongestion() {
-      await fetch('/api/inject_congestion', {
+      const res = await fetch('/api/inject_congestion', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({util: 0.95})
+        body: JSON.stringify({util: 0.95, auto_trigger: true})
       });
+      const data = await res.json();
+      updateUI(data);
     }
 
     async function relieveCongestion() {
-      await fetch('/api/relieve_congestion', {
+      const res = await fetch('/api/relieve_congestion', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({util: 0.10})
+        body: JSON.stringify({util: 0.10, auto_trigger: true})
       });
+      const data = await res.json();
+      updateUI(data);
     }
 
     async function resetSimulation() {
-      if (isPlaying) await togglePlay();
-      await fetch('/api/reset', { method: 'POST' });
+      const res = await fetch('/api/reset', { method: 'POST' });
+      const data = await res.json();
+      updateUI(data);
     }
 
     let loadDebounce = null;
@@ -1241,25 +1292,25 @@
       const util = parseFloat(val) / 100.0;
       document.getElementById('load-val-text').textContent = `${val}%`;
       clearTimeout(loadDebounce);
-      loadDebounce = setTimeout(() => {
-        fetch('/api/set_load', {
+      loadDebounce = setTimeout(async () => {
+        const res = await fetch('/api/set_load', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({util: util})
         });
+        const data = await res.json();
+        updateUI(data);
       }, 80);
     }
 
     function onSpeedSliderChange(val) {
       simSpeed = parseFloat(val);
       document.getElementById('speed-val-text').textContent = `${val}x`;
-      if (isPlaying) {
-        fetch('/api/play', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({speed: simSpeed})
-        });
-      }
+      fetch('/api/play', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({speed: simSpeed})
+      });
     }
 
     async function toggleScenarioMode() {
@@ -1272,7 +1323,6 @@
       });
     }
 
-    // Initialize
     window.addEventListener('DOMContentLoaded', () => {
       resizeCanvas();
       connectWebSocket();

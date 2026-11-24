@@ -91,6 +91,10 @@ class SDNSimulationEngine:
 
         # Initialize controller
         self.ctrl = AdaptiveRoutingController()
+        # Disable disk-bound decision logging for the UI simulation engine to prevent file lock contention
+        if hasattr(self.ctrl, "congestion_service"):
+            self.ctrl.congestion_service.decision_log_path = None
+
         self.switches = {1: SimulatedDatapath(1), 2: SimulatedDatapath(2), 3: SimulatedDatapath(3)}
         self.ctrl.datapaths = self.switches
 
@@ -113,7 +117,10 @@ class SDNSimulationEngine:
 
         # Latest step metrics cache
         self.latest_decision = None
-        self._record_log("System initialized", "Diamond topology online. Primary route [s1, s2] active.")
+        self._record_log("System initialized", "Diamond topology online. Primary route [s1, s2] active.", "info")
+
+        # Prime with 1 initial sample so delta calculations are ready immediately
+        self.step()
 
     def _record_log(self, title: str, detail: str, level: str = "info"):
         self.event_logs.insert(0, {
@@ -130,17 +137,33 @@ class SDNSimulationEngine:
         self.offered_util = max(0.01, min(1.0, float(util)))
         self.mode = "sandbox"
 
-    def inject_congestion(self, util: float = 0.95):
-        """Immediately trigger heavy traffic surge."""
+    def inject_congestion(self, util: float = 0.95, auto_trigger: bool = True):
+        """Immediately trigger heavy traffic surge and confirm rerouting."""
         self.offered_util = util
         self.mode = "sandbox"
-        self._record_log("Traffic Surge Injected", f"Offered load increased to {int(util*100)}% (9.5 Mbps)", "warning")
+        self._record_log("Traffic Surge Injected", f"Offered load surged to {int(util*100)}% (9.5 Mbps)", "warning")
 
-    def relieve_congestion(self, util: float = 0.10):
-        """Relieve congestion to normal load."""
+        # Advance persistence window (N=3 samples) so the reroute happens immediately
+        if auto_trigger:
+            for _ in range(3):
+                self.step()
+                active_flow = self.ctrl.engine.active_flows.get(("00:00:00:00:00:01", "00:00:00:00:00:03"))
+                if active_flow and active_flow.path_dpids == [1, 3, 2]:
+                    break
+
+    def relieve_congestion(self, util: float = 0.10, auto_trigger: bool = True):
+        """Relieve congestion to normal load and restore primary path."""
         self.offered_util = util
         self.mode = "sandbox"
-        self._record_log("Traffic Normalized", f"Offered load reduced to {int(util*100)}% (1.0 Mbps)", "info")
+        self._record_log("Traffic Normalized", f"Offered load normalized to {int(util*100)}% (1.0 Mbps)", "info")
+
+        # Advance exit persistence window (M=5 samples) to complete restoration
+        if auto_trigger:
+            for _ in range(5):
+                self.step()
+                active_flow = self.ctrl.engine.active_flows.get(("00:00:00:00:00:01", "00:00:00:00:00:03"))
+                if active_flow and active_flow.path_dpids == [1, 2]:
+                    break
 
     def step(self) -> Dict[str, Any]:
         """Advance simulation by 1 second."""
@@ -161,9 +184,20 @@ class SDNSimulationEngine:
         else:
             phase = "SANDBOX"
 
-        # Advance bytes on primary link
-        bytes_added = int(self.offered_util * CAP_10M / 8)
-        self.counters[(1, 3)] += bytes_added
+        active_flow_before = self.ctrl.engine.active_flows.get(("00:00:00:00:00:01", "00:00:00:00:00:03"))
+        was_rerouted = (active_flow_before.path_dpids == [1, 3, 2]) if active_flow_before else False
+
+        # If already rerouted, primary link traffic is relieved, and bypass link receives the offered load
+        if was_rerouted and self.offered_util > 0.50:
+            # Rerouted: primary port s1:3 has dropped traffic, bypass port s1:4 carries flow
+            primary_bytes = int(0.05 * CAP_10M / 8)
+            bypass_bytes = int(self.offered_util * CAP_10M / 8)
+        else:
+            primary_bytes = int(self.offered_util * CAP_10M / 8)
+            bypass_bytes = int(0.01 * CAP_10M / 8)
+
+        self.counters[(1, 3)] += primary_bytes
+        self.counters[(1, 4)] += bypass_bytes
 
         # Ingest port stats into CongestionService
         body_s1 = [St(3, self.counters[(1, 3)], 0), St(4, self.counters[(1, 4)], 0)]
@@ -174,7 +208,7 @@ class SDNSimulationEngine:
         active_flow = self.ctrl.engine.active_flows.get(("00:00:00:00:00:01", "00:00:00:00:00:03"))
         current_path = list(active_flow.path_dpids) if active_flow else [1, 2]
 
-        # Log events
+        # Log significant events
         if d3 and d3.event == Event.CONGESTION_CONFIRMED:
             self._record_log(
                 "Congestion Confirmed (Rerouted)",
@@ -191,13 +225,13 @@ class SDNSimulationEngine:
             streak = getattr(d3, "streak", 1)
             self._record_log(
                 "Congestion Pending",
-                f"Surge detected on primary link. Persistence verifying ({streak}/3)...",
+                f"Traffic surge on s1:port3 ({self.offered_util*100:.0f}%). Persistence verifying ({streak}/3)...",
                 "warning"
             )
 
         # Baseline Comparison Metrics (Static SDN vs Adaptive SDN)
         is_adaptive_rerouted = (current_path == [1, 3, 2])
-        
+
         # Adaptive SDN performance
         if is_adaptive_rerouted:
             adaptive_throughput = round(self.offered_util * 10.0, 2)
@@ -205,7 +239,7 @@ class SDNSimulationEngine:
             adaptive_latency_ms = round(3.8 + (self.offered_util * 0.4), 1)  # Extra hop through s3
             adaptive_status = "BYPASS [s1 -> s3 -> s2]"
         elif self.offered_util > 0.85 and not is_adaptive_rerouted:
-            # During the 3-sample pending phase
+            # During pending phase
             adaptive_throughput = round(min(8.5, self.offered_util * 10.0), 2)
             adaptive_loss_pct = round(max(0.0, (self.offered_util - 0.85) / self.offered_util * 15.0), 1)
             adaptive_latency_ms = round(12.0 + (self.offered_util * 8.0), 1)
@@ -218,7 +252,6 @@ class SDNSimulationEngine:
 
         # Static SDN performance (Never reroutes, drops packets when congested)
         if self.offered_util > 0.75:
-            # Bottleneck buffer overflow
             overflow = self.offered_util - 0.75
             static_loss_pct = round(min(52.0, (overflow / self.offered_util) * 100.0), 1)
             static_throughput = round(7.5 + (0.5 * (1.0 - static_loss_pct / 100.0)), 2)
@@ -271,12 +304,8 @@ class SDNSimulationEngine:
         current_path = list(active_flow.path_dpids) if active_flow else [1, 2]
         is_rerouted = (current_path == [1, 3, 2])
 
-        # Link utilization dictionary
-        # Link 1: s1 -> s2 (port 3)
-        # Link 2: s1 -> s3 (port 4)
-        # Link 3: s3 -> s2 (port 2)
         if is_rerouted:
-            link_s1_s2_util = 0.02
+            link_s1_s2_util = 0.05
             link_s1_s3_util = self.offered_util
             link_s3_s2_util = self.offered_util
         else:
@@ -284,7 +313,6 @@ class SDNSimulationEngine:
             link_s1_s3_util = 0.01
             link_s3_s2_util = 0.01
 
-        # Current comparison snapshot
         latest = self.history[-1] if self.history else None
 
         return {
@@ -323,7 +351,7 @@ class SDNSimulationEngine:
                         "mbps": round(link_s1_s2_util * 10.0, 2),
                         "capacity_mbps": 10.0,
                         "active": not is_rerouted,
-                        "congested": (link_s1_s2_util > 0.80),
+                        "congested": (link_s1_s2_util > 0.80 or (not is_rerouted and self.offered_util > 0.80)),
                     },
                     {
                         "id": "link-s1-s3",

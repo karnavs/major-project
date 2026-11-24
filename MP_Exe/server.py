@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import os
 import sys
+import traceback
 from typing import Any, Dict, List
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -40,12 +41,16 @@ app.add_middleware(
 
 # Shared simulation engine instance
 engine = SDNSimulationEngine()
+# Enable playback by default so user sees live network ticks immediately
+engine.is_running = True
+
 connected_websockets: List[WebSocket] = []
 playback_task: asyncio.Task | None = None
 
 
 class LoadRequest(BaseModel):
     util: float = 0.50
+    auto_trigger: bool = True
 
 
 class SpeedRequest(BaseModel):
@@ -75,22 +80,32 @@ async def broadcast_state():
 async def _playback_loop():
     """Background task for auto-running simulation ticks."""
     try:
-        while engine.is_running:
-            delay = 1.0 / max(0.2, min(5.0, engine.speed))
-            await asyncio.sleep(delay)
-            if not engine.is_running:
-                break
-            engine.step()
-            await broadcast_state()
+        while True:
+            if engine.is_running:
+                delay = 1.0 / max(0.2, min(5.0, engine.speed))
+                await asyncio.sleep(delay)
+                if engine.is_running:
+                    try:
+                        engine.step()
+                        await broadcast_state()
+                    except Exception as ex:
+                        print("Error during simulation step:", ex)
+                        traceback.print_exc()
+            else:
+                await asyncio.sleep(0.3)
     except asyncio.CancelledError:
         pass
+    except Exception as e:
+        print("Playback task exception:", e)
 
 
 @app.on_event("startup")
 async def startup_event():
-    # Ensure static directory exists
+    global playback_task
     static_dir = os.path.join(BASE_DIR, "static")
     os.makedirs(static_dir, exist_ok=True)
+    if playback_task is None or playback_task.done():
+        playback_task = asyncio.create_task(_playback_loop())
 
 
 @app.get("/api/state")
@@ -107,48 +122,37 @@ async def api_step():
 
 @app.post("/api/reset")
 async def api_reset():
-    global playback_task
-    engine.is_running = False
-    if playback_task and not playback_task.done():
-        playback_task.cancel()
     engine.reset()
+    engine.is_running = True
     await broadcast_state()
     return engine.get_state()
 
 
 @app.post("/api/play")
 async def api_play(req: SpeedRequest = SpeedRequest()):
-    global playback_task
     engine.speed = req.speed
-    if not engine.is_running:
-        engine.is_running = True
-        if playback_task and not playback_task.done():
-            playback_task.cancel()
-        playback_task = asyncio.create_task(_playback_loop())
+    engine.is_running = True
     await broadcast_state()
     return {"status": "playing", "speed": engine.speed}
 
 
 @app.post("/api/pause")
 async def api_pause():
-    global playback_task
     engine.is_running = False
-    if playback_task and not playback_task.done():
-        playback_task.cancel()
     await broadcast_state()
     return {"status": "paused"}
 
 
 @app.post("/api/inject_congestion")
-async def api_inject(req: LoadRequest = LoadRequest(util=0.95)):
-    engine.inject_congestion(req.util)
+async def api_inject(req: LoadRequest = LoadRequest(util=0.95, auto_trigger=True)):
+    engine.inject_congestion(req.util, auto_trigger=req.auto_trigger)
     await broadcast_state()
     return engine.get_state()
 
 
 @app.post("/api/relieve_congestion")
-async def api_relieve(req: LoadRequest = LoadRequest(util=0.10)):
-    engine.relieve_congestion(req.util)
+async def api_relieve(req: LoadRequest = LoadRequest(util=0.10, auto_trigger=True)):
+    engine.relieve_congestion(req.util, auto_trigger=req.auto_trigger)
     await broadcast_state()
     return engine.get_state()
 
@@ -176,7 +180,6 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
-            # Client can send commands via WS as well
             if data == "step":
                 engine.step()
                 await broadcast_state()

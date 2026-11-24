@@ -76,8 +76,11 @@ class CongestionService:
             self.log.info("%s on %s at %.3f (value=%.3f t_enter=%.3f t_exit=%.3f)", d.event.value, ent,
                           d.timestamp, d.value, d.t_enter, d.t_exit)
         if write and self.decision_log_path:
-            with open(self.decision_log_path, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(d.to_dict()) + "\n")
+            try:
+                with open(self.decision_log_path, "a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(d.to_dict()) + "\n")
+            except Exception as e:
+                self.log.debug("Failed writing decision log: %s", e)
 
 
 def build_service(cfg: Mapping[str, Any], on_event: Optional[EventCallback] = None,
