@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0b0e14" />
+  <rect x="2" y="2" width="60" height="60" rx="12" stroke="#0ea5e9" stroke-width="2" stroke-opacity="0.4" />
+  
+  <!-- Topology Links -->
+  <line x1="18" y1="32" x2="46" y2="32" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+  <line x1="18" y1="32" x2="32" y2="48" stroke="#0ea5e9" stroke-width="2.5" stroke-dasharray="3 3" />
+  <line x1="32" y1="48" x2="46" y2="32" stroke="#0ea5e9" stroke-width="2.5" stroke-dasharray="3 3" />
+
+  <!-- Switch Nodes -->
+  <!-- s1 -->
+  <circle cx="18" cy="32" r="7" fill="#1e293b" stroke="#10b981" stroke-width="2.5" />
+  <circle cx="18" cy="32" r="2.5" fill="#34d399" />
+  
+  <!-- s2 -->
+  <circle cx="46" cy="32" r="7" fill="#1e293b" stroke="#10b981" stroke-width="2.5" />
+  <circle cx="46" cy="32" r="2.5" fill="#34d399" />
+
+  <!-- s3 Bypass -->
+  <circle cx="32" cy="48" r="6" fill="#1e293b" stroke="#0ea5e9" stroke-width="2" />
+  <circle cx="32" cy="48" r="2" fill="#38bdf8" />
+  
+  <!-- Data Pulse -->
+  <circle cx="32" cy="18" r="3.5" fill="#38bdf8" />
+  <line x1="18" y1="32" x2="32" y2="18" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.6" />
+  <line x1="32" y1="18" x2="46" y2="32" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.6" />
+</svg>

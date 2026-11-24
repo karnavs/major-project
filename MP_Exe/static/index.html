@@ -4,25 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SDN Adaptive Congestion-Aware Traffic Management Console</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <!-- GSAP Animation Platform -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
   <style>
     /* -------------------------------------------------------------
-       Unslop Design Tokens (Graphite neutral ramp, 4px grid, NOC character)
+       Hallmark & Unslop Design System (Obsidian & Cobalt Theme)
     -------------------------------------------------------------- */
     :root {
-      --bg-base: #0a0c10;
-      --bg-surface: #11141b;
-      --bg-surface-raised: #171b24;
-      --bg-surface-elevated: #1e232f;
-      --border-quiet: rgba(255, 255, 255, 0.07);
+      --bg-base: #07090e;
+      --bg-surface: #0e121a;
+      --bg-surface-raised: #141924;
+      --bg-surface-elevated: #1b2130;
+      
+      --border-quiet: rgba(255, 255, 255, 0.065);
       --border-subtle: rgba(255, 255, 255, 0.12);
       --border-focus: rgba(255, 255, 255, 0.22);
 
-      --text-primary: #f1f4f9;
-      --text-secondary: #949db0;
-      --text-muted: #596173;
+      --text-primary: #f3f6fc;
+      --text-secondary: #9099ab;
+      --text-muted: #535b6d;
 
       --accent: #0ea5e9;
       --accent-tint: rgba(14, 165, 233, 0.12);
@@ -47,8 +55,16 @@
       padding: 0;
     }
 
+    html.lenis {
+      height: auto;
+    }
+
     body {
       background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06), transparent 45%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 32px;
       color: var(--text-primary);
       font-family: var(--font-sans);
       font-size: 13px;
@@ -60,11 +76,12 @@
       min-height: 100vh;
     }
 
-    /* ---------------- Header & Navbar ---------------- */
+    /* ---------------- Header ---------------- */
     header {
-      background: var(--bg-surface);
+      background: rgba(14, 18, 26, 0.85);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-quiet);
-      padding: 14px 28px;
+      padding: 14px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -76,22 +93,24 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .brand-mark {
-      width: 30px;
-      height: 30px;
+    .brand-logo {
+      width: 32px;
+      height: 32px;
       border-radius: var(--radius-sm);
       background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
+      border: 1px solid rgba(14, 165, 233, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 13px;
-      font-family: var(--font-mono);
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.2);
+    }
+
+    .brand-logo svg {
+      width: 20px;
+      height: 20px;
     }
 
     .brand-title {
@@ -131,20 +150,20 @@
       height: 8px;
       border-radius: 50%;
       background: var(--emerald);
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
     }
-    .status-dot.warning { background: var(--amber); box-shadow: 0 0 6px rgba(245, 158, 11, 0.6); }
-    .status-dot.critical { background: var(--rose); box-shadow: 0 0 6px rgba(239, 68, 68, 0.6); }
+    .status-dot.warning { background: var(--amber); box-shadow: 0 0 8px rgba(245, 158, 11, 0.7); }
+    .status-dot.critical { background: var(--rose); box-shadow: 0 0 8px rgba(239, 68, 68, 0.7); }
 
     /* ---------------- Main Layout ---------------- */
     main {
-      padding: 20px 28px 36px;
+      padding: 24px 32px 48px;
       max-width: 1680px;
       width: 100%;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       flex: 1;
     }
 
@@ -153,12 +172,13 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 12px 18px;
+      padding: 12px 20px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .controls-left, .controls-right {
@@ -173,8 +193,8 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      height: 34px;
-      padding: 0 14px;
+      height: 35px;
+      padding: 0 15px;
       border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 500;
@@ -190,6 +210,7 @@
     .btn:hover {
       background: var(--bg-surface-elevated);
       border-color: var(--border-focus);
+      transform: translateY(-1px);
     }
 
     .btn:active {
@@ -200,34 +221,35 @@
       background: #0284c7;
       border-color: #38bdf8;
       color: #fff;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
     }
     .btn-primary:hover {
       background: #0369a1;
     }
 
     .btn-danger {
-      background: rgba(239, 68, 68, 0.16);
+      background: rgba(239, 68, 68, 0.18);
       border-color: rgba(239, 68, 68, 0.45);
       color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.28);
+      background: rgba(239, 68, 68, 0.3);
       border-color: #ef4444;
       color: #fff;
     }
 
     .btn-success {
-      background: rgba(16, 185, 129, 0.16);
+      background: rgba(16, 185, 129, 0.18);
       border-color: rgba(16, 185, 129, 0.45);
       color: #6ee7b7;
     }
     .btn-success:hover {
-      background: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.3);
       border-color: #10b981;
       color: #fff;
     }
 
-    /* Speed preset button group */
+    /* Speed preset buttons */
     .speed-group {
       display: flex;
       align-items: center;
@@ -238,7 +260,7 @@
     }
 
     .speed-btn {
-      padding: 4px 9px;
+      padding: 4px 10px;
       font-size: 11px;
       font-family: var(--font-mono);
       font-weight: 600;
@@ -258,6 +280,7 @@
       background: var(--bg-surface-elevated);
       color: var(--accent);
       border: 1px solid var(--border-subtle);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
 
     .slider-group {
@@ -265,7 +288,7 @@
       align-items: center;
       gap: 10px;
       background: var(--bg-surface-raised);
-      padding: 5px 12px;
+      padding: 5px 14px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-quiet);
     }
@@ -302,31 +325,37 @@
       background: var(--accent);
       cursor: pointer;
       border: 2px solid var(--bg-surface);
+      box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);
     }
 
-    /* ---------------- Side-by-Side Comparison Grid ---------------- */
+    /* ---------------- Side-by-Side Comparison ---------------- */
     .comparison-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .compare-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 18px 20px;
+      padding: 20px 22px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
     .compare-card.adaptive-card {
       border-color: rgba(16, 185, 129, 0.35);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.03) 0%, rgba(14, 18, 26, 1) 100%);
     }
 
     .compare-card.static-card {
       border-color: rgba(239, 68, 68, 0.3);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.03) 0%, rgba(14, 18, 26, 1) 100%);
     }
 
     .compare-header {
@@ -398,7 +427,7 @@
     .workspace-grid {
       display: grid;
       grid-template-columns: 1.4fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .panel {
@@ -408,10 +437,11 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
     .panel-header {
-      padding: 12px 20px;
+      padding: 14px 22px;
       border-bottom: 1px solid var(--border-quiet);
       display: flex;
       align-items: center;
@@ -429,24 +459,14 @@
     }
 
     .panel-body {
-      padding: 18px 20px;
+      padding: 20px 22px;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     /* Architecture View Switcher Segmented Control */
-    .arch-switch-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg-surface-raised);
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-quiet);
-    }
-
     .arch-segmented-group {
       display: flex;
       align-items: center;
@@ -478,12 +498,14 @@
       background: var(--emerald-tint);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.4);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
     }
 
     .arch-segment-btn.active.static {
       background: var(--rose-tint);
       color: #f87171;
       border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
     }
 
     /* Route Alert Banner */
@@ -516,14 +538,14 @@
       background: rgba(14, 165, 233, 0.15);
       border-color: rgba(14, 165, 233, 0.5);
       color: #38bdf8;
-      box-shadow: 0 0 14px rgba(14, 165, 233, 0.2);
+      box-shadow: 0 0 14px rgba(14, 165, 233, 0.25);
     }
 
     .route-banner.static-congested {
       background: rgba(239, 68, 68, 0.18);
       border-color: rgba(239, 68, 68, 0.55);
       color: #fca5a5;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
     }
 
     /* Interactive Topology Canvas */
@@ -557,7 +579,6 @@
       z-index: 1;
     }
 
-    /* SVG Link & Node styling */
     .link-line {
       stroke-width: 3px;
       transition: stroke 0.2s ease, stroke-width 0.2s ease;
@@ -581,13 +602,13 @@
       stroke-dasharray: 4 4;
     }
     .link-bypass.active {
-      stroke: #0284c7;
+      stroke: #0ea5e9;
       stroke-width: 5px;
       stroke-dasharray: none;
     }
 
     .node-switch {
-      fill: #1a2234;
+      fill: #161e2e;
       stroke: #475569;
       stroke-width: 2px;
       rx: 8px;
@@ -595,12 +616,12 @@
       transition: all 0.2s ease;
     }
     .node-switch.active {
-      stroke: #0284c7;
-      filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.4));
+      stroke: #0ea5e9;
+      filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.45));
     }
     .node-switch.congested {
       stroke: #ef4444;
-      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.6));
+      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.65));
     }
 
     .node-host {
@@ -663,7 +684,7 @@
     .details-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 24px;
     }
 
     .table-container {
@@ -742,7 +763,14 @@
   <!-- Top Header -->
   <header>
     <div class="brand">
-      <div class="brand-mark">SDN</div>
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
+          <circle cx="6" cy="12" r="3" fill="#1e293b"/>
+          <circle cx="18" cy="6" r="3" fill="#1e293b"/>
+          <circle cx="18" cy="18" r="3" fill="#1e293b"/>
+          <path d="M9 12h6M15 6l-6 6M15 18l-6-6"/>
+        </svg>
+      </div>
       <div>
         <div class="brand-title">Adaptive Congestion Detection & Dynamic Rerouting</div>
         <div class="brand-subtitle">Software-Defined Networking Telemetry & Control Console</div>
@@ -796,7 +824,7 @@
     <!-- Side-by-Side Live Performance Comparison (The Proof Panel) -->
     <div class="comparison-grid">
       <!-- Standard Static SDN -->
-      <div class="compare-card static-card">
+      <div class="compare-card static-card" id="card-static">
         <div class="compare-header">
           <div>
             <div style="font-weight:600; font-size:13px; color:#fca5a5;">Standard SDN / Static Routing (Baseline)</div>
@@ -829,7 +857,7 @@
       </div>
 
       <!-- Our Adaptive SDN System -->
-      <div class="compare-card adaptive-card">
+      <div class="compare-card adaptive-card" id="card-adaptive">
         <div class="compare-header">
           <div>
             <div style="font-weight:600; font-size:13px; color:#6ee7b7;">Our Adaptive SDN System (EWMA + Hysteresis)</div>
@@ -992,19 +1020,41 @@
 
   <script>
     /* -------------------------------------------------------------
-       Frontend Logic & Particle Drop Animation Engine
+       Lenis Smooth Scroll + GSAP Animation Engine
     -------------------------------------------------------------- */
+    // Initialize Lenis Momentum Smooth Scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
     let ws = null;
     let currentState = null;
     let isPlaying = true;
     let simSpeed = 1.0;
     let currentMode = 'sandbox';
-    let currentArchView = 'adaptive'; // 'adaptive' or 'static'
+    let currentArchView = 'adaptive';
+
+    // Animated numerical telemetry stores
+    const animNumbers = {
+      staticThru: 1.0,
+      staticDrop: 0.0,
+      staticLat: 2.2,
+      adaptiveThru: 1.0,
+      adaptiveDrop: 0.0,
+      adaptiveLat: 2.2
+    };
 
     const canvas = document.getElementById('topology-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let droppedBursts = []; // Red drop burst animations
+    let droppedBursts = [];
     const PARTICLE_COUNT = 28;
 
     function resizeCanvas() {
@@ -1021,9 +1071,7 @@
       }
       reset() {
         this.progress = 0;
-        // Particle speed dynamically scales with slow-motion settings!
         this.baseSpeed = 0.006 + Math.random() * 0.004;
-        this.willDrop = false;
         this.droppedFired = false;
       }
       update() {
@@ -1053,7 +1101,6 @@
 
         let waypoints = [];
         if (!isBypass) {
-          // Primary: h1 -> s1 -> s2 -> h3
           waypoints = [
             {x: 60, y: 140},
             {x: 180, y: 180},
@@ -1061,7 +1108,6 @@
             {x: 740, y: 140}
           ];
         } else {
-          // Bypass: h1 -> s1 -> s3 -> s2 -> h3
           waypoints = [
             {x: 60, y: 140},
             {x: 180, y: 180},
@@ -1083,12 +1129,10 @@
           const curX = (p1.x + (p2.x - p1.x) * segmentProgress) * scaleX;
           const curY = (p1.y + (p2.y - p1.y) * segmentProgress) * scaleY;
 
-          // Packet Drop Simulation for Standard Static SDN under Congestion
-          // When in static mode and congested, roughly 40% of packets drop midway between s1 and s2!
+          // Packet drop animation for Standard Static SDN under Congestion
           const shouldDropThis = (isStaticMode && isCongested && (idx % 3 === 0));
 
           if (shouldDropThis && currentSegment === 1 && segmentProgress > 0.45) {
-            // Trigger drop burst at point of buffer drop
             if (!p.droppedFired) {
               p.droppedFired = true;
               droppedBursts.push({
@@ -1099,14 +1143,12 @@
                 vy: (Math.random() * 1.5) + 0.5
               });
             }
-            // Discard particle back to start
             if (segmentProgress > 0.6) {
               p.reset();
             }
             return;
           }
 
-          // Normal Packet particle rendering
           ctx.beginPath();
           ctx.arc(curX, curY, isBypass ? 4.2 : 3.6, 0, Math.PI * 2);
 
@@ -1115,17 +1157,17 @@
             ctx.shadowColor = '#ef4444';
           } else if (isBypass) {
             ctx.fillStyle = '#38bdf8';
-            ctx.shadowColor = '#0284c7';
+            ctx.shadowColor = '#0ea5e9';
           } else {
             ctx.fillStyle = '#10b981';
             ctx.shadowColor = '#10b981';
           }
 
-          ctx.shadowBlur = (isBypass || isCongested) ? 10 : 6;
+          ctx.shadowBlur = (isBypass || isCongested) ? 12 : 6;
           ctx.fill();
         });
 
-        // Render Red Dropped Packet Bursts (Falling & Fading out)
+        // Render Red Dropped Packet Bursts
         for (let i = droppedBursts.length - 1; i >= 0; i--) {
           const b = droppedBursts[i];
           b.y += b.vy;
@@ -1144,7 +1186,6 @@
           ctx.lineWidth = 1.5;
           ctx.stroke();
 
-          // Draw small "x" drop indicator
           ctx.fillStyle = `rgba(248, 113, 113, ${b.alpha})`;
           ctx.font = '10px JetBrains Mono';
           ctx.textAlign = 'center';
@@ -1226,7 +1267,6 @@
       const s1_s2_congested = topology.links[0].congested;
 
       svg.innerHTML = `
-        <!-- Links -->
         <!-- Primary Link s1 -> s2 -->
         <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" />
         
@@ -1248,12 +1288,12 @@
           Primary: ${topology.links[0].mbps}M (${Math.round(topology.links[0].util * 100)}%)
         </text>
 
-        <rect x="230" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0284c7' : '#334155'}" />
+        <rect x="230" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0ea5e9' : '#334155'}" />
         <text x="277" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
           Bypass: ${topology.links[1].mbps}M
         </text>
 
-        <rect x="475" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0284c7' : '#334155'}" />
+        <rect x="475" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0ea5e9' : '#334155'}" />
         <text x="522" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
           Bypass: ${topology.links[2].mbps}M
         </text>
@@ -1290,7 +1330,7 @@
       `;
     }
 
-    // ---------------- UI Update Handler ----------------
+    // ---------------- UI Update with GSAP Tweening ----------------
     function updateUI(state) {
       currentState = state;
       currentArchView = state.architecture_view || 'adaptive';
@@ -1304,7 +1344,7 @@
       if (state.detector.state === 'CONGESTED') dot.classList.add('critical');
       else if (state.detector.state === 'CONGESTION_PENDING') dot.classList.add('warning');
 
-      // Play/pause button sync
+      // Play/pause sync
       isPlaying = state.is_running;
       const btn = document.getElementById('btn-play');
       const text = document.getElementById('play-text');
@@ -1322,8 +1362,7 @@
       // Sync Speed buttons
       simSpeed = state.speed;
       ['025', '05', '10', '20'].forEach(id => {
-        const b = document.getElementById(`spd-${id}`);
-        if (b) b.classList.remove('active');
+        document.getElementById(`spd-${id}`)?.classList.remove('active');
       });
       if (simSpeed === 0.25) document.getElementById('spd-025')?.classList.add('active');
       else if (simSpeed === 0.5) document.getElementById('spd-05')?.classList.add('active');
@@ -1346,22 +1385,35 @@
       document.getElementById('load-slider').value = loadPercent;
       document.getElementById('load-val-text').textContent = `${loadPercent}%`;
 
-      // Comparison Cards
+      // GSAP Smooth Number Counter Animations
       const staticComp = state.comparison.static;
       const adaptiveComp = state.comparison.adaptive;
 
-      document.getElementById('static-thru').innerHTML = `${staticComp.throughput_mbps.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
-      document.getElementById('static-drop').textContent = `${staticComp.loss_pct.toFixed(1)}%`;
-      document.getElementById('static-lat').innerHTML = `${staticComp.latency_ms.toFixed(1)} <span style="font-size:12px;">ms</span>`;
-      document.getElementById('static-status-badge').textContent = staticComp.status;
+      gsap.to(animNumbers, {
+        staticThru: staticComp.throughput_mbps,
+        staticDrop: staticComp.loss_pct,
+        staticLat: staticComp.latency_ms,
+        adaptiveThru: adaptiveComp.throughput_mbps,
+        adaptiveDrop: adaptiveComp.loss_pct,
+        adaptiveLat: adaptiveComp.latency_ms,
+        duration: 0.6,
+        ease: 'power2.out',
+        onUpdate: () => {
+          document.getElementById('static-thru').innerHTML = `${animNumbers.staticThru.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
+          document.getElementById('static-drop').textContent = `${animNumbers.staticDrop.toFixed(1)}%`;
+          document.getElementById('static-lat').innerHTML = `${animNumbers.staticLat.toFixed(1)} <span style="font-size:12px;">ms</span>`;
 
-      document.getElementById('adaptive-thru').innerHTML = `${adaptiveComp.throughput_mbps.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
-      document.getElementById('adaptive-drop').textContent = `${adaptiveComp.loss_pct.toFixed(1)}%`;
-      document.getElementById('adaptive-lat').innerHTML = `${adaptiveComp.latency_ms.toFixed(1)} <span style="font-size:12px;">ms</span>`;
+          document.getElementById('adaptive-thru').innerHTML = `${animNumbers.adaptiveThru.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
+          document.getElementById('adaptive-drop').textContent = `${animNumbers.adaptiveDrop.toFixed(1)}%`;
+          document.getElementById('adaptive-lat').innerHTML = `${animNumbers.adaptiveLat.toFixed(1)} <span style="font-size:12px;">ms</span>`;
+        }
+      });
+
+      document.getElementById('static-status-badge').textContent = staticComp.status;
       document.getElementById('adaptive-path-text').textContent = JSON.stringify(adaptiveComp.path);
       document.getElementById('adaptive-status-badge').textContent = adaptiveComp.status;
 
-      // Dynamic Route Banner
+      // Dynamic Route Banner with GSAP micro-highlight
       const isBypass = state.topology.is_rerouted;
       const isStatic = (currentArchView === 'static');
       const isCongested = (state.offered_util > 0.75);
@@ -1479,7 +1531,13 @@
 
     async function switchArchitecture(arch) {
       currentArchView = arch;
-      const res = await fetch('/api/architecture', {
+      // GSAP tactile transition animation on cards
+      gsap.fromTo(['#card-static', '#card-adaptive', '#route-banner'], 
+        { scale: 0.99, opacity: 0.8 }, 
+        { scale: 1.0, opacity: 1.0, duration: 0.3, ease: 'power2.out' }
+      );
+
+      await fetch('/api/architecture', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({architecture: arch})
