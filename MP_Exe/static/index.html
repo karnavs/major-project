@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SDN Adaptive Congestion-Aware Traffic Management Console</title>
+  <title>SDN Adaptive Congestion-Aware Flow Management Studio</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,35 +11,36 @@
   
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <!-- GSAP Animation Platform -->
+  <!-- GSAP Animation Engine -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <style>
     /* -------------------------------------------------------------
-       Hallmark & Unslop Design System (Obsidian & Cobalt Theme)
+       Hallmark & Unslop Pro Studio Design System (Obsidian & Cobalt)
     -------------------------------------------------------------- */
     :root {
-      --bg-base: #07090e;
-      --bg-surface: #0e121a;
-      --bg-surface-raised: #141924;
-      --bg-surface-elevated: #1b2130;
+      --bg-base: #08090d;
+      --bg-surface: #0e1117;
+      --bg-surface-raised: #131720;
+      --bg-surface-elevated: #1a202c;
+      --bg-input: #11151e;
       
       --border-quiet: rgba(255, 255, 255, 0.065);
-      --border-subtle: rgba(255, 255, 255, 0.12);
-      --border-focus: rgba(255, 255, 255, 0.22);
+      --border-subtle: rgba(255, 255, 255, 0.11);
+      --border-focus: rgba(255, 255, 255, 0.24);
 
-      --text-primary: #f3f6fc;
-      --text-secondary: #9099ab;
-      --text-muted: #535b6d;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #475569;
 
-      --accent: #0ea5e9;
-      --accent-tint: rgba(14, 165, 233, 0.12);
+      --cyan: #38bdf8;
+      --cyan-tint: rgba(56, 189, 248, 0.12);
       --emerald: #10b981;
       --emerald-tint: rgba(16, 185, 129, 0.12);
       --amber: #f59e0b;
       --amber-tint: rgba(245, 158, 11, 0.12);
-      --rose: #ef4444;
-      --rose-tint: rgba(239, 68, 68, 0.14);
+      --rose: #f43f5e;
+      --rose-tint: rgba(244, 63, 94, 0.14);
 
       --radius-sm: 6px;
       --radius-md: 10px;
@@ -55,223 +56,547 @@
       padding: 0;
     }
 
-    html.lenis {
-      height: auto;
-    }
-
-    body {
+    html, body {
+      overflow-x: clip;
       background-color: var(--bg-base);
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.06), transparent 45%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 32px;
       color: var(--text-primary);
       font-family: var(--font-sans);
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.45;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+    }
+
+    body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 40% 0%, rgba(56, 189, 248, 0.04), transparent 50%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 28px;
     }
 
-    /* ---------------- Header ---------------- */
+    /* Interactive Focus States */
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 1px;
+    }
+
+    /* ---------------- Header (Ultra-Clean, 44px) ---------------- */
     header {
-      background: rgba(14, 18, 26, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(14, 17, 23, 0.92);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border-quiet);
-      padding: 14px 32px;
+      padding: 8px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 50;
+      height: 48px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
     }
 
     .brand-logo {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: var(--radius-sm);
-      background: var(--bg-surface-elevated);
-      border: 1px solid rgba(14, 165, 233, 0.35);
+      background: var(--bg-surface-raised);
+      border: 1px solid rgba(56, 189, 248, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 12px rgba(14, 165, 233, 0.2);
     }
 
     .brand-logo svg {
-      width: 20px;
-      height: 20px;
+      width: 17px;
+      height: 17px;
     }
 
     .brand-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: -0.01em;
       color: var(--text-primary);
+      letter-spacing: -0.01em;
     }
 
-    .brand-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 400;
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-quiet);
     }
 
     .header-status {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    /* Engine Status Capsule */
     .engine-capsule {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 5px 14px;
-      border-radius: 20px;
+      gap: 7px;
+      padding: 3px 10px;
+      border-radius: 16px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
-      transition: all 0.25s ease;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
 
     .engine-capsule.running {
-      border-color: rgba(16, 185, 129, 0.4);
+      border-color: rgba(16, 185, 129, 0.35);
       color: #34d399;
       background: rgba(16, 185, 129, 0.08);
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
     }
 
     .engine-capsule.stopped {
-      border-color: rgba(245, 158, 11, 0.4);
+      border-color: rgba(245, 158, 11, 0.35);
       color: #fbbf24;
       background: rgba(245, 158, 11, 0.08);
     }
 
-    .engine-capsule .pulse-dot {
-      width: 8px;
-      height: 8px;
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
     }
 
     .engine-capsule.running .pulse-dot {
       background: var(--emerald);
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
-      animation: pulseAnim 1.4s infinite ease-in-out;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
     }
 
     .engine-capsule.stopped .pulse-dot {
       background: var(--amber);
-      box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
     }
 
-    @keyframes pulseAnim {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(0.8); opacity: 0.4; }
-    }
-
-    .status-pill {
+    .sim-clock-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 5px 12px;
+      gap: 6px;
+      padding: 3px 9px;
       border-radius: var(--radius-sm);
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
       color: var(--text-secondary);
     }
 
-    /* ---------------- Main Layout ---------------- */
+    /* ---------------- Main Studio Layout ---------------- */
     main {
-      padding: 24px 32px 48px;
-      max-width: 1680px;
+      padding: 14px 20px 32px;
+      max-width: 1760px;
       width: 100%;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 16px;
       flex: 1;
     }
 
-    /* ---------------- Control Panel Bar ---------------- */
-    .control-bar {
+    /* Studio 2-Column Split: Dominant Hero Stage (Left) + Workstation Console (Right) */
+    .studio-workspace {
+      display: grid;
+      grid-template-columns: 1fr 390px;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1260px) {
+      .studio-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------------- HERO STAGE: Packet Streaming Topology ---------------- */
+    .hero-stage {
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 14px 22px;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 580px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .stage-header {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border-quiet);
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      background: rgba(19, 23, 32, 0.6);
+      gap: 12px;
     }
 
-    .controls-left, .controls-right {
+    .stage-title-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    /* Creative Engine Button */
+    .stage-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Architecture Toggle Switcher on Stage */
+    .arch-segmented-group {
+      display: inline-flex;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+    }
+
+    .arch-segment-btn {
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .arch-segment-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .arch-segment-btn.active.adaptive {
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .arch-segment-btn.active.static {
+      background: rgba(244, 63, 94, 0.16);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    /* Live Route Notification Strip */
+    .route-banner {
+      padding: 7px 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-quiet);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+
+    .route-banner.normal {
+      background: rgba(16, 185, 129, 0.08);
+      color: #6ee7b7;
+      border-bottom-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .route-banner.rerouted {
+      background: rgba(56, 189, 248, 0.09);
+      color: #7dd3fc;
+      border-bottom-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .route-banner.congested-static {
+      background: rgba(244, 63, 94, 0.12);
+      color: #fda4af;
+      border-bottom-color: rgba(244, 63, 94, 0.3);
+    }
+
+    /* Topology SVG Stage Canvas */
+    .stage-canvas-area {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.035) 0%, transparent 65%), #0a0d13;
+      padding: 10px 16px;
+    }
+
+    #topology-svg {
+      width: 100%;
+      height: 100%;
+      min-height: 440px;
+      max-height: 510px;
+      display: block;
+    }
+
+    /* SVG Link & Node Styling */
+    .link-line {
+      stroke: #1e2638;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke 0.3s, stroke-width 0.3s;
+    }
+
+    .link-line.active {
+      stroke: #334155;
+      stroke-width: 5;
+    }
+
+    .link-primary.active {
+      stroke: var(--cyan);
+      filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+    }
+
+    .link-primary.congested {
+      stroke: var(--rose) !important;
+      filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.65)) !important;
+    }
+
+    .link-bypass.active {
+      stroke: var(--emerald);
+      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.55));
+    }
+
+    .link-label-rect {
+      fill: #0c1017;
+      stroke: var(--border-subtle);
+      stroke-width: 1;
+      rx: 4px;
+    }
+
+    .link-label-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      fill: var(--text-primary);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .node-box {
+      fill: #111622;
+      stroke: #252e42;
+      stroke-width: 1.5;
+      rx: 6px;
+      cursor: default;
+      transition: stroke 0.2s;
+    }
+
+    .node-box.switch-active {
+      stroke: rgba(56, 189, 248, 0.7);
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.25));
+    }
+
+    .node-box.switch-bypass-active {
+      stroke: rgba(16, 185, 129, 0.7);
+      filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.25));
+    }
+
+    .node-title {
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 700;
+      fill: var(--text-primary);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .node-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      fill: var(--text-secondary);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    /* Stage Bottom HUD Telemetry Strip */
+    .stage-hud-bar {
+      border-top: 1px solid var(--border-quiet);
+      background: var(--bg-surface);
+      padding: 8px 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .hud-chip {
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-quiet);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hud-chip-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+    }
+
+    .hud-chip-val {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .hud-status-tag {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .hud-status-tag.normal {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+    }
+
+    .hud-status-tag.congested {
+      background: rgba(244, 63, 94, 0.18);
+      color: #fda4af;
+    }
+
+    .hud-status-tag.active {
+      background: rgba(56, 189, 248, 0.16);
+      color: #7dd3fc;
+    }
+
+    .hud-status-tag.standby {
+      background: rgba(148, 163, 184, 0.12);
+      color: #94a3b8;
+    }
+
+    /* ---------------- WORKSTATION CONSOLE (Right Column) ---------------- */
+    .workstation-console {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .workstation-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-quiet);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .ws-header {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border-quiet);
+      background: rgba(19, 23, 32, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ws-title {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-sans);
+      color: var(--text-secondary);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .ws-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--cyan);
+      background: var(--cyan-tint);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .ws-body {
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .ws-body.p-0 {
+      padding: 0;
+    }
+
+    /* Creative Turbine Engine Control */
+    .engine-action-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+    }
+
     .btn-engine {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
-      height: 38px;
-      padding: 0 18px;
+      justify-content: center;
+      gap: 8px;
+      height: 36px;
+      padding: 0 14px;
       border-radius: var(--radius-sm);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       font-family: var(--font-mono);
       cursor: pointer;
       border: 1px solid var(--border-subtle);
-      transition: all 0.2s ease;
-      letter-spacing: 0.02em;
+      transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.15s;
+    }
+
+    .btn-engine:hover {
+      transform: translateY(-1px);
     }
 
     .btn-engine.running {
-      background: rgba(239, 68, 68, 0.16);
-      border-color: rgba(239, 68, 68, 0.5);
-      color: #fca5a5;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+      background: rgba(244, 63, 94, 0.16);
+      border-color: rgba(244, 63, 94, 0.45);
+      color: #fda4af;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.2);
     }
     .btn-engine.running:hover {
-      background: rgba(239, 68, 68, 0.26);
-      border-color: #ef4444;
+      background: rgba(244, 63, 94, 0.25);
+      border-color: #f43f5e;
       color: #fff;
     }
 
     .btn-engine.stopped {
-      background: rgba(16, 185, 129, 0.18);
-      border-color: rgba(16, 185, 129, 0.55);
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
       color: #6ee7b7;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
     }
     .btn-engine.stopped:hover {
-      background: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.25);
       border-color: #10b981;
       color: #fff;
     }
 
     .turbine-icon {
-      width: 17px;
-      height: 17px;
+      width: 15px;
+      height: 15px;
       display: inline-block;
       transform-origin: center center;
     }
@@ -289,22 +614,22 @@
       justify-content: center;
       gap: 6px;
       height: 36px;
-      padding: 0 15px;
+      padding: 0 12px;
       border-radius: var(--radius-sm);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       font-family: var(--font-sans);
       cursor: pointer;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-quiet);
       background: var(--bg-surface-raised);
       color: var(--text-primary);
-      transition: all 0.15s ease;
+      transition: background 0.15s, border-color 0.15s, transform 0.15s;
       white-space: nowrap;
     }
 
     .btn:hover {
       background: var(--bg-surface-elevated);
-      border-color: var(--border-focus);
+      border-color: var(--border-subtle);
       transform: translateY(-1px);
     }
 
@@ -312,29 +637,99 @@
       transform: translateY(1px);
     }
 
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.16);
-      border-color: rgba(239, 68, 68, 0.45);
-      color: #fca5a5;
+    /* Injection Control Buttons */
+    .injection-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.28);
-      border-color: #ef4444;
+
+    .btn-surge {
+      background: rgba(244, 63, 94, 0.14);
+      border-color: rgba(244, 63, 94, 0.4);
+      color: #fda4af;
+      font-weight: 600;
+    }
+    .btn-surge:hover {
+      background: rgba(244, 63, 94, 0.25);
+      border-color: #f43f5e;
       color: #fff;
     }
 
-    .btn-success {
-      background: rgba(16, 185, 129, 0.16);
-      border-color: rgba(16, 185, 129, 0.45);
+    .btn-relieve {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.4);
       color: #6ee7b7;
+      font-weight: 600;
     }
-    .btn-success:hover {
-      background: rgba(16, 185, 129, 0.28);
+    .btn-relieve:hover {
+      background: rgba(16, 185, 129, 0.25);
       border-color: #10b981;
       color: #fff;
     }
 
-    /* Speed preset buttons */
+    /* Load Slider Control Box */
+    .slider-box {
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-quiet);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .slider-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slider-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .slider-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: #1c2230;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+      transition: transform 0.1s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    /* Playback Rate + Mode Row */
+    .rate-mode-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
     .speed-group {
       display: flex;
       align-items: center;
@@ -345,8 +740,8 @@
     }
 
     .speed-btn {
-      padding: 4px 10px;
-      font-size: 11px;
+      padding: 4px 8px;
+      font-size: 10.5px;
       font-family: var(--font-mono);
       font-weight: 600;
       background: transparent;
@@ -354,7 +749,7 @@
       color: var(--text-muted);
       cursor: pointer;
       border-radius: 4px;
-      transition: all 0.12s ease;
+      transition: color 0.12s, background 0.12s;
     }
 
     .speed-btn:hover {
@@ -363,407 +758,179 @@
 
     .speed-btn.active {
       background: var(--bg-surface-elevated);
-      color: var(--accent);
+      color: var(--cyan);
       border: 1px solid var(--border-subtle);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
 
-    .slider-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-surface-raised);
-      padding: 5px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-quiet);
-    }
-
-    .slider-label {
+    .btn-mode {
+      height: 28px;
+      padding: 0 10px;
       font-size: 11px;
-      color: var(--text-secondary);
-      font-weight: 500;
     }
 
-    .slider-val {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-primary);
-      min-width: 44px;
-      text-align: right;
-    }
-
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 90px;
-      height: 4px;
-      background: var(--bg-surface-elevated);
-      border-radius: 2px;
-      outline: none;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: 2px solid var(--bg-surface);
-      box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);
-    }
-
-    /* ---------------- Side-by-Side Comparison Grid ---------------- */
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .compare-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-quiet);
-      border-radius: var(--radius-md);
-      padding: 20px 22px;
+    /* ---------------- SECTION 2: LIVE ARCHITECTURE BENCHMARK MATRIX ---------------- */
+    .matrix-table {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .compare-card.adaptive-card {
-      border-color: rgba(16, 185, 129, 0.35);
-      background: linear-gradient(180deg, rgba(16, 185, 129, 0.03) 0%, rgba(14, 18, 26, 1) 100%);
-    }
-
-    .compare-card.static-card {
-      border-color: rgba(239, 68, 68, 0.3);
-      background: linear-gradient(180deg, rgba(239, 68, 68, 0.03) 0%, rgba(14, 18, 26, 1) 100%);
-    }
-
-    .compare-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .compare-badge {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 4px;
-      text-transform: uppercase;
+    .matrix-row-head {
+      display: grid;
+      grid-template-columns: 105px 1fr 1fr;
+      padding: 7px 12px;
+      background: #0b0e14;
+      border-bottom: 1px solid var(--border-quiet);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
       letter-spacing: 0.04em;
     }
 
-    .badge-static {
-      background: var(--rose-tint);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.35);
-    }
-
-    .badge-adaptive {
-      background: var(--emerald-tint);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-    }
-
-    .metric-row {
+    .matrix-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      grid-template-columns: 105px 1fr 1fr;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-quiet);
+      align-items: center;
+      transition: background 0.15s;
     }
 
-    .metric-item {
-      background: var(--bg-surface-raised);
+    .matrix-row:last-child {
+      border-bottom: none;
+    }
+
+    .matrix-row:hover {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .matrix-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .matrix-val {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .matrix-val .unit {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .matrix-val.static {
+      color: #fca5a5;
+    }
+
+    .matrix-val.adaptive {
+      color: #6ee7b7;
+    }
+
+    .matrix-val.loss-fail {
+      color: var(--rose);
+      font-weight: 700;
+    }
+
+    .matrix-val.loss-pass {
+      color: var(--emerald);
+      font-weight: 700;
+    }
+
+    .matrix-badge {
+      display: inline-block;
+      font-size: 9.5px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .matrix-badge.badge-static {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fda4af;
+    }
+
+    .matrix-badge.badge-adaptive {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+    }
+
+    /* ---------------- SECTION 3: TELEMETRY & EWMA SPARKLINE ---------------- */
+    #chart-canvas {
+      width: 100%;
+      height: 105px;
+      background: #090c12;
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-sm);
-      padding: 12px 14px;
+      display: block;
+    }
+
+    .chart-legend-compact {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 4px 0;
     }
 
-    .metric-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-family: var(--font-mono);
-      font-size: 19px;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .metric-sub {
+    .legend-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       font-size: 10px;
-      color: var(--text-secondary);
-      margin-top: 3px;
+      color: var(--text-muted);
       font-family: var(--font-mono);
     }
 
-    /* ---------------- Topology & Telemetry Row ---------------- */
-    .workspace-grid {
+    .legend-line-sample {
+      width: 10px;
+      height: 2px;
+      border-radius: 1px;
+    }
+
+    /* ---------------- LOWER PANELS: OpenFlow Rules & Audit Logs ---------------- */
+    .lower-panels-grid {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 1100px) {
+      .lower-panels-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .panel {
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
     .panel-header {
-      padding: 14px 22px;
+      padding: 9px 14px;
       border-bottom: 1px solid var(--border-quiet);
+      background: rgba(19, 23, 32, 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--bg-surface-raised);
     }
 
     .panel-title {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .panel-body {
-      padding: 20px 22px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    /* Architecture View Switcher Segmented Control */
-    .arch-segmented-group {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--bg-base);
-      padding: 3px;
-      border-radius: 6px;
-      border: 1px solid var(--border-quiet);
-    }
-
-    .arch-segment-btn {
-      padding: 5px 14px;
-      font-size: 11px;
-      font-family: var(--font-mono);
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-      background: transparent;
-      color: var(--text-muted);
-      transition: all 0.15s ease;
-    }
-
-    .arch-segment-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .arch-segment-btn.active.adaptive {
-      background: var(--emerald-tint);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
-    }
-
-    .arch-segment-btn.active.static {
-      background: var(--rose-tint);
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
-    }
-
-    /* Route Alert Banner */
-    .route-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      border: 1px solid var(--border-quiet);
-      transition: all 0.25s ease;
-    }
-
-    .route-banner.normal {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.35);
-      color: #34d399;
-    }
-
-    .route-banner.pending {
-      background: rgba(245, 158, 11, 0.12);
-      border-color: rgba(245, 158, 11, 0.4);
-      color: #fbbf24;
-    }
-
-    .route-banner.bypass {
-      background: rgba(14, 165, 233, 0.15);
-      border-color: rgba(14, 165, 233, 0.5);
-      color: #38bdf8;
-      box-shadow: 0 0 14px rgba(14, 165, 233, 0.25);
-    }
-
-    .route-banner.static-congested {
-      background: rgba(239, 68, 68, 0.18);
-      border-color: rgba(239, 68, 68, 0.55);
-      color: #fca5a5;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
-    }
-
-    /* Interactive Topology Container - Direct Native SVG Animation */
-    #topology-container {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      background: #080a0e;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-quiet);
-      overflow: hidden;
-      flex: 1;
-    }
-
-    #topology-svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .link-line {
-      stroke-width: 3px;
-      transition: stroke 0.2s ease, stroke-width 0.2s ease;
-    }
-
-    .link-primary {
-      stroke: #334155;
-    }
-    .link-primary.active {
-      stroke: #10b981;
-      stroke-width: 4px;
-    }
-    .link-primary.congested {
-      stroke: #ef4444;
-      stroke-width: 5px;
-      stroke-dasharray: 6 3;
-    }
-
-    .link-bypass {
-      stroke: #334155;
-      stroke-dasharray: 4 4;
-    }
-    .link-bypass.active {
-      stroke: #0ea5e9;
-      stroke-width: 5px;
-      stroke-dasharray: none;
-    }
-
-    .node-switch {
-      fill: #161e2e;
-      stroke: #475569;
-      stroke-width: 2px;
-      rx: 8px;
-      ry: 8px;
-      transition: all 0.2s ease;
-    }
-    .node-switch.active {
-      stroke: #0ea5e9;
-      filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.45));
-    }
-    .node-switch.congested {
-      stroke: #ef4444;
-      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.65));
-    }
-
-    .node-host {
-      fill: #0c1220;
-      stroke: #334155;
-      stroke-width: 1.5px;
-      rx: 6px;
-      ry: 6px;
-    }
-
-    .node-text-title {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      fill: #f8fafc;
-      text-anchor: middle;
-      dominant-baseline: central;
-    }
-
-    .node-text-sub {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      fill: #94a3b8;
-      text-anchor: middle;
-      dominant-baseline: central;
-    }
-
-    /* Telemetry Chart */
-    #chart-canvas {
-      width: 100%;
-      height: 230px;
-      background: #080a0e;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-quiet);
-    }
-
-    .chart-legend {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      flex-wrap: wrap;
-    }
-
-    .legend-item {
+      color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 6px;
-      color: var(--text-secondary);
-    }
-
-    .legend-line {
-      width: 12px;
-      height: 3px;
-      border-radius: 1px;
-    }
-
-    /* Bottom Tables Grid */
-    .details-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
     }
 
     .table-container {
-      max-height: 220px;
+      max-height: 160px;
       overflow-y: auto;
-      border: 1px solid var(--border-quiet);
-      border-radius: var(--radius-sm);
     }
 
     table {
@@ -771,312 +938,322 @@
       border-collapse: collapse;
       font-family: var(--font-mono);
       font-size: 11px;
-      text-align: left;
     }
 
     th {
-      background: var(--bg-surface-elevated);
-      color: var(--text-secondary);
-      font-weight: 500;
-      padding: 9px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      position: sticky;
-      top: 0;
-      z-index: 5;
+      text-align: left;
+      padding: 6px 12px;
+      background: #090c12;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-quiet);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
     td {
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-bottom: 1px solid var(--border-quiet);
       color: var(--text-primary);
     }
 
-    tr:hover td {
-      background: var(--bg-surface-raised);
+    tr:last-child td {
+      border-bottom: none;
     }
 
+    /* Transition Logs */
     .log-item {
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-bottom: 1px solid var(--border-quiet);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
       display: flex;
-      gap: 12px;
-      font-size: 11px;
+      gap: 8px;
+    }
+
+    .log-item:last-child {
+      border-bottom: none;
     }
 
     .log-time {
-      font-family: var(--font-mono);
       color: var(--text-muted);
-      min-width: 46px;
+      min-width: 44px;
     }
 
-    .log-content {
+    .log-msg {
+      color: var(--text-primary);
       flex: 1;
     }
 
-    .log-title {
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 2px;
+    .log-msg.congested {
+      color: #fda4af;
     }
 
-    .log-detail {
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 10px;
+    .log-msg.rerouted {
+      color: #7dd3fc;
     }
 
-    .log-item.critical .log-title { color: #f87171; }
-    .log-item.success .log-title { color: #34d399; }
-    .log-item.warning .log-title { color: #fbbf24; }
+    .log-msg.relieved {
+      color: #6ee7b7;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Header -->
+  <!-- Top Global Header -->
   <header>
     <div class="brand">
       <div class="brand-logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
-          <circle cx="6" cy="12" r="3" fill="#1e293b"/>
-          <circle cx="18" cy="6" r="3" fill="#1e293b"/>
-          <circle cx="18" cy="18" r="3" fill="#1e293b"/>
-          <path d="M9 12h6M15 6l-6 6M15 18l-6-6"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2">
+          <circle cx="6" cy="6" r="3"/>
+          <circle cx="6" cy="18" r="3"/>
+          <circle cx="18" cy="12" r="3"/>
+          <line x1="8.5" y1="7.5" x2="15.5" y2="10.5"/>
+          <line x1="8.5" y1="16.5" x2="15.5" y2="13.5"/>
         </svg>
       </div>
-      <div>
-        <div class="brand-title">Adaptive Congestion Detection & Dynamic Rerouting</div>
-        <div class="brand-subtitle">Software-Defined Networking Telemetry & Control Console</div>
-      </div>
+      <div class="brand-title">Adaptive Congestion Detection & Dynamic Rerouting</div>
+      <span class="brand-tag">SDN Flow Studio</span>
     </div>
+
     <div class="header-status">
-      <!-- Engine Status Visual Capsule -->
+      <!-- Creative Engine Pulse Capsule -->
       <div class="engine-capsule running" id="engine-capsule">
         <span class="pulse-dot"></span>
         <span id="engine-capsule-text">SDN CORE ONLINE</span>
       </div>
 
-      <div class="status-pill">
-        <span>SIM TIME:</span>
+      <div class="sim-clock-pill">
+        <span style="color:var(--text-muted);">TIME:</span>
         <span id="sim-time" style="color:var(--text-primary); font-weight:600;">0.0s</span>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- Sandbox Controls Bar -->
-    <div class="control-bar">
-      <div class="controls-left">
-        <!-- Creative Start/Stop Engine Button with Turbine Icon -->
-        <button class="btn-engine running" id="btn-engine-toggle" onclick="toggleEngine()">
-          <svg class="turbine-icon spin" id="turbine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="12" cy="12" r="3" fill="currentColor"/>
-            <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-          </svg>
-          <span id="engine-btn-text">STOP ENGINE</span>
-        </button>
-
-        <button class="btn" onclick="stepSimulation()">Step (+1s)</button>
-        <button class="btn btn-danger" onclick="injectCongestion()">⚡ Inject Congestion (95% Surge)</button>
-        <button class="btn btn-success" onclick="relieveCongestion()">✓ Relieve Congestion (10% Normal)</button>
-        <button class="btn" onclick="resetSimulation()">Reset</button>
-      </div>
-
-      <div class="controls-right">
-        <!-- Slow-motion speed preset selector -->
-        <div class="speed-group">
-          <span style="font-size:11px; color:var(--text-muted); padding:0 6px;">Speed:</span>
-          <button class="speed-btn" id="spd-025" onclick="setSpeed(0.25)">0.25x</button>
-          <button class="speed-btn" id="spd-05" onclick="setSpeed(0.5)">0.5x</button>
-          <button class="speed-btn active" id="spd-10" onclick="setSpeed(1.0)">1.0x</button>
-          <button class="speed-btn" id="spd-20" onclick="setSpeed(2.0)">2.0x</button>
-        </div>
-
-        <div class="slider-group">
-          <span class="slider-label">Offered Load</span>
-          <input type="range" id="load-slider" min="5" max="100" value="10" oninput="onLoadSliderChange(this.value)">
-          <span class="slider-val" id="load-val-text">10%</span>
-        </div>
-
-        <button class="btn" id="btn-mode-toggle" onclick="toggleScenarioMode()">Mode: Sandbox</button>
-      </div>
-    </div>
-
-    <!-- Side-by-Side Live Performance Comparison (The Proof Panel) -->
-    <div class="comparison-grid">
-      <!-- Standard Static SDN -->
-      <div class="compare-card static-card" id="card-static">
-        <div class="compare-header">
-          <div>
-            <div style="font-weight:600; font-size:13px; color:#fca5a5;">Standard SDN / Static Routing (Baseline)</div>
-            <div style="font-size:11px; color:var(--text-muted);">Shortest path s1 -> s2. Lacks real-time congestion awareness.</div>
-          </div>
-          <span class="compare-badge badge-static" id="static-status-badge">NORMAL</span>
-        </div>
-        <div class="metric-row">
-          <div class="metric-item">
-            <div class="metric-label">Delivered Throughput</div>
-            <div class="metric-value" id="static-thru">1.0 <span style="font-size:12px;">Mbps</span></div>
-            <div class="metric-sub">Bottleneck @ 8.0M</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Packet Drop Rate</div>
-            <div class="metric-value" id="static-drop" style="color:#f87171;">0.0%</div>
-            <div class="metric-sub" id="static-drop-sub">Buffer status</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Queuing Delay / Bufferbloat</div>
-            <div class="metric-value" id="static-lat">2.2 <span style="font-size:12px;">ms</span></div>
-            <div class="metric-sub">Queue latency</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Active Route</div>
-            <div class="metric-value" style="font-size:14px; font-family:var(--font-mono); color:#94a3b8;">[s1, s2]</div>
-            <div class="metric-sub">Static OpenFlow rule</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Our Adaptive SDN System -->
-      <div class="compare-card adaptive-card" id="card-adaptive">
-        <div class="compare-header">
-          <div>
-            <div style="font-weight:600; font-size:13px; color:#6ee7b7;">Our Adaptive SDN System (EWMA + Hysteresis)</div>
-            <div style="font-size:11px; color:var(--text-muted);">Persistence N=3, Exit M=5, dynamic Dijkstra link penalty.</div>
-          </div>
-          <span class="compare-badge badge-adaptive" id="adaptive-status-badge">PRIMARY [s1, s2]</span>
-        </div>
-        <div class="metric-row">
-          <div class="metric-item">
-            <div class="metric-label">Delivered Throughput</div>
-            <div class="metric-value" id="adaptive-thru" style="color:#34d399;">1.0 <span style="font-size:12px;">Mbps</span></div>
-            <div class="metric-sub">100% Preserved</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Packet Drop Rate</div>
-            <div class="metric-value" id="adaptive-drop" style="color:#34d399;">0.0%</div>
-            <div class="metric-sub">Zero packet loss</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Round Trip Latency</div>
-            <div class="metric-value" id="adaptive-lat">2.2 <span style="font-size:12px;">ms</span></div>
-            <div class="metric-sub">Bypass +1.6ms</div>
-          </div>
-          <div class="metric-item">
-            <div class="metric-label">Adaptive Route</div>
-            <div class="metric-value" id="adaptive-path-text" style="font-size:14px; font-family:var(--font-mono); color:#38bdf8;">[s1, s2]</div>
-            <div class="metric-sub">0 Flaps Recorded</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Topology & Telemetry Row -->
-    <div class="workspace-grid">
-      <!-- Left: Interactive Diamond Topology -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="6" height="6" rx="1"/>
-              <rect x="16" y="2" width="6" height="6" rx="1"/>
-              <rect x="9" y="16" width="6" height="6" rx="1"/>
-              <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/>
-              <path d="M12 13v3"/>
-            </svg>
-            SDN Diamond Topology & Animated Packet Streams
+    <!-- Top Studio Workspace Split -->
+    <div class="studio-workspace">
+      
+      <!-- LEFT DOMINANT HERO: Packet Streaming Topology Stage -->
+      <div class="hero-stage">
+        <div class="stage-header">
+          <div class="stage-title-wrap">
+            <span class="stage-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                <rect x="2" y="2" width="6" height="6" rx="1"/>
+                <rect x="16" y="2" width="6" height="6" rx="1"/>
+                <rect x="9" y="16" width="6" height="6" rx="1"/>
+                <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/>
+                <path d="M12 13v3"/>
+              </svg>
+              SDN Diamond Topology & Real-Time Vector Stream
+            </span>
           </div>
 
-          <!-- Architecture Switcher Button -->
+          <!-- Architecture Switcher -->
           <div class="arch-segmented-group">
             <button class="arch-segment-btn active adaptive" id="btn-arch-adaptive" onclick="switchArchitecture('adaptive')">
-              ⚡ Our Adaptive SDN
+              Our Adaptive SDN
             </button>
             <button class="arch-segment-btn" id="btn-arch-static" onclick="switchArchitecture('static')">
-              🔴 Standard Static SDN
+              Standard Static SDN
             </button>
           </div>
         </div>
 
-        <div class="panel-body">
-          <!-- Dynamic Route Status Banner -->
-          <div class="route-banner normal" id="route-banner">
-            <span id="route-banner-text">✓ PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2</span>
-            <span id="route-banner-sub">Packet Loss: 0.0%</span>
+        <!-- Dynamic Route Banner Strip -->
+        <div class="route-banner normal" id="route-banner">
+          <span id="route-banner-text">PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2</span>
+          <span id="route-banner-sub">Packet Loss: 0.0%</span>
+        </div>
+
+        <!-- Expansive Vector Topology Canvas -->
+        <div class="stage-canvas-area" id="topology-container">
+          <svg id="topology-svg" viewBox="0 0 800 390" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <filter id="packet-glow-emerald" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="packet-glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="packet-glow-red" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Topology Wires & Node Badges -->
+            <g id="topology-base-layer"></g>
+
+            <!-- Native SVG Packets (Zero-Drift Vector Geometry) -->
+            <g id="packets-layer"></g>
+
+            <!-- Drop Particles Bursts -->
+            <g id="drops-layer"></g>
+          </svg>
+        </div>
+
+        <!-- Stage Bottom HUD Telemetry Strip -->
+        <div class="stage-hud-bar">
+          <div class="hud-chip">
+            <span class="hud-chip-label">PORT (1, 2) PRIMARY</span>
+            <span class="hud-chip-val" id="hud-primary-val">1.0 Mbps (10%)</span>
+            <span class="hud-status-tag normal" id="hud-primary-status">NORMAL</span>
           </div>
-
-          <div id="topology-container">
-            <!-- Native SVG with Perfectly Aligned Vector Geometry and Integrated Packet Layer -->
-            <svg id="topology-svg" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <filter id="packet-glow-emerald" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="3.5" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-                <filter id="packet-glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-                <filter id="packet-glow-red" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="4.5" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              <!-- Static Lines & Nodes Layer -->
-              <g id="topology-base-layer"></g>
-
-              <!-- Dynamic Integrated Packets Layer (Zero Drift Guarantee) -->
-              <g id="packets-layer"></g>
-
-              <!-- Interactive Drop Bursts Layer -->
-              <g id="drops-layer"></g>
-            </svg>
+          <div class="hud-chip">
+            <span class="hud-chip-label">PORT (1, 3) BYPASS</span>
+            <span class="hud-chip-val" id="hud-bypass-val">0.0 Mbps (0%)</span>
+            <span class="hud-status-tag standby" id="hud-bypass-status">STANDBY</span>
+          </div>
+          <div class="hud-chip">
+            <span class="hud-chip-label">ACTIVE ROUTE</span>
+            <span class="hud-chip-val" id="hud-route-val" style="color:var(--cyan);">s1 → s2 [DIRECT]</span>
           </div>
         </div>
       </div>
 
-      <!-- Right: Telemetry & Detection Graph -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 3v18h18"/>
-              <path d="m19 9-5 5-4-4-3 3"/>
-            </svg>
-            Adaptive Congestion Thresholds & Utilization Telemetry
+      <!-- RIGHT WORKSTATION CONSOLE -->
+      <div class="workstation-console">
+        
+        <!-- Section 1: Execution & Flow Workstation Deck -->
+        <div class="workstation-card">
+          <div class="ws-header">
+            <span class="ws-title">MISSION CONTROL DECK</span>
+            <span class="ws-badge" id="ws-sim-status">ONLINE</span>
           </div>
-          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="detector-state-badge">
-            STATE: NORMAL
+          <div class="ws-body">
+            <!-- Turbine Engine Button + Step + Reset -->
+            <div class="engine-action-row">
+              <button class="btn-engine running" id="btn-engine-toggle" onclick="toggleEngine()">
+                <svg class="turbine-icon spin" id="turbine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                  <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+                <span id="engine-btn-text">STOP ENGINE</span>
+              </button>
+              <button class="btn" onclick="stepSimulation()">Step (+1s)</button>
+              <button class="btn" onclick="resetSimulation()">Reset</button>
+            </div>
+
+            <!-- Instant Traffic Surge Triggers -->
+            <div class="injection-grid">
+              <button class="btn btn-surge" onclick="injectCongestion()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                95% Surge
+              </button>
+              <button class="btn btn-relieve" onclick="relieveCongestion()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+                10% Relieve
+              </button>
+            </div>
+
+            <!-- Offered Load Precision Slider -->
+            <div class="slider-box">
+              <div class="slider-meta">
+                <span class="slider-title">Offered Load Level</span>
+                <span class="slider-val" id="load-val-text">10%</span>
+              </div>
+              <input type="range" id="load-slider" min="5" max="100" value="10" oninput="onLoadSliderChange(this.value)">
+            </div>
+
+            <!-- Rate & Mode Row -->
+            <div class="rate-mode-row">
+              <div class="speed-group">
+                <button class="speed-btn" id="spd-025" onclick="setSpeed(0.25)">0.25x</button>
+                <button class="speed-btn" id="spd-05" onclick="setSpeed(0.5)">0.5x</button>
+                <button class="speed-btn active" id="spd-10" onclick="setSpeed(1.0)">1.0x</button>
+                <button class="speed-btn" id="spd-20" onclick="setSpeed(2.0)">2.0x</button>
+              </div>
+              <button class="btn btn-mode" id="btn-mode-toggle" onclick="toggleScenarioMode()">Mode: Sandbox</button>
+            </div>
           </div>
         </div>
-        <div class="panel-body" style="justify-content:space-between;">
-          <canvas id="chart-canvas"></canvas>
-          <div class="chart-legend">
-            <div class="legend-item"><div class="legend-line" style="background:#38bdf8;"></div> Offered Load</div>
-            <div class="legend-item"><div class="legend-line" style="background:#ef4444;"></div> Enter Threshold (T_enter)</div>
-            <div class="legend-item"><div class="legend-line" style="background:#f59e0b;"></div> Exit Threshold (T_exit)</div>
-            <div class="legend-item"><div class="legend-line" style="background:#94a3b8; border-top:1px dashed #94a3b8;"></div> Baseline (EWMA)</div>
+
+        <!-- Section 2: Live Architecture Comparison Matrix -->
+        <div class="workstation-card">
+          <div class="ws-header">
+            <span class="ws-title">LIVE ARCHITECTURE BENCHMARK</span>
+            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);" id="adaptive-path-text">[s1, s2]</span>
+          </div>
+          <div class="ws-body p-0">
+            <div class="matrix-table">
+              <div class="matrix-row-head">
+                <div>METRIC</div>
+                <div>STATIC SDN</div>
+                <div>OUR ADAPTIVE</div>
+              </div>
+
+              <div class="matrix-row">
+                <div class="matrix-label">Throughput</div>
+                <div class="matrix-val static" id="static-thru">1.0 <span class="unit">Mbps</span></div>
+                <div class="matrix-val adaptive" id="adaptive-thru">1.0 <span class="unit">Mbps</span></div>
+              </div>
+
+              <div class="matrix-row">
+                <div class="matrix-label">Packet Loss</div>
+                <div class="matrix-val static" id="static-drop">0.0%</div>
+                <div class="matrix-val adaptive loss-pass" id="adaptive-drop">0.0%</div>
+              </div>
+
+              <div class="matrix-row">
+                <div class="matrix-label">Queue / Latency</div>
+                <div class="matrix-val static" id="static-lat">2.2 <span class="unit">ms</span></div>
+                <div class="matrix-val adaptive" id="adaptive-lat">2.2 <span class="unit">ms</span></div>
+              </div>
+
+              <div class="matrix-row">
+                <div class="matrix-label">Active Route</div>
+                <div><span class="matrix-badge badge-static" id="static-status-badge">NORMAL</span></div>
+                <div><span class="matrix-badge badge-adaptive" id="adaptive-status-badge">PRIMARY</span></div>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Section 3: Telemetry & EWMA Sparkline -->
+        <div class="workstation-card">
+          <div class="ws-header">
+            <span class="ws-title">DETECTOR TELEMETRY</span>
+            <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-muted);" id="detector-state-badge">STATE: NORMAL</span>
+          </div>
+          <div class="ws-body">
+            <canvas id="chart-canvas"></canvas>
+            <div class="chart-legend-compact">
+              <div class="legend-chip">
+                <span class="legend-line-sample" style="background:#38bdf8;"></span> Offered Load
+              </div>
+              <div class="legend-chip">
+                <span class="legend-line-sample" style="background:#f43f5e;"></span> T_enter (85%)
+              </div>
+              <div class="legend-chip">
+                <span class="legend-line-sample" style="background:#f59e0b;"></span> T_exit (75%)
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- Bottom Tables: OpenFlow Flow Tables & Audit Logs -->
-    <div class="details-grid">
-      <!-- OpenFlow Switch Flow Table Rules -->
+    <!-- LOWER PANELS: OpenFlow Rules & Audit Log -->
+    <div class="lower-panels-grid">
+      <!-- OpenFlow Flow Tables -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="8" y1="6" x2="21" y2="6"/>
               <line x1="8" y1="12" x2="21" y2="12"/>
               <line x1="8" y1="18" x2="21" y2="18"/>
@@ -1087,45 +1264,40 @@
             Installed OpenFlow 1.3 Flow Table Entries
           </div>
         </div>
-        <div class="panel-body" style="padding:0;">
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Switch</th>
-                  <th>Priority</th>
-                  <th>Match (eth_src -> eth_dst)</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="flow-table-body">
-                <tr>
-                  <td colspan="4" style="text-align:center; color:var(--text-muted);">Loading active flow mods...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Switch</th>
+                <th>Priority</th>
+                <th>Match</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="flow-table-body">
+              <tr>
+                <td colspan="4" style="text-align:center; color:var(--text-muted);">Awaiting flow entries...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <!-- Live Audit & Transition Log -->
+      <!-- Real-Time Decision & Audit Log -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
               <polyline points="14 2 14 8 20 8"/>
               <line x1="16" y1="13" x2="8" y2="13"/>
               <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
             </svg>
             Real-Time Transition & Decision Audit Log
           </div>
         </div>
-        <div class="panel-body" style="padding:0;">
-          <div class="table-container" id="logs-container">
-            <!-- Dynamic logs will be appended here -->
-          </div>
+        <div class="table-container" id="logs-container">
+          <!-- Logs appended dynamically -->
         </div>
       </div>
     </div>
@@ -1133,10 +1305,10 @@
 
   <script>
     /* -------------------------------------------------------------
-       Lenis Smooth Scroll + GSAP Animation Engine
+       Lenis Smooth Scroll + GSAP Numerical Platform
     -------------------------------------------------------------- */
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
@@ -1163,12 +1335,12 @@
     };
 
     // ---------------- Native SVG Packet Stream Animation ----------------
-    // Using 24 persistent SVG circle elements that are 100% mathematically locked to the SVG path
     const PARTICLE_COUNT = 24;
     const particles = [];
     const packetElements = [];
     let droppedBursts = [];
 
+    // Initialize 24 persistent SVG packet circles inside #packets-layer
     const packetsLayer = document.getElementById('packets-layer');
     const dropsLayer = document.getElementById('drops-layer');
 
@@ -1189,31 +1361,29 @@
       packetElements.push(circle);
     }
 
-    // Animation Loop
+    // Main Animation Loop
     function renderAnimation() {
       if (currentState && currentState.topology) {
         const isBypass = (currentState.topology.active_path.length === 3);
         const isStaticMode = (currentState.architecture_view === 'static');
         const isCongested = (currentState.offered_util > 0.75);
 
-        // Native SVG Coordinates: Matches EXACT line definitions
-        // Primary path: (60, 140) -> (180, 180) -> (620, 180) -> (740, 140)
-        // Bypass path:  (60, 140) -> (180, 180) -> (400, 340) -> (620, 180) -> (740, 140)
+        // Native SVG Coordinate Waypoints (Aligned with Wires)
         let waypoints = [];
         if (!isBypass) {
           waypoints = [
-            {x: 60, y: 140},
+            {x: 60, y: 130},
             {x: 180, y: 180},
             {x: 620, y: 180},
-            {x: 740, y: 140}
+            {x: 740, y: 130}
           ];
         } else {
           waypoints = [
-            {x: 60, y: 140},
+            {x: 60, y: 130},
             {x: 180, y: 180},
-            {x: 400, y: 340},
+            {x: 400, y: 330},
             {x: 620, y: 180},
-            {x: 740, y: 140}
+            {x: 740, y: 130}
           ];
         }
 
@@ -1233,34 +1403,31 @@
           const p1 = waypoints[currentSegment];
           const p2 = waypoints[currentSegment + 1];
 
-          // Exact linear interpolation along the wire!
+          // Exact linear vector interpolation along wire
           const curX = p1.x + (p2.x - p1.x) * segmentProgress;
           const curY = p1.y + (p2.y - p1.y) * segmentProgress;
 
           const el = packetElements[idx];
 
-          // Simulate packet drops under congestion in Standard Static SDN
+          // Simulate packet drop under congestion in Standard Static SDN
           const isDropPacket = (isStaticMode && isCongested && (idx % 3 === 0));
 
           if (isDropPacket && currentSegment === 1 && segmentProgress > 0.40) {
-            // Trigger visual drop burst
             if (!p.droppedFired) {
               p.droppedFired = true;
               createDropBurst(curX, curY);
             }
-            // Hide particle once dropped
             el.setAttribute('cx', '-100');
             el.setAttribute('cy', '-100');
             return;
           }
 
-          // Update SVG Circle Position
           el.setAttribute('cx', curX.toFixed(2));
           el.setAttribute('cy', curY.toFixed(2));
 
           // Color & Glow selection
           if (isStaticMode && isCongested) {
-            el.setAttribute('fill', '#ef4444');
+            el.setAttribute('fill', '#f43f5e');
             el.setAttribute('filter', 'url(#packet-glow-red)');
             el.setAttribute('r', '4');
           } else if (isBypass) {
@@ -1274,7 +1441,6 @@
           }
         });
 
-        // Update Drop Bursts
         updateDropBursts();
       }
 
@@ -1283,109 +1449,106 @@
 
     function createDropBurst(x, y) {
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', x);
-      circle.setAttribute('cy', y);
-      circle.setAttribute('r', '5');
-      circle.setAttribute('fill', 'none');
-      circle.setAttribute('stroke', '#ef4444');
-      circle.setAttribute('stroke-width', '1.5');
-      
-      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      txt.setAttribute('x', x);
-      txt.setAttribute('y', y - 8);
-      txt.setAttribute('fill', '#f87171');
-      txt.setAttribute('font-family', 'JetBrains Mono');
-      txt.setAttribute('font-size', '9');
-      txt.setAttribute('font-weight', '600');
-      txt.setAttribute('text-anchor', 'middle');
-      txt.textContent = 'DROP ✕';
+      g.setAttribute('transform', `translate(${x}, ${y})`);
 
-      g.appendChild(circle);
-      g.appendChild(txt);
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.textContent = 'DROP ✕';
+      text.setAttribute('fill', '#f43f5e');
+      text.setAttribute('font-size', '10');
+      text.setAttribute('font-weight', '700');
+      text.setAttribute('font-family', 'JetBrains Mono, monospace');
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('dominant-baseline', 'middle');
+
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      ring.setAttribute('r', '3');
+      ring.setAttribute('fill', 'none');
+      ring.setAttribute('stroke', '#f43f5e');
+      ring.setAttribute('stroke-width', '1.5');
+
+      g.appendChild(ring);
+      g.appendChild(text);
       dropsLayer.appendChild(g);
 
       droppedBursts.push({
         el: g,
-        circle: circle,
-        txt: txt,
-        x: x,
-        y: y,
-        r: 5,
-        alpha: 1.0,
-        vy: 0.8
+        ring: ring,
+        text: text,
+        age: 0,
+        maxAge: 40
       });
     }
 
     function updateDropBursts() {
       for (let i = droppedBursts.length - 1; i >= 0; i--) {
         const b = droppedBursts[i];
-        b.y += b.vy;
-        b.r += 0.35;
-        b.alpha -= 0.025;
+        b.age++;
+        const pct = b.age / b.maxAge;
+        const scale = 1 + pct * 0.8;
+        const opacity = Math.max(0, 1 - pct);
+        const yOff = -pct * 24;
 
-        if (b.alpha <= 0) {
+        b.ring.setAttribute('r', `${3 + pct * 14}`);
+        b.el.setAttribute('opacity', `${opacity}`);
+        b.text.setAttribute('y', `${yOff}`);
+
+        if (b.age >= b.maxAge) {
           dropsLayer.removeChild(b.el);
           droppedBursts.splice(i, 1);
-          continue;
         }
-
-        b.circle.setAttribute('cy', b.y.toFixed(1));
-        b.circle.setAttribute('r', b.r.toFixed(1));
-        b.circle.setAttribute('stroke-opacity', b.alpha.toFixed(2));
-        b.txt.setAttribute('y', (b.y - 8).toFixed(1));
-        b.txt.setAttribute('fill-opacity', b.alpha.toFixed(2));
       }
     }
 
-    // ---------------- Chart Rendering Engine ----------------
+    // ---------------- Telemetry Sparkline Chart ----------------
     const chartCanvas = document.getElementById('chart-canvas');
     const chartCtx = chartCanvas.getContext('2d');
 
-    function renderTelemetryChart(history) {
-      chartCanvas.width = chartCanvas.clientWidth;
-      chartCanvas.height = chartCanvas.clientHeight;
-      const w = chartCanvas.width;
-      const h = chartCanvas.height;
+    function resizeChartCanvas() {
+      const rect = chartCanvas.getBoundingClientRect();
+      chartCanvas.width = rect.width * window.devicePixelRatio;
+      chartCanvas.height = 105 * window.devicePixelRatio;
+      chartCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeChartCanvas);
+    resizeChartCanvas();
+
+    function updateTelemetryChart(history) {
+      if (!history || history.length === 0) return;
+      const rect = chartCanvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = 105;
 
       chartCtx.clearRect(0, 0, w, h);
 
+      // Grid Lines
       chartCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
       chartCtx.lineWidth = 1;
-      const padding = {top: 20, right: 20, bottom: 25, left: 40};
+      const padding = { top: 12, bottom: 18, left: 28, right: 10 };
       const plotW = w - padding.left - padding.right;
       const plotH = h - padding.top - padding.bottom;
 
-      chartCtx.fillStyle = '#64748b';
-      chartCtx.font = '10px JetBrains Mono';
-      chartCtx.textAlign = 'right';
-
-      for (let i = 0; i <= 4; i++) {
-        const yVal = i * 0.25;
-        const y = padding.top + plotH - (yVal * plotH);
+      [0.0, 0.5, 0.85, 1.0].forEach(level => {
+        const y = padding.top + plotH - (level * plotH);
         chartCtx.beginPath();
         chartCtx.moveTo(padding.left, y);
         chartCtx.lineTo(w - padding.right, y);
         chartCtx.stroke();
-        chartCtx.fillText(`${Math.round(yVal * 100)}%`, padding.left - 6, y + 3);
-      }
 
-      if (!history || history.length < 2) return;
-
-      const pointsCount = history.length;
-      const stepX = plotW / (pointsCount - 1);
+        chartCtx.fillStyle = '#475569';
+        chartCtx.font = '9px JetBrains Mono, monospace';
+        chartCtx.textAlign = 'right';
+        chartCtx.fillText(`${Math.round(level * 100)}%`, padding.left - 4, y + 3);
+      });
 
       function drawSeries(key, color, isDashed = false) {
-        chartCtx.beginPath();
         chartCtx.strokeStyle = color;
-        chartCtx.lineWidth = 2;
-        if (isDashed) chartCtx.setLineDash([4, 4]);
-        else chartCtx.setLineDash([]);
+        chartCtx.lineWidth = isDashed ? 1.5 : 2;
+        chartCtx.setLineDash(isDashed ? [4, 4] : []);
+        chartCtx.beginPath();
 
         history.forEach((pt, idx) => {
-          const val = Math.max(0, Math.min(1.0, pt[key] || 0));
-          const x = padding.left + idx * stepX;
+          const val = Math.min(1.0, Math.max(0.0, pt[key]));
+          const x = padding.left + (idx / Math.max(1, history.length - 1)) * plotW;
           const y = padding.top + plotH - (val * plotH);
           if (idx === 0) chartCtx.moveTo(x, y);
           else chartCtx.lineTo(x, y);
@@ -1395,7 +1558,7 @@
 
       drawSeries('baseline', '#64748b', true);
       drawSeries('t_exit', '#f59e0b', false);
-      drawSeries('t_enter', '#ef4444', false);
+      drawSeries('t_enter', '#f43f5e', false);
       drawSeries('offered_util', '#38bdf8', false);
     }
 
@@ -1408,76 +1571,93 @@
       const s1_s2_congested = topology.links[0].congested;
 
       baseLayer.innerHTML = `
-        <!-- Links -->
-        <!-- Primary Link s1 -> s2 -->
+        <!-- Links Wire Geometry -->
         <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" />
-        
-        <!-- Bypass Link s1 -> s3 -->
-        <line x1="180" y1="180" x2="400" y2="340" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
-        
-        <!-- Bypass Link s3 -> s2 -->
-        <line x1="400" y1="340" x2="620" y2="180" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
+        <line x1="180" y1="180" x2="400" y2="330" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
+        <line x1="400" y1="330" x2="620" y2="180" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
 
-        <!-- Host links -->
-        <line x1="60" y1="140" x2="180" y2="180" stroke="#334155" stroke-width="1.5" />
-        <line x1="60" y1="220" x2="180" y2="180" stroke="#334155" stroke-width="1.5" />
-        <line x1="620" y1="180" x2="740" y2="140" stroke="#334155" stroke-width="1.5" />
-        <line x1="620" y1="180" x2="740" y2="220" stroke="#334155" stroke-width="1.5" />
+        <!-- Host Access Links -->
+        <line x1="60" y1="130" x2="180" y2="180" class="link-line active" />
+        <line x1="60" y1="230" x2="180" y2="180" class="link-line" />
+        <line x1="620" y1="180" x2="740" y2="130" class="link-line active" />
+        <line x1="620" y1="180" x2="740" y2="230" class="link-line" />
 
-        <!-- Link Labels -->
-        <rect x="345" y="154" width="110" height="24" rx="4" fill="#0f172a" stroke="${s1_s2_congested ? '#ef4444' : '#334155'}" stroke-width="${s1_s2_congested ? 2 : 1}" />
-        <text x="400" y="170" fill="${s1_s2_congested ? '#ef4444' : '#cbd5e1'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle" font-weight="600">
-          Primary: ${topology.links[0].mbps}M (${Math.round(topology.links[0].util * 100)}%)
-        </text>
+        <!-- Primary Link Capacity Badge -->
+        <g transform="translate(400, 150)">
+          <rect x="-70" y="-12" width="140" height="24" class="link-label-rect" />
+          <text x="0" y="0" class="link-label-text">
+            Primary: ${(topology.links[0].utilization * 10).toFixed(1)}M (${Math.round(topology.links[0].utilization * 100)}%)
+          </text>
+        </g>
 
-        <rect x="230" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0ea5e9' : '#334155'}" />
-        <text x="277" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
-          Bypass: ${topology.links[1].mbps}M
-        </text>
+        <!-- Bypass Link 1 Badge -->
+        <g transform="translate(270, 275)">
+          <rect x="-65" y="-12" width="130" height="24" class="link-label-rect" />
+          <text x="0" y="0" class="link-label-text">
+            Bypass: ${(topology.links[1].utilization * 10).toFixed(1)}M (${Math.round(topology.links[1].utilization * 100)}%)
+          </text>
+        </g>
 
-        <rect x="475" y="268" width="95" height="20" rx="4" fill="#0f172a" stroke="${isBypass ? '#0ea5e9' : '#334155'}" />
-        <text x="522" y="282" fill="${isBypass ? '#38bdf8' : '#64748b'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
-          Bypass: ${topology.links[2].mbps}M
-        </text>
+        <!-- Bypass Link 2 Badge -->
+        <g transform="translate(530, 275)">
+          <rect x="-65" y="-12" width="130" height="24" class="link-label-rect" />
+          <text x="0" y="0" class="link-label-text">
+            Bypass: ${(topology.links[2].utilization * 10).toFixed(1)}M (${Math.round(topology.links[2].utilization * 100)}%)
+          </text>
+        </g>
 
         <!-- Hosts -->
-        <rect x="15" y="122" width="75" height="36" class="node-host" />
-        <text x="52" y="137" class="node-text-title">h1 (Sender)</text>
-        <text x="52" y="149" class="node-text-sub">10.0.0.1</text>
+        <g transform="translate(60, 130)">
+          <rect x="-44" y="-18" width="88" height="36" class="node-box" />
+          <text x="0" y="-4" class="node-title">h1 (Sender)</text>
+          <text x="0" y="8" class="node-subtitle">10.0.0.1</text>
+        </g>
 
-        <rect x="15" y="202" width="75" height="36" class="node-host" />
-        <text x="52" y="217" class="node-text-title">h2</text>
-        <text x="52" y="229" class="node-text-sub">10.0.0.2</text>
+        <g transform="translate(60, 230)">
+          <rect x="-44" y="-18" width="88" height="36" class="node-box" />
+          <text x="0" y="-4" class="node-title">h2</text>
+          <text x="0" y="8" class="node-subtitle">10.0.0.2</text>
+        </g>
 
-        <rect x="710" y="122" width="75" height="36" class="node-host" />
-        <text x="747" y="137" class="node-text-title">h3 (Target)</text>
-        <text x="747" y="149" class="node-text-sub">10.0.0.3</text>
+        <g transform="translate(740, 130)">
+          <rect x="-44" y="-18" width="88" height="36" class="node-box" />
+          <text x="0" y="-4" class="node-title">h3 (Target)</text>
+          <text x="0" y="8" class="node-subtitle">10.0.0.3</text>
+        </g>
 
-        <rect x="710" y="202" width="75" height="36" class="node-host" />
-        <text x="747" y="217" class="node-text-title">h4</text>
-        <text x="747" y="229" class="node-text-sub">10.0.0.4</text>
+        <g transform="translate(740, 230)">
+          <rect x="-44" y="-18" width="88" height="36" class="node-box" />
+          <text x="0" y="-4" class="node-title">h4</text>
+          <text x="0" y="8" class="node-subtitle">10.0.0.4</text>
+        </g>
 
         <!-- Switches -->
-        <rect x="130" y="152" width="100" height="56" class="node-switch ${s1_s2_congested ? 'congested' : 'active'}" />
-        <text x="180" y="174" class="node-text-title">s1 (Ingress)</text>
-        <text x="180" y="190" class="node-text-sub">DPID: 0001 | OF1.3</text>
+        <g transform="translate(180, 180)">
+          <rect x="-48" y="-24" width="96" height="48" class="node-box ${isBypass ? 'switch-bypass-active' : 'switch-active'}" />
+          <text x="0" y="-5" class="node-title">s1 (Ingress)</text>
+          <text x="0" y="10" class="node-subtitle">DPID: 0001 | OF1.3</text>
+        </g>
 
-        <rect x="570" y="152" width="100" height="56" class="node-switch active" />
-        <text x="620" y="174" class="node-text-title">s2 (Egress)</text>
-        <text x="620" y="190" class="node-text-sub">DPID: 0002 | OF1.3</text>
+        <g transform="translate(620, 180)">
+          <rect x="-48" y="-24" width="96" height="48" class="node-box ${isBypass ? 'switch-bypass-active' : 'switch-active'}" />
+          <text x="0" y="-5" class="node-title">s2 (Egress)</text>
+          <text x="0" y="10" class="node-subtitle">DPID: 0002 | OF1.3</text>
+        </g>
 
-        <rect x="350" y="312" width="100" height="56" class="node-switch ${isBypass ? 'active' : ''}" />
-        <text x="400" y="334" class="node-text-title">s3 (Bypass)</text>
-        <text x="400" y="350" class="node-text-sub">DPID: 0003 | OF1.3</text>
+        <g transform="translate(400, 330)">
+          <rect x="-48" y="-24" width="96" height="48" class="node-box ${isBypass ? 'switch-bypass-active' : ''}" />
+          <text x="0" y="-5" class="node-title">s3 (Bypass)</text>
+          <text x="0" y="10" class="node-subtitle">DPID: 0003 | OF1.3</text>
+        </g>
       `;
     }
 
-    // ---------------- UI Update with GSAP Tweening ----------------
+    // ---------------- UI Master State Updater ----------------
     function updateUI(state) {
+      if (!state) return;
       currentState = state;
-      currentArchView = state.architecture_view || 'adaptive';
 
-      // Status bar
+      // Update Clocks & Global Status
       document.getElementById('sim-time').textContent = `${state.time_s.toFixed(1)}s`;
 
       // Update Engine Button and Capsule
@@ -1487,6 +1667,7 @@
       const turbine = document.getElementById('turbine-icon');
       const capsule = document.getElementById('engine-capsule');
       const capsuleTxt = document.getElementById('engine-capsule-text');
+      const wsSimStatus = document.getElementById('ws-sim-status');
 
       if (isPlaying) {
         engBtn.className = 'btn-engine running';
@@ -1494,16 +1675,17 @@
         turbine.classList.add('spin');
         capsule.className = 'engine-capsule running';
         capsuleTxt.textContent = 'SDN CORE ONLINE';
+        if (wsSimStatus) wsSimStatus.textContent = 'ONLINE';
       } else {
         engBtn.className = 'btn-engine stopped';
         engTxt.textContent = 'START ENGINE';
         turbine.classList.remove('spin');
         capsule.className = 'engine-capsule stopped';
         capsuleTxt.textContent = 'SDN CORE STANDBY';
+        if (wsSimStatus) wsSimStatus.textContent = 'STANDBY';
       }
 
-      // Sync Speed buttons
-      simSpeed = state.speed;
+      // Sync Speed Buttons
       ['025', '05', '10', '20'].forEach(id => {
         document.getElementById(`spd-${id}`)?.classList.remove('active');
       });
@@ -1515,145 +1697,192 @@
       // Sync Architecture Buttons
       const btnArchAd = document.getElementById('btn-arch-adaptive');
       const btnArchSt = document.getElementById('btn-arch-static');
-      if (currentArchView === 'static') {
-        btnArchAd.classList.remove('active', 'adaptive');
-        btnArchSt.classList.add('active', 'static');
+      if (state.architecture_view === 'static') {
+        btnArchAd.className = 'arch-segment-btn';
+        btnArchSt.className = 'arch-segment-btn active static';
       } else {
-        btnArchSt.classList.remove('active', 'static');
-        btnArchAd.classList.add('active', 'adaptive');
+        btnArchAd.className = 'arch-segment-btn active adaptive';
+        btnArchSt.className = 'arch-segment-btn';
       }
 
-      // Slider sync
+      // Sync Offered Load
       const loadPercent = Math.round(state.offered_util * 100);
       document.getElementById('load-slider').value = loadPercent;
       document.getElementById('load-val-text').textContent = `${loadPercent}%`;
 
-      // GSAP Smooth Number Counter Animations
-      const staticComp = state.comparison.static;
-      const adaptiveComp = state.comparison.adaptive;
+      // Live Comparison Matrix with GSAP Numbers
+      const staticComp = state.comparison.static_sdn;
+      const adaptiveComp = state.comparison.adaptive_sdn;
 
       gsap.to(animNumbers, {
         staticThru: staticComp.throughput_mbps,
-        staticDrop: staticComp.loss_pct,
+        staticDrop: staticComp.packet_loss_pct,
         staticLat: staticComp.latency_ms,
         adaptiveThru: adaptiveComp.throughput_mbps,
-        adaptiveDrop: adaptiveComp.loss_pct,
+        adaptiveDrop: adaptiveComp.packet_loss_pct,
         adaptiveLat: adaptiveComp.latency_ms,
-        duration: 0.6,
+        duration: 0.35,
         ease: 'power2.out',
         onUpdate: () => {
-          document.getElementById('static-thru').innerHTML = `${animNumbers.staticThru.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
+          document.getElementById('static-thru').innerHTML = `${animNumbers.staticThru.toFixed(1)} <span class="unit">Mbps</span>`;
           document.getElementById('static-drop').textContent = `${animNumbers.staticDrop.toFixed(1)}%`;
-          document.getElementById('static-lat').innerHTML = `${animNumbers.staticLat.toFixed(1)} <span style="font-size:12px;">ms</span>`;
+          document.getElementById('static-lat').innerHTML = `${animNumbers.staticLat.toFixed(1)} <span class="unit">ms</span>`;
 
-          document.getElementById('adaptive-thru').innerHTML = `${animNumbers.adaptiveThru.toFixed(1)} <span style="font-size:12px;">Mbps</span>`;
+          document.getElementById('adaptive-thru').innerHTML = `${animNumbers.adaptiveThru.toFixed(1)} <span class="unit">Mbps</span>`;
           document.getElementById('adaptive-drop').textContent = `${animNumbers.adaptiveDrop.toFixed(1)}%`;
-          document.getElementById('adaptive-lat').innerHTML = `${animNumbers.adaptiveLat.toFixed(1)} <span style="font-size:12px;">ms</span>`;
+          document.getElementById('adaptive-lat').innerHTML = `${animNumbers.adaptiveLat.toFixed(1)} <span class="unit">ms</span>`;
         }
       });
 
+      // Loss Fail/Pass Highlighting
+      const elStaticDrop = document.getElementById('static-drop');
+      if (staticComp.packet_loss_pct > 0) {
+        elStaticDrop.className = 'matrix-val static loss-fail';
+      } else {
+        elStaticDrop.className = 'matrix-val static';
+      }
+
       document.getElementById('static-status-badge').textContent = staticComp.status;
-      document.getElementById('adaptive-path-text').textContent = JSON.stringify(adaptiveComp.path);
+      const elPathText = document.getElementById('adaptive-path-text');
+      if (elPathText) elPathText.textContent = JSON.stringify(adaptiveComp.path);
       document.getElementById('adaptive-status-badge').textContent = adaptiveComp.status;
 
-      // Dynamic Route Banner
-      const isBypass = state.topology.is_rerouted;
-      const isStatic = (currentArchView === 'static');
+      // Update Topology Route Banner
+      const isBypass = (state.topology && state.topology.active_path.length === 3);
+      const isStatic = (state.architecture_view === 'static');
       const isCongested = (state.offered_util > 0.75);
       const banner = document.getElementById('route-banner');
       const bannerText = document.getElementById('route-banner-text');
       const bannerSub = document.getElementById('route-banner-sub');
 
-      if (isStatic && isCongested) {
-        banner.className = 'route-banner static-congested';
-        bannerText.textContent = `⚠ STANDARD STATIC SDN: BOTTLENECK SATURATED ON LINK s1 -> s2 | PACKET LOSS: ~${staticComp.loss_pct}%`;
-        bannerSub.textContent = 'Buffer Overflows (Dropping Packets)';
-      } else if (isStatic && !isCongested) {
-        banner.className = 'route-banner normal';
-        bannerText.textContent = '✓ STANDARD STATIC SDN: NORMAL FLOW ON LINK s1 -> s2 [1, 2]';
-        bannerSub.textContent = 'Packet Loss: 0.0%';
-      } else if (isBypass) {
-        banner.className = 'route-banner bypass';
-        bannerText.textContent = '⚡ OUR ADAPTIVE SDN: TRAFFIC DIVERTED TO BYPASS SWITCH s3 [1, 3, 2]';
-        bannerSub.textContent = 'Zero Packet Loss | 100% Throughput';
-      } else if (state.detector.state === 'CONGESTION_PENDING') {
-        banner.className = 'route-banner pending';
-        bannerText.textContent = `⚠ TRAFFIC SURGE DETECTED (${Math.round(state.offered_util*100)}%): VERIFYING PERSISTENCE`;
-        bannerSub.textContent = 'Persistence sample check...';
+      if (isStatic) {
+        if (isCongested) {
+          banner.className = 'route-banner congested-static';
+          bannerText.textContent = 'STANDARD STATIC SDN: BOTTLENECK DIRECT LINK [s1 -> s2]';
+          bannerSub.textContent = `CRITICAL PACKET LOSS: ${staticComp.packet_loss_pct.toFixed(1)}% | BUFFER OVERFLOW`;
+        } else {
+          banner.className = 'route-banner normal';
+          bannerText.textContent = 'STANDARD STATIC SDN: NORMAL FLOW DIRECT LINK [s1 -> s2]';
+          bannerSub.textContent = 'Packet Loss: 0.0%';
+        }
       } else {
-        banner.className = 'route-banner normal';
-        bannerText.textContent = '✓ OUR ADAPTIVE SDN: PRIMARY ROUTE ACTIVE s1 -> s2 [1, 2]';
-        bannerSub.textContent = 'Normal Load: 10 Mbps Cap';
+        if (isBypass) {
+          banner.className = 'route-banner rerouted';
+          bannerText.textContent = 'OUR ADAPTIVE SDN: ZERO-LOSS BYPASS REROUTED via s3 [s1 -> s3 -> s2]';
+          bannerSub.textContent = 'Throughput 100% Preserved | 0 Flaps Recorded';
+        } else {
+          banner.className = 'route-banner normal';
+          bannerText.textContent = 'OUR ADAPTIVE SDN: PRIMARY ROUTE ACTIVE DIRECT LINK [s1 -> s2]';
+          bannerSub.textContent = 'Normal Load: Loss 0.0%';
+        }
       }
 
-      document.getElementById('detector-state-badge').textContent = `DETECTOR: ${state.detector.state} (T_enter=${state.detector.t_enter}, T_exit=${state.detector.t_exit})`;
+      // Update Stage HUD Bar Chips
+      const primLink = (state.topology && state.topology.links && state.topology.links[0]) || null;
+      const bypassLink = (state.topology && state.topology.links && state.topology.links[1]) || null;
+      if (primLink) {
+        const pUtil = (primLink.utilization * 10).toFixed(1);
+        const pPct = Math.round(primLink.utilization * 100);
+        document.getElementById('hud-primary-val').textContent = `${pUtil} Mbps (${pPct}%)`;
+        const elSt = document.getElementById('hud-primary-status');
+        if (primLink.congested) {
+          elSt.className = 'hud-status-tag congested';
+          elSt.textContent = 'CONGESTED';
+        } else {
+          elSt.className = 'hud-status-tag normal';
+          elSt.textContent = 'NORMAL';
+        }
+      }
+      if (bypassLink) {
+        const bUtil = (bypassLink.utilization * 10).toFixed(1);
+        const bPct = Math.round(bypassLink.utilization * 100);
+        document.getElementById('hud-bypass-val').textContent = `${bUtil} Mbps (${bPct}%)`;
+        const elSt = document.getElementById('hud-bypass-status');
+        if (isBypass) {
+          elSt.className = 'hud-status-tag active';
+          elSt.textContent = 'ACTIVE BYPASS';
+        } else {
+          elSt.className = 'hud-status-tag standby';
+          elSt.textContent = 'STANDBY';
+        }
+      }
+      document.getElementById('hud-route-val').textContent = isBypass ? 's1 → s3 → s2 [BYPASS]' : 's1 → s2 [DIRECT]';
 
-      // Render Topology & Chart
-      renderTopologySVG(state.topology, currentArchView);
-      renderTelemetryChart(state.history);
+      // Update Telemetry Chart
+      updateTelemetryChart(state.history);
+      document.getElementById('detector-state-badge').textContent = `STATE: ${state.detector.state}`;
 
-      // Flow Tables
+      // Re-render SVG Topology Base
+      renderTopologySVG(state.topology, state.architecture_view);
+
+      // Update Flow Table
       const flowTbody = document.getElementById('flow-table-body');
-      let flowRows = '';
-      ['s1', 's2', 's3'].forEach(sw => {
-        const rules = state.flow_tables[sw] || [];
-        rules.forEach(r => {
-          flowRows += `
-            <tr>
-              <td style="color:#38bdf8; font-weight:600;">${sw.toUpperCase()}</td>
-              <td>${r.priority}</td>
-              <td>${r.match.eth_src || '*'} -> ${r.match.eth_dst || '*'}</td>
-              <td><span style="color:#10b981;">${r.actions.join(', ')}</span></td>
-            </tr>
-          `;
-        });
-      });
-      flowTbody.innerHTML = flowRows || '<tr><td colspan="4">No flow mods yet</td></tr>';
+      if (state.flow_table && state.flow_table.length > 0) {
+        flowTbody.innerHTML = state.flow_table.map(f => `
+          <tr>
+            <td style="color:#38bdf8; font-weight:600;">${f.switch}</td>
+            <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">${f.priority}</span></td>
+            <td>${f.match}</td>
+            <td style="color:#34d399;">${f.action}</td>
+          </tr>
+        `).join('');
+      } else {
+        flowTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No custom rules active</td></tr>`;
+      }
 
-      // Event Logs
+      // Update Transition Audit Logs
       const logsContainer = document.getElementById('logs-container');
-      let logsHtml = '';
-      (state.recent_events || []).forEach(ev => {
-        logsHtml += `
-          <div class="log-item ${ev.level}">
-            <div class="log-time">${ev.time}s</div>
-            <div class="log-content">
-              <div class="log-title">${ev.title}</div>
-              <div class="log-detail">${ev.detail}</div>
+      if (state.logs && state.logs.length > 0) {
+        logsContainer.innerHTML = state.logs.slice().reverse().map(l => {
+          let msgClass = '';
+          if (l.msg.includes('CONGESTION DETECTED') || l.msg.includes('SURGE')) msgClass = 'congested';
+          else if (l.msg.includes('REROUTED') || l.msg.includes('Bypass')) msgClass = 'rerouted';
+          else if (l.msg.includes('RELIEVED') || l.msg.includes('RESTORED') || l.msg.includes('NORMAL')) msgClass = 'relieved';
+          return `
+            <div class="log-item">
+              <span class="log-time">${l.time.toFixed(1)}s</span>
+              <span class="log-msg ${msgClass}">${l.msg}</span>
             </div>
-          </div>
-        `;
-      });
-      logsContainer.innerHTML = logsHtml || '<div style="padding:16px; color:var(--text-muted);">No events recorded</div>';
+          `;
+        }).join('');
+      }
     }
 
-    // ---------------- Server Communications ----------------
+    // ---------------- WebSocket Connectivity ----------------
     function connectWebSocket() {
-      const loc = window.location;
-      const wsUri = (loc.protocol === 'https:' ? 'wss://' : 'ws://') + loc.host + '/ws';
-      ws = new WebSocket(wsUri);
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      ws = new WebSocket(wsUrl);
+
+      ws.onopen = () => {
+        console.log('[WebSocket] Connected to simulation telemetry stream.');
+      };
 
       ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        updateUI(data);
+        try {
+          const state = JSON.parse(event.data);
+          updateUI(state);
+        } catch (err) {
+          console.error('[WebSocket] JSON Parse Error:', err);
+        }
       };
 
       ws.onclose = () => {
+        console.warn('[WebSocket] Closed. Reconnecting in 1.5s...');
         setTimeout(connectWebSocket, 1500);
+      };
+
+      ws.onerror = (err) => {
+        console.error('[WebSocket] Error:', err);
+        ws.close();
       };
     }
 
-    async function stepSimulation() {
-      const res = await fetch('/api/step', { method: 'POST' });
-      const data = await res.json();
-      updateUI(data);
-    }
-
+    // ---------------- Interactive Controls Engine ----------------
     async function toggleEngine() {
       if (isPlaying) {
         await fetch('/api/pause', { method: 'POST' });
         isPlaying = false;
-        // GSAP spin down effect
         gsap.to('#turbine-icon', { rotate: '+=180', duration: 0.8, ease: 'power2.out' });
       } else {
         await fetch('/api/play', {
@@ -1662,13 +1891,12 @@
           body: JSON.stringify({speed: simSpeed})
         });
         isPlaying = true;
-        // GSAP spin up effect
         gsap.fromTo('#turbine-icon', { scale: 0.8 }, { scale: 1.0, duration: 0.4, ease: 'back.out(2)' });
       }
     }
 
-    async function setSpeed(val) {
-      simSpeed = val;
+    async function setSpeed(spd) {
+      simSpeed = spd;
       await fetch('/api/play', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -1678,16 +1906,19 @@
 
     async function switchArchitecture(arch) {
       currentArchView = arch;
-      gsap.fromTo(['#card-static', '#card-adaptive', '#route-banner'], 
-        { scale: 0.99, opacity: 0.8 }, 
-        { scale: 1.0, opacity: 1.0, duration: 0.3, ease: 'power2.out' }
-      );
-
-      await fetch('/api/architecture', {
+      const res = await fetch('/api/architecture', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({architecture: arch})
       });
+      const data = await res.json();
+      updateUI(data);
+    }
+
+    async function stepSimulation() {
+      const res = await fetch('/api/step', { method: 'POST' });
+      const data = await res.json();
+      updateUI(data);
     }
 
     async function injectCongestion() {
