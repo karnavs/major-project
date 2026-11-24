@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
@@ -17,14 +17,14 @@
   <style>
     /* -------------------------------------------------------------
        Typography & Design System:
-       - Main Headings: The Awesome Serif Family (fallback: Playfair Display, Georgia)
+       - Main Headings: Montserrat Black (weights 800, 900)
        - Subtexts: Santa Monica (fallback: Plus Jakarta Sans)
        - Packet Flow & Control Panel: Courier ('Courier New', Courier, monospace)
     -------------------------------------------------------------- */
     @font-face {
-      font-family: 'The Awesome Serif';
-      src: local('The Awesome Serif'), local('Awesome Serif'), local('TheAwesomeSerif'), local('AwesomeSerif-Regular');
-      font-weight: 400 700;
+      font-family: 'Montserrat Black';
+      src: local('Montserrat Black'), local('Montserrat-Black'), local('Montserrat-ExtraBold');
+      font-weight: 900;
       font-style: normal;
     }
 
@@ -64,7 +64,7 @@
       --radius-lg: 14px;
 
       /* Font Family Tokens */
-      --font-heading: 'The Awesome Serif', 'Awesome Serif', 'Playfair Display', Georgia, serif;
+      --font-heading: 'Montserrat Black', 'Montserrat', -apple-system, system-ui, sans-serif;
       --font-subtext: 'Santa Monica', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       --font-courier: 'Courier New', Courier, 'Liberation Mono', monospace;
       --font-sans: var(--font-subtext);
@@ -139,13 +139,13 @@
       height: 17px;
     }
 
-    /* Main Heading: The Awesome Serif Family */
+    /* Main Heading: Montserrat Black */
     .brand-title {
       font-family: var(--font-heading);
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 900;
       color: var(--text-primary);
-      letter-spacing: 0.01em;
+      letter-spacing: -0.01em;
     }
 
     /* Subtext: Santa Monica */
@@ -271,12 +271,12 @@
     .stage-title {
       font-family: var(--font-heading);
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 900;
       color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 8px;
-      letter-spacing: 0.01em;
+      letter-spacing: -0.01em;
     }
 
     /* Architecture Toggle Switcher on Stage */
@@ -546,10 +546,10 @@
       justify-content: space-between;
     }
 
-    /* Main Heading on Workstation: The Awesome Serif */
+    /* Main Heading on Workstation: Montserrat Black */
     .ws-title {
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 900;
       font-family: var(--font-heading);
       color: var(--text-secondary);
       letter-spacing: 0.03em;
@@ -957,16 +957,16 @@
       justify-content: space-between;
     }
 
-    /* Main Heading: The Awesome Serif */
+    /* Main Heading: Montserrat Black */
     .panel-title {
       font-size: 12.5px;
-      font-weight: 700;
+      font-weight: 900;
       font-family: var(--font-heading);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 6px;
-      letter-spacing: 0.02em;
+      letter-spacing: -0.01em;
     }
 
     .table-container {
@@ -1054,7 +1054,7 @@
           <line x1="8.5" y1="16.5" x2="15.5" y2="13.5"/>
         </svg>
       </div>
-      <!-- Main Heading: The Awesome Serif Family -->
+      <!-- Main Heading: Montserrat Black -->
       <div class="brand-title">Adaptive Congestion Detection & Dynamic Rerouting</div>
       <!-- Subtext: Santa Monica -->
       <span class="brand-tag">SDN Flow Studio</span>
@@ -1081,7 +1081,7 @@
       <!-- LEFT DOMINANT HERO: Packet Streaming Topology Stage -->
       <div class="hero-stage">
         <div class="stage-header">
-          <!-- Main Heading: The Awesome Serif -->
+          <!-- Main Heading: Montserrat Black -->
           <div class="stage-title">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
               <rect x="2" y="2" width="6" height="6" rx="1"/>
@@ -1173,7 +1173,7 @@
         <!-- Section 1: Execution & Flow Workstation Deck -->
         <div class="workstation-card">
           <div class="ws-header">
-            <!-- Main Heading: The Awesome Serif -->
+            <!-- Main Heading: Montserrat Black -->
             <span class="ws-title">MISSION CONTROL DECK</span>
             <span class="ws-badge" id="ws-sim-status">ONLINE</span>
           </div>
@@ -1229,7 +1229,7 @@
         <!-- Section 2: Live Architecture Comparison Matrix (Courier) -->
         <div class="workstation-card">
           <div class="ws-header">
-            <!-- Main Heading: The Awesome Serif -->
+            <!-- Main Heading: Montserrat Black -->
             <span class="ws-title">LIVE ARCHITECTURE BENCHMARK</span>
             <span style="font-family:var(--font-courier); font-size:10px; color:var(--text-muted);" id="adaptive-path-text">[s1, s2]</span>
           </div>
@@ -1271,7 +1271,7 @@
         <!-- Section 3: Telemetry & EWMA Sparkline -->
         <div class="workstation-card">
           <div class="ws-header">
-            <!-- Main Heading: The Awesome Serif -->
+            <!-- Main Heading: Montserrat Black -->
             <span class="ws-title">DETECTOR TELEMETRY</span>
             <span style="font-family:var(--font-courier); font-size:10px; color:var(--text-muted);" id="detector-state-badge">STATE: NORMAL</span>
           </div>
@@ -1300,7 +1300,7 @@
       <!-- OpenFlow Flow Tables -->
       <div class="panel">
         <div class="panel-header">
-          <!-- Main Heading: The Awesome Serif -->
+          <!-- Main Heading: Montserrat Black -->
           <div class="panel-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="8" y1="6" x2="21" y2="6"/>
@@ -1344,7 +1344,7 @@
       <!-- Real-Time Decision & Audit Log -->
       <div class="panel">
         <div class="panel-header">
-          <!-- Main Heading: The Awesome Serif -->
+          <!-- Main Heading: Montserrat Black -->
           <div class="panel-title">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
