@@ -1,0 +1,986 @@
+{
+  "simulation": "adaptive_traffic_reroute",
+  "reroute_events": [
+    {
+      "time": 23.0,
+      "event": "REROUTE",
+      "entity": [
+        1,
+        3
+      ],
+      "flow": [
+        "00:00:00:00:00:01",
+        "00:00:00:00:00:03"
+      ],
+      "old_path": [
+        1,
+        2
+      ],
+      "new_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time": 50.0,
+      "event": "RESTORE",
+      "entity": [
+        1,
+        3
+      ],
+      "flow": [
+        "00:00:00:00:00:01",
+        "00:00:00:00:00:03"
+      ],
+      "old_path": [
+        1,
+        3,
+        2
+      ],
+      "new_path": [
+        1,
+        2
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "time_s": 1,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 2,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 3,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 4,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 5,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 6,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 7,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 8,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 9,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 10,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 11,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.85,
+      "t_exit": 0.75,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 12,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 13,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 14,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 15,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 16,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 17,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 18,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 19,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 20,
+      "phase": "BASELINE",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 21,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTION_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 22,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTION_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 23,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": "CONGESTION_CONFIRMED",
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 24,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 25,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 26,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 27,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 28,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 29,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 30,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 31,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 32,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 33,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 34,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 35,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 36,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 37,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 38,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 39,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 40,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 41,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 42,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 43,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 44,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 45,
+      "phase": "OVERLOAD",
+      "offered_util": 0.95,
+      "detector_state": "CONGESTED",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 46,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "RECOVERY_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 47,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "RECOVERY_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 48,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "RECOVERY_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 49,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "RECOVERY_PENDING",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        3,
+        2
+      ]
+    },
+    {
+      "time_s": 50,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": "RECOVERY_CONFIRMED",
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 51,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 52,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 53,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 54,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 55,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 56,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 57,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 58,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 59,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 60,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 61,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 62,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 63,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 64,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 65,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 66,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 67,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 68,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 69,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    },
+    {
+      "time_s": 70,
+      "phase": "RECOVERY",
+      "offered_util": 0.1,
+      "detector_state": "NORMAL",
+      "detector_event": null,
+      "t_enter": 0.4,
+      "t_exit": 0.3,
+      "active_path": [
+        1,
+        2
+      ]
+    }
+  ]
+}

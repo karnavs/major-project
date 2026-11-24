@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.log
+.DS_Store
+.idea/
+.vscode/
+# Large decision logs
+decisions.jsonl
+decisions_rerouting_evidence.jsonl

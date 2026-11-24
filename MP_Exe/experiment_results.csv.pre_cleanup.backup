@@ -1,0 +1,3 @@
+run,mode,duration_s,sender_mbps,receiver_mbps,retransmissions
+1,baseline,10,10.9,9.84,155
+2,udp_high_load,20,9.50,9.48,0

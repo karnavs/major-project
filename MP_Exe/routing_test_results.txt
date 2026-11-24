@@ -1,0 +1,25 @@
+/home/jeevan/major-project/.venv/lib/python3.10/site-packages/ryu/lib/hub.py:30: EventletDeprecationWarning: 
+Eventlet is deprecated. It is currently being maintained in bugfix mode, and
+we strongly recommend against using it for new projects.
+
+If you are already using Eventlet, we recommend migrating to a different
+framework.  For more detail see
+https://eventlet.readthedocs.io/en/latest/asyncio/migration.html
+
+  import eventlet
+test_controller_initialization_and_reroute_event (tests.test_routing_controller.TestAdaptiveRoutingController) ... CONGESTION DETECTED on switch 1 port 3 (utilization=0.95, threshold=0.40)
+ok
+test_bypass_congestion_prefers_primary_path (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_congestion_causes_reroute_to_bypass_path (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_find_all_paths (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_initial_shortest_path_takes_primary (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_multi_flow_load_distribution (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_recovery_restores_primary_path (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_route_computation_between_hosts (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_same_switch_host_routing (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+test_unknown_host_returns_none (tests.test_routing_controller.TestTopologyAndRoutingEngine) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
