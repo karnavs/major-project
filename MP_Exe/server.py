@@ -41,7 +41,6 @@ app.add_middleware(
 
 # Shared simulation engine instance
 engine = SDNSimulationEngine()
-# Enable playback by default so user sees live network ticks immediately
 engine.is_running = True
 
 connected_websockets: List[WebSocket] = []
@@ -59,6 +58,10 @@ class SpeedRequest(BaseModel):
 
 class ModeRequest(BaseModel):
     mode: str = "sandbox"  # 'sandbox' or 'scenario_70s'
+
+
+class ArchRequest(BaseModel):
+    architecture: str = "adaptive"  # 'adaptive' or 'static'
 
 
 async def broadcast_state():
@@ -82,7 +85,8 @@ async def _playback_loop():
     try:
         while True:
             if engine.is_running:
-                delay = 1.0 / max(0.2, min(5.0, engine.speed))
+                # Support 0.25x (delay 4.0s), 0.5x (delay 2.0s), 1.0x (delay 1.0s), etc.
+                delay = 1.0 / max(0.1, min(5.0, engine.speed))
                 await asyncio.sleep(delay)
                 if engine.is_running:
                     try:
@@ -92,7 +96,7 @@ async def _playback_loop():
                         print("Error during simulation step:", ex)
                         traceback.print_exc()
             else:
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(0.2)
     except asyncio.CancelledError:
         pass
     except Exception as e:
@@ -171,11 +175,17 @@ async def api_set_mode(req: ModeRequest):
     return {"mode": engine.mode}
 
 
+@app.post("/api/architecture")
+async def api_set_architecture(req: ArchRequest):
+    engine.architecture_view = req.architecture
+    await broadcast_state()
+    return {"architecture": engine.architecture_view}
+
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     connected_websockets.append(websocket)
-    # Send immediate initial state
     await websocket.send_json(engine.get_state())
     try:
         while True:

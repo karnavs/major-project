@@ -6,32 +6,32 @@
   <title>SDN Adaptive Congestion-Aware Traffic Management Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* -------------------------------------------------------------
        Unslop Design Tokens (Graphite neutral ramp, 4px grid, NOC character)
     -------------------------------------------------------------- */
     :root {
-      --bg-base: #0b0d11;
-      --bg-surface: #12151c;
-      --bg-surface-raised: #181c25;
-      --bg-surface-elevated: #202532;
-      --border-quiet: rgba(255, 255, 255, 0.08);
-      --border-subtle: rgba(255, 255, 255, 0.14);
-      --border-focus: rgba(255, 255, 255, 0.24);
+      --bg-base: #0a0c10;
+      --bg-surface: #11141b;
+      --bg-surface-raised: #171b24;
+      --bg-surface-elevated: #1e232f;
+      --border-quiet: rgba(255, 255, 255, 0.07);
+      --border-subtle: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(255, 255, 255, 0.22);
 
-      --text-primary: #f0f3f8;
-      --text-secondary: #9aa2b1;
-      --text-muted: #5e6676;
+      --text-primary: #f1f4f9;
+      --text-secondary: #949db0;
+      --text-muted: #596173;
 
-      --accent: #0284c7;
-      --accent-tint: rgba(2, 132, 199, 0.12);
+      --accent: #0ea5e9;
+      --accent-tint: rgba(14, 165, 233, 0.12);
       --emerald: #10b981;
       --emerald-tint: rgba(16, 185, 129, 0.12);
       --amber: #f59e0b;
       --amber-tint: rgba(245, 158, 11, 0.12);
       --rose: #ef4444;
-      --rose-tint: rgba(239, 68, 68, 0.12);
+      --rose-tint: rgba(239, 68, 68, 0.14);
 
       --radius-sm: 6px;
       --radius-md: 10px;
@@ -64,7 +64,7 @@
     header {
       background: var(--bg-surface);
       border-bottom: 1px solid var(--border-quiet);
-      padding: 12px 24px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -80,17 +80,17 @@
     }
 
     .brand-mark {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: var(--radius-sm);
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--emerald);
+      color: var(--accent);
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       font-family: var(--font-mono);
     }
 
@@ -102,7 +102,7 @@
     }
 
     .brand-subtitle {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
       font-weight: 400;
     }
@@ -110,7 +110,7 @@
     .header-status {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       font-family: var(--font-mono);
       font-size: 12px;
     }
@@ -119,7 +119,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: var(--radius-sm);
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
@@ -136,10 +136,10 @@
     .status-dot.warning { background: var(--amber); box-shadow: 0 0 6px rgba(245, 158, 11, 0.6); }
     .status-dot.critical { background: var(--rose); box-shadow: 0 0 6px rgba(239, 68, 68, 0.6); }
 
-    /* ---------------- Main Layout Grid ---------------- */
+    /* ---------------- Main Layout ---------------- */
     main {
-      padding: 20px 24px;
-      max-width: 1600px;
+      padding: 20px 28px 36px;
+      max-width: 1680px;
       width: 100%;
       margin: 0 auto;
       display: flex;
@@ -153,7 +153,7 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
+      padding: 12px 18px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -197,34 +197,67 @@
     }
 
     .btn-primary {
-      background: #2563eb;
-      border-color: #3b82f6;
+      background: #0284c7;
+      border-color: #38bdf8;
       color: #fff;
     }
     .btn-primary:hover {
-      background: #1d4ed8;
+      background: #0369a1;
     }
 
     .btn-danger {
-      background: rgba(239, 68, 68, 0.18);
-      border-color: rgba(239, 68, 68, 0.5);
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.45);
       color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.28);
       border-color: #ef4444;
       color: #fff;
     }
 
     .btn-success {
-      background: rgba(16, 185, 129, 0.18);
-      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
       color: #6ee7b7;
     }
     .btn-success:hover {
-      background: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.28);
       border-color: #10b981;
       color: #fff;
+    }
+
+    /* Speed preset button group */
+    .speed-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-quiet);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+    }
+
+    .speed-btn {
+      padding: 4px 9px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.12s ease;
+    }
+
+    .speed-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .speed-btn.active {
+      background: var(--bg-surface-elevated);
+      color: var(--accent);
+      border: 1px solid var(--border-subtle);
     }
 
     .slider-group {
@@ -232,7 +265,7 @@
       align-items: center;
       gap: 10px;
       background: var(--bg-surface-raised);
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-quiet);
     }
@@ -254,7 +287,7 @@
 
     input[type="range"] {
       -webkit-appearance: none;
-      width: 100px;
+      width: 90px;
       height: 4px;
       background: var(--bg-surface-elevated);
       border-radius: 2px;
@@ -266,62 +299,62 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: #38bdf8;
+      background: var(--accent);
       cursor: pointer;
       border: 2px solid var(--bg-surface);
     }
 
-    /* ---------------- Side-by-Side Comparison ---------------- */
+    /* ---------------- Side-by-Side Comparison Grid ---------------- */
     .comparison-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 20px;
     }
 
     .compare-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
 
     .compare-card.adaptive-card {
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(16, 185, 129, 0.35);
     }
 
     .compare-card.static-card {
-      border-color: rgba(239, 68, 68, 0.25);
+      border-color: rgba(239, 68, 68, 0.3);
     }
 
     .compare-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 14px;
     }
 
     .compare-badge {
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 600;
-      padding: 2px 8px;
+      padding: 3px 10px;
       border-radius: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
 
     .badge-static {
       background: var(--rose-tint);
       color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
     .badge-adaptive {
       background: var(--emerald-tint);
       color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      border: 1px solid rgba(16, 185, 129, 0.35);
     }
 
     .metric-row {
@@ -334,7 +367,10 @@
       background: var(--bg-surface-raised);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-sm);
-      padding: 10px 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .metric-label {
@@ -345,7 +381,7 @@
 
     .metric-value {
       font-family: var(--font-mono);
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 600;
       color: var(--text-primary);
       font-variant-numeric: tabular-nums;
@@ -354,15 +390,15 @@
     .metric-sub {
       font-size: 10px;
       color: var(--text-secondary);
-      margin-top: 2px;
+      margin-top: 3px;
       font-family: var(--font-mono);
     }
 
     /* ---------------- Topology & Telemetry Row ---------------- */
     .workspace-grid {
       display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 16px;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
     }
 
     .panel {
@@ -375,7 +411,7 @@
     }
 
     .panel-header {
-      padding: 12px 16px;
+      padding: 12px 20px;
       border-bottom: 1px solid var(--border-quiet);
       display: flex;
       align-items: center;
@@ -393,19 +429,70 @@
     }
 
     .panel-body {
-      padding: 16px;
+      padding: 18px 20px;
       flex: 1;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    /* ---------------- Route Alert Banner ---------------- */
+    /* Architecture View Switcher Segmented Control */
+    .arch-switch-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface-raised);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-quiet);
+    }
+
+    .arch-segmented-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-base);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid var(--border-quiet);
+    }
+
+    .arch-segment-btn {
+      padding: 5px 14px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+
+    .arch-segment-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .arch-segment-btn.active.adaptive {
+      background: var(--emerald-tint);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .arch-segment-btn.active.static {
+      background: var(--rose-tint);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    /* Route Alert Banner */
     .route-banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 14px;
+      padding: 10px 16px;
       border-radius: var(--radius-sm);
-      margin-bottom: 12px;
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 600;
@@ -415,7 +502,7 @@
 
     .route-banner.normal {
       background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.3);
+      border-color: rgba(16, 185, 129, 0.35);
       color: #34d399;
     }
 
@@ -426,21 +513,29 @@
     }
 
     .route-banner.bypass {
-      background: rgba(2, 132, 199, 0.15);
-      border-color: rgba(2, 132, 199, 0.5);
+      background: rgba(14, 165, 233, 0.15);
+      border-color: rgba(14, 165, 233, 0.5);
       color: #38bdf8;
-      box-shadow: 0 0 12px rgba(2, 132, 199, 0.25);
+      box-shadow: 0 0 14px rgba(14, 165, 233, 0.2);
     }
 
-    /* ---------------- Interactive Topology Canvas ---------------- */
+    .route-banner.static-congested {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.55);
+      color: #fca5a5;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+    }
+
+    /* Interactive Topology Canvas */
     #topology-container {
       position: relative;
       width: 100%;
       height: 380px;
-      background: #090b0f;
+      background: #080a0e;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-quiet);
       overflow: hidden;
+      flex: 1;
     }
 
     #topology-canvas {
@@ -465,7 +560,7 @@
     /* SVG Link & Node styling */
     .link-line {
       stroke-width: 3px;
-      transition: stroke 0.3s ease, stroke-width 0.3s ease;
+      transition: stroke 0.2s ease, stroke-width 0.2s ease;
     }
 
     .link-primary {
@@ -492,7 +587,7 @@
     }
 
     .node-switch {
-      fill: #1e293b;
+      fill: #1a2234;
       stroke: #475569;
       stroke-width: 2px;
       rx: 8px;
@@ -509,7 +604,7 @@
     }
 
     .node-host {
-      fill: #0f172a;
+      fill: #0c1220;
       stroke: #334155;
       stroke-width: 1.5px;
       rx: 6px;
@@ -533,11 +628,11 @@
       dominant-baseline: central;
     }
 
-    /* ---------------- Telemetry Chart ---------------- */
+    /* Telemetry Chart */
     #chart-canvas {
       width: 100%;
-      height: 220px;
-      background: #090b0f;
+      height: 230px;
+      background: #080a0e;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border-quiet);
     }
@@ -546,7 +641,6 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-top: 10px;
       font-family: var(--font-mono);
       font-size: 11px;
       flex-wrap: wrap;
@@ -565,11 +659,11 @@
       border-radius: 1px;
     }
 
-    /* ---------------- Tables & Logs Row ---------------- */
+    /* Bottom Tables Grid */
     .details-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 20px;
     }
 
     .table-container {
@@ -591,7 +685,7 @@
       background: var(--bg-surface-elevated);
       color: var(--text-secondary);
       font-weight: 500;
-      padding: 8px 12px;
+      padding: 9px 14px;
       border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
@@ -599,7 +693,7 @@
     }
 
     td {
-      padding: 6px 12px;
+      padding: 7px 14px;
       border-bottom: 1px solid var(--border-quiet);
       color: var(--text-primary);
     }
@@ -609,7 +703,7 @@
     }
 
     .log-item {
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-bottom: 1px solid var(--border-quiet);
       display: flex;
       gap: 12px;
@@ -657,10 +751,10 @@
     <div class="header-status">
       <div class="status-pill">
         <span class="status-dot" id="system-dot"></span>
-        <span id="system-state-text">INITIALIZING</span>
+        <span id="system-state-text">NORMAL</span>
       </div>
       <div class="status-pill">
-        <span>TIME:</span>
+        <span>SIM TIME:</span>
         <span id="sim-time" style="color:var(--text-primary); font-weight:600;">0.0s</span>
       </div>
     </div>
@@ -680,28 +774,33 @@
       </div>
 
       <div class="controls-right">
+        <!-- Slow-motion speed preset selector -->
+        <div class="speed-group">
+          <span style="font-size:11px; color:var(--text-muted); padding:0 6px;">Speed:</span>
+          <button class="speed-btn" id="spd-025" onclick="setSpeed(0.25)">0.25x</button>
+          <button class="speed-btn" id="spd-05" onclick="setSpeed(0.5)">0.5x</button>
+          <button class="speed-btn active" id="spd-10" onclick="setSpeed(1.0)">1.0x</button>
+          <button class="speed-btn" id="spd-20" onclick="setSpeed(2.0)">2.0x</button>
+        </div>
+
         <div class="slider-group">
           <span class="slider-label">Offered Load</span>
           <input type="range" id="load-slider" min="5" max="100" value="10" oninput="onLoadSliderChange(this.value)">
           <span class="slider-val" id="load-val-text">10%</span>
         </div>
-        <div class="slider-group">
-          <span class="slider-label">Sim Speed</span>
-          <input type="range" id="speed-slider" min="1" max="4" value="1" oninput="onSpeedSliderChange(this.value)">
-          <span class="slider-val" id="speed-val-text">1x</span>
-        </div>
+
         <button class="btn" id="btn-mode-toggle" onclick="toggleScenarioMode()">Mode: Sandbox</button>
       </div>
     </div>
 
-    <!-- Side-by-Side Live Performance Comparison (For Panel Judges) -->
+    <!-- Side-by-Side Live Performance Comparison (The Proof Panel) -->
     <div class="comparison-grid">
       <!-- Standard Static SDN -->
       <div class="compare-card static-card">
         <div class="compare-header">
           <div>
             <div style="font-weight:600; font-size:13px; color:#fca5a5;">Standard SDN / Static Routing (Baseline)</div>
-            <div style="font-size:11px; color:var(--text-muted);">Fixed path s1 -> s2. No congestion intelligence.</div>
+            <div style="font-size:11px; color:var(--text-muted);">Shortest path s1 -> s2. Lacks real-time congestion awareness.</div>
           </div>
           <span class="compare-badge badge-static" id="static-status-badge">NORMAL</span>
         </div>
@@ -717,14 +816,14 @@
             <div class="metric-sub" id="static-drop-sub">Buffer status</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">Latency / Bufferbloat</div>
+            <div class="metric-label">Queuing Delay / Bufferbloat</div>
             <div class="metric-value" id="static-lat">2.2 <span style="font-size:12px;">ms</span></div>
-            <div class="metric-sub">Queue delay</div>
+            <div class="metric-sub">Queue latency</div>
           </div>
           <div class="metric-item">
             <div class="metric-label">Active Route</div>
             <div class="metric-value" style="font-size:14px; font-family:var(--font-mono); color:#94a3b8;">[s1, s2]</div>
-            <div class="metric-sub">No dynamic reroute</div>
+            <div class="metric-sub">Static OpenFlow rule</div>
           </div>
         </div>
       </div>
@@ -734,7 +833,7 @@
         <div class="compare-header">
           <div>
             <div style="font-weight:600; font-size:13px; color:#6ee7b7;">Our Adaptive SDN System (EWMA + Hysteresis)</div>
-            <div style="font-size:11px; color:var(--text-muted);">Persistence N=3, Exit M=5, Dijkstra dynamic penalty.</div>
+            <div style="font-size:11px; color:var(--text-muted);">Persistence N=3, Exit M=5, dynamic Dijkstra link penalty.</div>
           </div>
           <span class="compare-badge badge-adaptive" id="adaptive-status-badge">PRIMARY [s1, s2]</span>
         </div>
@@ -750,7 +849,7 @@
             <div class="metric-sub">Zero packet loss</div>
           </div>
           <div class="metric-item">
-            <div class="metric-label">Latency (Round Trip)</div>
+            <div class="metric-label">Round Trip Latency</div>
             <div class="metric-value" id="adaptive-lat">2.2 <span style="font-size:12px;">ms</span></div>
             <div class="metric-sub">Bypass +1.6ms</div>
           </div>
@@ -763,7 +862,7 @@
       </div>
     </div>
 
-    <!-- Interactive Topology & Real-time Chart -->
+    <!-- Topology & Telemetry Row -->
     <div class="workspace-grid">
       <!-- Left: Interactive Diamond Topology -->
       <div class="panel">
@@ -776,12 +875,20 @@
               <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/>
               <path d="M12 13v3"/>
             </svg>
-            SDN Diamond Topology & Animated Packet Flow
+            SDN Diamond Topology & Animated Packet Streams
           </div>
-          <div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);" id="path-desc">
-            ACTIVE FLOW: h1 -> s1 -> s2 -> h3
+
+          <!-- Architecture Switcher Button -->
+          <div class="arch-segmented-group">
+            <button class="arch-segment-btn active adaptive" id="btn-arch-adaptive" onclick="switchArchitecture('adaptive')">
+              ⚡ Our Adaptive SDN
+            </button>
+            <button class="arch-segment-btn" id="btn-arch-static" onclick="switchArchitecture('static')">
+              🔴 Standard Static SDN
+            </button>
           </div>
         </div>
+
         <div class="panel-body">
           <!-- Dynamic Route Status Banner -->
           <div class="route-banner normal" id="route-banner">
@@ -810,7 +917,7 @@
             STATE: NORMAL
           </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" style="justify-content:space-between;">
           <canvas id="chart-canvas"></canvas>
           <div class="chart-legend">
             <div class="legend-item"><div class="legend-line" style="background:#38bdf8;"></div> Offered Load</div>
@@ -885,19 +992,20 @@
 
   <script>
     /* -------------------------------------------------------------
-       Frontend Logic & High-Performance Animation Engine
+       Frontend Logic & Particle Drop Animation Engine
     -------------------------------------------------------------- */
     let ws = null;
     let currentState = null;
     let isPlaying = true;
     let simSpeed = 1.0;
     let currentMode = 'sandbox';
+    let currentArchView = 'adaptive'; // 'adaptive' or 'static'
 
-    // Particle Animation on Canvas
     const canvas = document.getElementById('topology-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const PARTICLE_COUNT = 24;
+    let droppedBursts = []; // Red drop burst animations
+    const PARTICLE_COUNT = 28;
 
     function resizeCanvas() {
       const container = document.getElementById('topology-container');
@@ -913,10 +1021,14 @@
       }
       reset() {
         this.progress = 0;
-        this.speed = 0.007 + Math.random() * 0.005;
+        // Particle speed dynamically scales with slow-motion settings!
+        this.baseSpeed = 0.006 + Math.random() * 0.004;
+        this.willDrop = false;
+        this.droppedFired = false;
       }
       update() {
-        this.progress += this.speed;
+        const speedFactor = Math.max(0.25, simSpeed);
+        this.progress += (this.baseSpeed * speedFactor);
         if (this.progress >= 1.0) {
           this.reset();
         }
@@ -933,12 +1045,15 @@
 
       if (currentState && currentState.topology) {
         const isBypass = (currentState.topology.active_path.length === 3);
+        const isStaticMode = (currentState.architecture_view === 'static');
+        const isCongested = (currentState.offered_util > 0.75);
+
         const scaleX = canvas.width / 800;
         const scaleY = canvas.height / 380;
 
         let waypoints = [];
         if (!isBypass) {
-          // Normal: h1 -> s1 -> s2 -> h3
+          // Primary: h1 -> s1 -> s2 -> h3
           waypoints = [
             {x: 60, y: 140},
             {x: 180, y: 180},
@@ -956,7 +1071,7 @@
           ];
         }
 
-        particles.forEach(p => {
+        particles.forEach((p, idx) => {
           p.update();
           const totalSegments = waypoints.length - 1;
           const currentSegment = Math.min(Math.floor(p.progress * totalSegments), totalSegments - 1);
@@ -968,19 +1083,80 @@
           const curX = (p1.x + (p2.x - p1.x) * segmentProgress) * scaleX;
           const curY = (p1.y + (p2.y - p1.y) * segmentProgress) * scaleY;
 
+          // Packet Drop Simulation for Standard Static SDN under Congestion
+          // When in static mode and congested, roughly 40% of packets drop midway between s1 and s2!
+          const shouldDropThis = (isStaticMode && isCongested && (idx % 3 === 0));
+
+          if (shouldDropThis && currentSegment === 1 && segmentProgress > 0.45) {
+            // Trigger drop burst at point of buffer drop
+            if (!p.droppedFired) {
+              p.droppedFired = true;
+              droppedBursts.push({
+                x: curX,
+                y: curY,
+                radius: 4,
+                alpha: 1.0,
+                vy: (Math.random() * 1.5) + 0.5
+              });
+            }
+            // Discard particle back to start
+            if (segmentProgress > 0.6) {
+              p.reset();
+            }
+            return;
+          }
+
+          // Normal Packet particle rendering
           ctx.beginPath();
-          ctx.arc(curX, curY, isBypass ? 4.0 : 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = isBypass ? '#38bdf8' : '#10b981';
-          ctx.shadowColor = isBypass ? '#0284c7' : '#10b981';
-          ctx.shadowBlur = isBypass ? 10 : 6;
+          ctx.arc(curX, curY, isBypass ? 4.2 : 3.6, 0, Math.PI * 2);
+
+          if (isStaticMode && isCongested) {
+            ctx.fillStyle = '#ef4444';
+            ctx.shadowColor = '#ef4444';
+          } else if (isBypass) {
+            ctx.fillStyle = '#38bdf8';
+            ctx.shadowColor = '#0284c7';
+          } else {
+            ctx.fillStyle = '#10b981';
+            ctx.shadowColor = '#10b981';
+          }
+
+          ctx.shadowBlur = (isBypass || isCongested) ? 10 : 6;
           ctx.fill();
         });
+
+        // Render Red Dropped Packet Bursts (Falling & Fading out)
+        for (let i = droppedBursts.length - 1; i >= 0; i--) {
+          const b = droppedBursts[i];
+          b.y += b.vy;
+          b.radius += 0.4;
+          b.alpha -= 0.025;
+
+          if (b.alpha <= 0) {
+            droppedBursts.splice(i, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(239, 68, 68, ${b.alpha})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Draw small "x" drop indicator
+          ctx.fillStyle = `rgba(248, 113, 113, ${b.alpha})`;
+          ctx.font = '10px JetBrains Mono';
+          ctx.textAlign = 'center';
+          ctx.fillText('DROP ✕', b.x, b.y - 6);
+          ctx.restore();
+        }
       }
 
       requestAnimationFrame(renderAnimation);
     }
 
-    // ---------------- Chart Rendering Engine (Canvas) ----------------
+    // ---------------- Chart Rendering Engine ----------------
     const chartCanvas = document.getElementById('chart-canvas');
     const chartCtx = chartCanvas.getContext('2d');
 
@@ -1041,22 +1217,23 @@
     }
 
     // ---------------- SVG Topology Renderer ----------------
-    function renderTopologySVG(topology) {
+    function renderTopologySVG(topology, archView) {
       const svg = document.getElementById('topology-svg');
       if (!topology) return;
 
       const isBypass = topology.is_rerouted;
-      const s1_s2_congested = (topology.links[0].congested);
+      const isStatic = (archView === 'static');
+      const s1_s2_congested = topology.links[0].congested;
 
       svg.innerHTML = `
         <!-- Links -->
-        <!-- Link s1 -> s2 (Primary) -->
+        <!-- Primary Link s1 -> s2 -->
         <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" />
         
-        <!-- Link s1 -> s3 (Bypass A) -->
+        <!-- Bypass Link s1 -> s3 -->
         <line x1="180" y1="180" x2="400" y2="340" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
         
-        <!-- Link s3 -> s2 (Bypass B) -->
+        <!-- Bypass Link s3 -> s2 -->
         <line x1="400" y1="340" x2="620" y2="180" class="link-line link-bypass ${isBypass ? 'active' : ''}" />
 
         <!-- Host links -->
@@ -1066,8 +1243,8 @@
         <line x1="620" y1="180" x2="740" y2="220" stroke="#334155" stroke-width="1.5" />
 
         <!-- Link Labels -->
-        <rect x="345" y="156" width="110" height="22" rx="4" fill="#0f172a" stroke="${s1_s2_congested ? '#ef4444' : '#334155'}" />
-        <text x="400" y="171" fill="${s1_s2_congested ? '#ef4444' : '#cbd5e1'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle">
+        <rect x="345" y="154" width="110" height="24" rx="4" fill="#0f172a" stroke="${s1_s2_congested ? '#ef4444' : '#334155'}" stroke-width="${s1_s2_congested ? 2 : 1}" />
+        <text x="400" y="170" fill="${s1_s2_congested ? '#ef4444' : '#cbd5e1'}" font-family="JetBrains Mono" font-size="9" text-anchor="middle" font-weight="600">
           Primary: ${topology.links[0].mbps}M (${Math.round(topology.links[0].util * 100)}%)
         </text>
 
@@ -1116,6 +1293,7 @@
     // ---------------- UI Update Handler ----------------
     function updateUI(state) {
       currentState = state;
+      currentArchView = state.architecture_view || 'adaptive';
 
       // Status bar
       document.getElementById('sim-time').textContent = `${state.time_s.toFixed(1)}s`;
@@ -1126,7 +1304,7 @@
       if (state.detector.state === 'CONGESTED') dot.classList.add('critical');
       else if (state.detector.state === 'CONGESTION_PENDING') dot.classList.add('warning');
 
-      // Sync play/pause button with backend state
+      // Play/pause button sync
       isPlaying = state.is_running;
       const btn = document.getElementById('btn-play');
       const text = document.getElementById('play-text');
@@ -1141,7 +1319,29 @@
         btn.classList.remove('btn-danger');
       }
 
-      // Sliders sync
+      // Sync Speed buttons
+      simSpeed = state.speed;
+      ['025', '05', '10', '20'].forEach(id => {
+        const b = document.getElementById(`spd-${id}`);
+        if (b) b.classList.remove('active');
+      });
+      if (simSpeed === 0.25) document.getElementById('spd-025')?.classList.add('active');
+      else if (simSpeed === 0.5) document.getElementById('spd-05')?.classList.add('active');
+      else if (simSpeed === 1.0) document.getElementById('spd-10')?.classList.add('active');
+      else if (simSpeed === 2.0) document.getElementById('spd-20')?.classList.add('active');
+
+      // Sync Architecture Buttons
+      const btnArchAd = document.getElementById('btn-arch-adaptive');
+      const btnArchSt = document.getElementById('btn-arch-static');
+      if (currentArchView === 'static') {
+        btnArchAd.classList.remove('active', 'adaptive');
+        btnArchSt.classList.add('active', 'static');
+      } else {
+        btnArchSt.classList.remove('active', 'static');
+        btnArchAd.classList.add('active', 'adaptive');
+      }
+
+      // Slider sync
       const loadPercent = Math.round(state.offered_util * 100);
       document.getElementById('load-slider').value = loadPercent;
       document.getElementById('load-val-text').textContent = `${loadPercent}%`;
@@ -1163,31 +1363,38 @@
 
       // Dynamic Route Banner
       const isBypass = state.topology.is_rerouted;
+      const isStatic = (currentArchView === 'static');
+      const isCongested = (state.offered_util > 0.75);
       const banner = document.getElementById('route-banner');
       const bannerText = document.getElementById('route-banner-text');
       const bannerSub = document.getElementById('route-banner-sub');
 
-      if (isBypass) {
+      if (isStatic && isCongested) {
+        banner.className = 'route-banner static-congested';
+        bannerText.textContent = `⚠ STANDARD STATIC SDN: BOTTLENECK SATURATED ON LINK s1 -> s2 | PACKET LOSS: ~${staticComp.loss_pct}%`;
+        bannerSub.textContent = 'Buffer Overflows (Dropping Packets)';
+      } else if (isStatic && !isCongested) {
+        banner.className = 'route-banner normal';
+        bannerText.textContent = '✓ STANDARD STATIC SDN: NORMAL FLOW ON LINK s1 -> s2 [1, 2]';
+        bannerSub.textContent = 'Packet Loss: 0.0%';
+      } else if (isBypass) {
         banner.className = 'route-banner bypass';
-        bannerText.textContent = '⚡ DYNAMIC REROUTE ACTIVE: TRAFFIC DIVERTED OVER BYPASS SWITCH s3 [1, 3, 2]';
-        bannerSub.textContent = 'Delivered: 100% | Packet Loss: 0.0%';
+        bannerText.textContent = '⚡ OUR ADAPTIVE SDN: TRAFFIC DIVERTED TO BYPASS SWITCH s3 [1, 3, 2]';
+        bannerSub.textContent = 'Zero Packet Loss | 100% Throughput';
       } else if (state.detector.state === 'CONGESTION_PENDING') {
         banner.className = 'route-banner pending';
         bannerText.textContent = `⚠ TRAFFIC SURGE DETECTED (${Math.round(state.offered_util*100)}%): VERIFYING PERSISTENCE`;
-        bannerSub.textContent = 'Testing threshold stability...';
+        bannerSub.textContent = 'Persistence sample check...';
       } else {
         banner.className = 'route-banner normal';
-        bannerText.textContent = '✓ PRIMARY ROUTE ACTIVE: DIRECT LINK s1 -> s2 [1, 2]';
+        bannerText.textContent = '✓ OUR ADAPTIVE SDN: PRIMARY ROUTE ACTIVE s1 -> s2 [1, 2]';
         bannerSub.textContent = 'Normal Load: 10 Mbps Cap';
       }
 
-      // Path Description
-      const pathStr = state.topology.active_path.join(' -> s');
-      document.getElementById('path-desc').textContent = `ACTIVE FLOW: h1 -> s${pathStr} -> h3`;
       document.getElementById('detector-state-badge').textContent = `DETECTOR: ${state.detector.state} (T_enter=${state.detector.t_enter}, T_exit=${state.detector.t_exit})`;
 
       // Render Topology & Chart
-      renderTopologySVG(state.topology);
+      renderTopologySVG(state.topology, currentArchView);
       renderTelemetryChart(state.history);
 
       // Flow Tables
@@ -1261,6 +1468,24 @@
       }
     }
 
+    async function setSpeed(val) {
+      simSpeed = val;
+      await fetch('/api/play', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({speed: simSpeed})
+      });
+    }
+
+    async function switchArchitecture(arch) {
+      currentArchView = arch;
+      const res = await fetch('/api/architecture', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({architecture: arch})
+      });
+    }
+
     async function injectCongestion() {
       const res = await fetch('/api/inject_congestion', {
         method: 'POST',
@@ -1301,16 +1526,6 @@
         const data = await res.json();
         updateUI(data);
       }, 80);
-    }
-
-    function onSpeedSliderChange(val) {
-      simSpeed = parseFloat(val);
-      document.getElementById('speed-val-text').textContent = `${val}x`;
-      fetch('/api/play', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({speed: simSpeed})
-      });
     }
 
     async function toggleScenarioMode() {
