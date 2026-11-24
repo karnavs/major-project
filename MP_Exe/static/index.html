@@ -129,9 +129,59 @@
     .header-status {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       font-family: var(--font-mono);
       font-size: 12px;
+    }
+
+    /* Engine Status Capsule */
+    .engine-capsule {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--bg-surface-raised);
+      border: 1px solid var(--border-quiet);
+      transition: all 0.25s ease;
+    }
+
+    .engine-capsule.running {
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+    }
+
+    .engine-capsule.stopped {
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .engine-capsule .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .engine-capsule.running .pulse-dot {
+      background: var(--emerald);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+      animation: pulseAnim 1.4s infinite ease-in-out;
+    }
+
+    .engine-capsule.stopped .pulse-dot {
+      background: var(--amber);
+      box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.8); opacity: 0.4; }
     }
 
     .status-pill {
@@ -144,16 +194,6 @@
       border: 1px solid var(--border-quiet);
       color: var(--text-secondary);
     }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
-    }
-    .status-dot.warning { background: var(--amber); box-shadow: 0 0 8px rgba(245, 158, 11, 0.7); }
-    .status-dot.critical { background: var(--rose); box-shadow: 0 0 8px rgba(239, 68, 68, 0.7); }
 
     /* ---------------- Main Layout ---------------- */
     main {
@@ -172,20 +212,75 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-quiet);
       border-radius: var(--radius-md);
-      padding: 12px 20px;
+      padding: 14px 22px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
 
     .controls-left, .controls-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
+    }
+
+    /* Creative Engine Button */
+    .btn-engine {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      height: 38px;
+      padding: 0 18px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-engine.running {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+    }
+    .btn-engine.running:hover {
+      background: rgba(239, 68, 68, 0.26);
+      border-color: #ef4444;
+      color: #fff;
+    }
+
+    .btn-engine.stopped {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: rgba(16, 185, 129, 0.55);
+      color: #6ee7b7;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+    }
+    .btn-engine.stopped:hover {
+      background: rgba(16, 185, 129, 0.28);
+      border-color: #10b981;
+      color: #fff;
+    }
+
+    .turbine-icon {
+      width: 17px;
+      height: 17px;
+      display: inline-block;
+      transform-origin: center center;
+    }
+    .turbine-icon.spin {
+      animation: turbineSpin 1.6s linear infinite;
+    }
+    @keyframes turbineSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .btn {
@@ -193,7 +288,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      height: 35px;
+      height: 36px;
       padding: 0 15px;
       border-radius: var(--radius-sm);
       font-size: 12px;
@@ -217,34 +312,24 @@
       transform: translateY(1px);
     }
 
-    .btn-primary {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
-    }
-    .btn-primary:hover {
-      background: #0369a1;
-    }
-
     .btn-danger {
-      background: rgba(239, 68, 68, 0.18);
+      background: rgba(239, 68, 68, 0.16);
       border-color: rgba(239, 68, 68, 0.45);
       color: #fca5a5;
     }
     .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.28);
       border-color: #ef4444;
       color: #fff;
     }
 
     .btn-success {
-      background: rgba(16, 185, 129, 0.18);
+      background: rgba(16, 185, 129, 0.16);
       border-color: rgba(16, 185, 129, 0.45);
       color: #6ee7b7;
     }
     .btn-success:hover {
-      background: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.28);
       border-color: #10b981;
       color: #fff;
     }
@@ -328,7 +413,7 @@
       box-shadow: 0 0 6px rgba(14, 165, 233, 0.6);
     }
 
-    /* ---------------- Side-by-Side Comparison ---------------- */
+    /* ---------------- Side-by-Side Comparison Grid ---------------- */
     .comparison-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -548,7 +633,7 @@
       box-shadow: 0 0 14px rgba(239, 68, 68, 0.3);
     }
 
-    /* Interactive Topology Canvas */
+    /* Interactive Topology Container - Direct Native SVG Animation */
     #topology-container {
       position: relative;
       width: 100%;
@@ -560,23 +645,10 @@
       flex: 1;
     }
 
-    #topology-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 2;
-    }
-
     #topology-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
+      display: block;
     }
 
     .link-line {
@@ -777,10 +849,12 @@
       </div>
     </div>
     <div class="header-status">
-      <div class="status-pill">
-        <span class="status-dot" id="system-dot"></span>
-        <span id="system-state-text">NORMAL</span>
+      <!-- Engine Status Visual Capsule -->
+      <div class="engine-capsule running" id="engine-capsule">
+        <span class="pulse-dot"></span>
+        <span id="engine-capsule-text">SDN CORE ONLINE</span>
       </div>
+
       <div class="status-pill">
         <span>SIM TIME:</span>
         <span id="sim-time" style="color:var(--text-primary); font-weight:600;">0.0s</span>
@@ -792,9 +866,15 @@
     <!-- Sandbox Controls Bar -->
     <div class="control-bar">
       <div class="controls-left">
-        <button class="btn btn-primary" id="btn-play" onclick="togglePlay()">
-          <span id="play-icon">⏸</span> <span id="play-text">Pause Auto-Run</span>
+        <!-- Creative Start/Stop Engine Button with Turbine Icon -->
+        <button class="btn-engine running" id="btn-engine-toggle" onclick="toggleEngine()">
+          <svg class="turbine-icon spin" id="turbine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          <span id="engine-btn-text">STOP ENGINE</span>
         </button>
+
         <button class="btn" onclick="stepSimulation()">Step (+1s)</button>
         <button class="btn btn-danger" onclick="injectCongestion()">⚡ Inject Congestion (95% Surge)</button>
         <button class="btn btn-success" onclick="relieveCongestion()">✓ Relieve Congestion (10% Normal)</button>
@@ -925,8 +1005,41 @@
           </div>
 
           <div id="topology-container">
-            <svg id="topology-svg" viewBox="0 0 800 380"></svg>
-            <canvas id="topology-canvas"></canvas>
+            <!-- Native SVG with Perfectly Aligned Vector Geometry and Integrated Packet Layer -->
+            <svg id="topology-svg" viewBox="0 0 800 380" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="packet-glow-emerald" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="packet-glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="packet-glow-red" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Static Lines & Nodes Layer -->
+              <g id="topology-base-layer"></g>
+
+              <!-- Dynamic Integrated Packets Layer (Zero Drift Guarantee) -->
+              <g id="packets-layer"></g>
+
+              <!-- Interactive Drop Bursts Layer -->
+              <g id="drops-layer"></g>
+            </svg>
           </div>
         </div>
       </div>
@@ -1022,7 +1135,6 @@
     /* -------------------------------------------------------------
        Lenis Smooth Scroll + GSAP Animation Engine
     -------------------------------------------------------------- */
-    // Initialize Lenis Momentum Smooth Scroll
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -1041,7 +1153,6 @@
     let currentMode = 'sandbox';
     let currentArchView = 'adaptive';
 
-    // Animated numerical telemetry stores
     const animNumbers = {
       staticThru: 1.0,
       staticDrop: 0.0,
@@ -1051,54 +1162,43 @@
       adaptiveLat: 2.2
     };
 
-    const canvas = document.getElementById('topology-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+    // ---------------- Native SVG Packet Stream Animation ----------------
+    // Using 24 persistent SVG circle elements that are 100% mathematically locked to the SVG path
+    const PARTICLE_COUNT = 24;
+    const particles = [];
+    const packetElements = [];
     let droppedBursts = [];
-    const PARTICLE_COUNT = 28;
 
-    function resizeCanvas() {
-      const container = document.getElementById('topology-container');
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-
-    class PacketParticle {
-      constructor() {
-        this.reset();
-        this.progress = Math.random();
-      }
-      reset() {
-        this.progress = 0;
-        this.baseSpeed = 0.006 + Math.random() * 0.004;
-        this.droppedFired = false;
-      }
-      update() {
-        const speedFactor = Math.max(0.25, simSpeed);
-        this.progress += (this.baseSpeed * speedFactor);
-        if (this.progress >= 1.0) {
-          this.reset();
-        }
-      }
-    }
+    const packetsLayer = document.getElementById('packets-layer');
+    const dropsLayer = document.getElementById('drops-layer');
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(new PacketParticle());
+      particles.push({
+        progress: (i / PARTICLE_COUNT),
+        baseSpeed: 0.0055,
+        droppedFired: false
+      });
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', '4');
+      circle.setAttribute('cx', '-100');
+      circle.setAttribute('cy', '-100');
+      circle.setAttribute('fill', '#10b981');
+      circle.setAttribute('filter', 'url(#packet-glow-emerald)');
+      packetsLayer.appendChild(circle);
+      packetElements.push(circle);
     }
 
     // Animation Loop
     function renderAnimation() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (currentState && currentState.topology) {
         const isBypass = (currentState.topology.active_path.length === 3);
         const isStaticMode = (currentState.architecture_view === 'static');
         const isCongested = (currentState.offered_util > 0.75);
 
-        const scaleX = canvas.width / 800;
-        const scaleY = canvas.height / 380;
-
+        // Native SVG Coordinates: Matches EXACT line definitions
+        // Primary path: (60, 140) -> (180, 180) -> (620, 180) -> (740, 140)
+        // Bypass path:  (60, 140) -> (180, 180) -> (400, 340) -> (620, 180) -> (740, 140)
         let waypoints = [];
         if (!isBypass) {
           waypoints = [
@@ -1117,84 +1217,126 @@
           ];
         }
 
+        const totalSegments = waypoints.length - 1;
+        const speedFactor = Math.max(0.25, simSpeed);
+
         particles.forEach((p, idx) => {
-          p.update();
-          const totalSegments = waypoints.length - 1;
+          p.progress += (p.baseSpeed * speedFactor);
+          if (p.progress >= 1.0) {
+            p.progress = 0;
+            p.droppedFired = false;
+          }
+
           const currentSegment = Math.min(Math.floor(p.progress * totalSegments), totalSegments - 1);
           const segmentProgress = (p.progress * totalSegments) - currentSegment;
 
           const p1 = waypoints[currentSegment];
           const p2 = waypoints[currentSegment + 1];
 
-          const curX = (p1.x + (p2.x - p1.x) * segmentProgress) * scaleX;
-          const curY = (p1.y + (p2.y - p1.y) * segmentProgress) * scaleY;
+          // Exact linear interpolation along the wire!
+          const curX = p1.x + (p2.x - p1.x) * segmentProgress;
+          const curY = p1.y + (p2.y - p1.y) * segmentProgress;
 
-          // Packet drop animation for Standard Static SDN under Congestion
-          const shouldDropThis = (isStaticMode && isCongested && (idx % 3 === 0));
+          const el = packetElements[idx];
 
-          if (shouldDropThis && currentSegment === 1 && segmentProgress > 0.45) {
+          // Simulate packet drops under congestion in Standard Static SDN
+          const isDropPacket = (isStaticMode && isCongested && (idx % 3 === 0));
+
+          if (isDropPacket && currentSegment === 1 && segmentProgress > 0.40) {
+            // Trigger visual drop burst
             if (!p.droppedFired) {
               p.droppedFired = true;
-              droppedBursts.push({
-                x: curX,
-                y: curY,
-                radius: 4,
-                alpha: 1.0,
-                vy: (Math.random() * 1.5) + 0.5
-              });
+              createDropBurst(curX, curY);
             }
-            if (segmentProgress > 0.6) {
-              p.reset();
-            }
+            // Hide particle once dropped
+            el.setAttribute('cx', '-100');
+            el.setAttribute('cy', '-100');
             return;
           }
 
-          ctx.beginPath();
-          ctx.arc(curX, curY, isBypass ? 4.2 : 3.6, 0, Math.PI * 2);
+          // Update SVG Circle Position
+          el.setAttribute('cx', curX.toFixed(2));
+          el.setAttribute('cy', curY.toFixed(2));
 
+          // Color & Glow selection
           if (isStaticMode && isCongested) {
-            ctx.fillStyle = '#ef4444';
-            ctx.shadowColor = '#ef4444';
+            el.setAttribute('fill', '#ef4444');
+            el.setAttribute('filter', 'url(#packet-glow-red)');
+            el.setAttribute('r', '4');
           } else if (isBypass) {
-            ctx.fillStyle = '#38bdf8';
-            ctx.shadowColor = '#0ea5e9';
+            el.setAttribute('fill', '#38bdf8');
+            el.setAttribute('filter', 'url(#packet-glow-cyan)');
+            el.setAttribute('r', '4.5');
           } else {
-            ctx.fillStyle = '#10b981';
-            ctx.shadowColor = '#10b981';
+            el.setAttribute('fill', '#10b981');
+            el.setAttribute('filter', 'url(#packet-glow-emerald)');
+            el.setAttribute('r', '4');
           }
-
-          ctx.shadowBlur = (isBypass || isCongested) ? 12 : 6;
-          ctx.fill();
         });
 
-        // Render Red Dropped Packet Bursts
-        for (let i = droppedBursts.length - 1; i >= 0; i--) {
-          const b = droppedBursts[i];
-          b.y += b.vy;
-          b.radius += 0.4;
-          b.alpha -= 0.025;
-
-          if (b.alpha <= 0) {
-            droppedBursts.splice(i, 1);
-            continue;
-          }
-
-          ctx.save();
-          ctx.beginPath();
-          ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(239, 68, 68, ${b.alpha})`;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-
-          ctx.fillStyle = `rgba(248, 113, 113, ${b.alpha})`;
-          ctx.font = '10px JetBrains Mono';
-          ctx.textAlign = 'center';
-          ctx.fillText('DROP ✕', b.x, b.y - 6);
-          ctx.restore();
-        }
+        // Update Drop Bursts
+        updateDropBursts();
       }
 
       requestAnimationFrame(renderAnimation);
+    }
+
+    function createDropBurst(x, y) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', '5');
+      circle.setAttribute('fill', 'none');
+      circle.setAttribute('stroke', '#ef4444');
+      circle.setAttribute('stroke-width', '1.5');
+      
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', x);
+      txt.setAttribute('y', y - 8);
+      txt.setAttribute('fill', '#f87171');
+      txt.setAttribute('font-family', 'JetBrains Mono');
+      txt.setAttribute('font-size', '9');
+      txt.setAttribute('font-weight', '600');
+      txt.setAttribute('text-anchor', 'middle');
+      txt.textContent = 'DROP ✕';
+
+      g.appendChild(circle);
+      g.appendChild(txt);
+      dropsLayer.appendChild(g);
+
+      droppedBursts.push({
+        el: g,
+        circle: circle,
+        txt: txt,
+        x: x,
+        y: y,
+        r: 5,
+        alpha: 1.0,
+        vy: 0.8
+      });
+    }
+
+    function updateDropBursts() {
+      for (let i = droppedBursts.length - 1; i >= 0; i--) {
+        const b = droppedBursts[i];
+        b.y += b.vy;
+        b.r += 0.35;
+        b.alpha -= 0.025;
+
+        if (b.alpha <= 0) {
+          dropsLayer.removeChild(b.el);
+          droppedBursts.splice(i, 1);
+          continue;
+        }
+
+        b.circle.setAttribute('cy', b.y.toFixed(1));
+        b.circle.setAttribute('r', b.r.toFixed(1));
+        b.circle.setAttribute('stroke-opacity', b.alpha.toFixed(2));
+        b.txt.setAttribute('y', (b.y - 8).toFixed(1));
+        b.txt.setAttribute('fill-opacity', b.alpha.toFixed(2));
+      }
     }
 
     // ---------------- Chart Rendering Engine ----------------
@@ -1257,16 +1399,16 @@
       drawSeries('offered_util', '#38bdf8', false);
     }
 
-    // ---------------- SVG Topology Renderer ----------------
+    // ---------------- Topology SVG Base Renderer ----------------
     function renderTopologySVG(topology, archView) {
-      const svg = document.getElementById('topology-svg');
+      const baseLayer = document.getElementById('topology-base-layer');
       if (!topology) return;
 
       const isBypass = topology.is_rerouted;
-      const isStatic = (archView === 'static');
       const s1_s2_congested = topology.links[0].congested;
 
-      svg.innerHTML = `
+      baseLayer.innerHTML = `
+        <!-- Links -->
         <!-- Primary Link s1 -> s2 -->
         <line x1="180" y1="180" x2="620" y2="180" class="link-line link-primary ${isBypass ? '' : 'active'} ${s1_s2_congested ? 'congested' : ''}" />
         
@@ -1337,26 +1479,27 @@
 
       // Status bar
       document.getElementById('sim-time').textContent = `${state.time_s.toFixed(1)}s`;
-      document.getElementById('system-state-text').textContent = state.detector.state;
 
-      const dot = document.getElementById('system-dot');
-      dot.className = 'status-dot';
-      if (state.detector.state === 'CONGESTED') dot.classList.add('critical');
-      else if (state.detector.state === 'CONGESTION_PENDING') dot.classList.add('warning');
-
-      // Play/pause sync
+      // Update Engine Button and Capsule
       isPlaying = state.is_running;
-      const btn = document.getElementById('btn-play');
-      const text = document.getElementById('play-text');
-      const icon = document.getElementById('play-icon');
+      const engBtn = document.getElementById('btn-engine-toggle');
+      const engTxt = document.getElementById('engine-btn-text');
+      const turbine = document.getElementById('turbine-icon');
+      const capsule = document.getElementById('engine-capsule');
+      const capsuleTxt = document.getElementById('engine-capsule-text');
+
       if (isPlaying) {
-        text.textContent = 'Pause Auto-Run';
-        icon.textContent = '⏸';
-        btn.classList.add('btn-danger');
+        engBtn.className = 'btn-engine running';
+        engTxt.textContent = 'STOP ENGINE';
+        turbine.classList.add('spin');
+        capsule.className = 'engine-capsule running';
+        capsuleTxt.textContent = 'SDN CORE ONLINE';
       } else {
-        text.textContent = 'Start Auto-Run';
-        icon.textContent = '▶';
-        btn.classList.remove('btn-danger');
+        engBtn.className = 'btn-engine stopped';
+        engTxt.textContent = 'START ENGINE';
+        turbine.classList.remove('spin');
+        capsule.className = 'engine-capsule stopped';
+        capsuleTxt.textContent = 'SDN CORE STANDBY';
       }
 
       // Sync Speed buttons
@@ -1413,7 +1556,7 @@
       document.getElementById('adaptive-path-text').textContent = JSON.stringify(adaptiveComp.path);
       document.getElementById('adaptive-status-badge').textContent = adaptiveComp.status;
 
-      // Dynamic Route Banner with GSAP micro-highlight
+      // Dynamic Route Banner
       const isBypass = state.topology.is_rerouted;
       const isStatic = (currentArchView === 'static');
       const isCongested = (state.offered_util > 0.75);
@@ -1506,10 +1649,12 @@
       updateUI(data);
     }
 
-    async function togglePlay() {
+    async function toggleEngine() {
       if (isPlaying) {
         await fetch('/api/pause', { method: 'POST' });
         isPlaying = false;
+        // GSAP spin down effect
+        gsap.to('#turbine-icon', { rotate: '+=180', duration: 0.8, ease: 'power2.out' });
       } else {
         await fetch('/api/play', {
           method: 'POST',
@@ -1517,6 +1662,8 @@
           body: JSON.stringify({speed: simSpeed})
         });
         isPlaying = true;
+        // GSAP spin up effect
+        gsap.fromTo('#turbine-icon', { scale: 0.8 }, { scale: 1.0, duration: 0.4, ease: 'back.out(2)' });
       }
     }
 
@@ -1531,7 +1678,6 @@
 
     async function switchArchitecture(arch) {
       currentArchView = arch;
-      // GSAP tactile transition animation on cards
       gsap.fromTo(['#card-static', '#card-adaptive', '#route-banner'], 
         { scale: 0.99, opacity: 0.8 }, 
         { scale: 1.0, opacity: 1.0, duration: 0.3, ease: 'power2.out' }
@@ -1597,7 +1743,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      resizeCanvas();
       connectWebSocket();
       renderAnimation();
     });
