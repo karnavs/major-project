@@ -937,11 +937,11 @@
     /* ---------------- LOWER PANELS: OpenFlow Rules & Audit Logs ---------------- */
     .lower-panels-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.42fr 0.58fr;
       gap: 16px;
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
       .lower-panels-grid {
         grid-template-columns: 1fr;
       }
@@ -976,7 +976,7 @@
     }
 
     .table-container {
-      max-height: 160px;
+      max-height: 240px;
       overflow-y: auto;
     }
 
@@ -989,25 +989,172 @@
 
     th {
       text-align: left;
-      padding: 6px 12px;
+      padding: 8px 12px;
       background: #090c12;
       color: var(--text-muted);
       border-bottom: 1px solid var(--border-quiet);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
       font-family: var(--font-courier);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     td {
-      padding: 6px 12px;
-      border-bottom: 1px solid var(--border-quiet);
+      padding: 7px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text-primary);
       font-family: var(--font-courier);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
     }
 
     tr:last-child td {
       border-bottom: none;
+    }
+
+    /* Switch DPID badges */
+    .sw-badge {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 10.5px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .sw-badge.s1 {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .sw-badge.s2 {
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.25);
+    }
+    .sw-badge.s3 {
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    /* Priority Badges */
+    .prio-badge {
+      display: inline-flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .prio-badge.override {
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+    }
+    .prio-badge.baseline {
+      color: #94a3b8;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    /* Match Box */
+    .match-flow {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .flow-host {
+      color: #f1f5f9;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+    .flow-arrow {
+      color: #38bdf8;
+      font-size: 9px;
+    }
+    .match-raw {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Action Box */
+    .action-port-pill {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 9.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+    .action-port-pill.bypass {
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+    .action-port-pill.primary {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .action-port-pill.egress {
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.15);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+    }
+    .action-desc {
+      font-size: 10px;
+      color: #cbd5e1;
+    }
+
+    /* Insight Box */
+    .flow-insight-box {
+      font-size: 10px;
+      line-height: 1.35;
+      color: #94a3b8;
+    }
+    .insight-pill {
+      display: inline-block;
+      font-size: 8.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-bottom: 2px;
+      margin-right: 4px;
+      letter-spacing: 0.03em;
+    }
+    .insight-pill.reroute {
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .insight-pill.baseline {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .insight-pill.transit {
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .insight-pill.egress {
+      color: #c084fc;
+      background: rgba(192, 132, 252, 0.12);
+      border: 1px solid rgba(192, 132, 252, 0.25);
     }
 
     .log-item {
@@ -1323,24 +1470,51 @@
           <table>
             <thead>
               <tr>
-                <th>Switch</th>
-                <th>Priority</th>
-                <th>Match</th>
-                <th>Action</th>
+                <th style="width: 13%;">Switch</th>
+                <th style="width: 14%;">Priority</th>
+                <th style="width: 22%;">Match Criteria</th>
+                <th style="width: 21%;">Action & Target Port</th>
+                <th style="width: 30%;">Control Plane Rationale & Insight</th>
               </tr>
             </thead>
             <tbody id="flow-table-body">
               <tr>
-                <td style="color:#38bdf8; font-weight:700;">s1 (0001)</td>
-                <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">100</span></td>
-                <td>in_port=1, eth_dst=10.0.0.3</td>
-                <td style="color:#34d399;">OUTPUT: port 3 (Primary s1->s2)</td>
+                <td><span class="sw-badge s1">s1 (Ingress)</span></td>
+                <td><span class="prio-badge baseline">P:10 [BASELINE]</span></td>
+                <td>
+                  <div class="match-flow">
+                    <span class="flow-host">h1 (10.0.0.1)</span>
+                    <span class="flow-arrow">➔</span>
+                    <span class="flow-host">h3 (10.0.0.3)</span>
+                  </div>
+                  <div class="match-raw">eth_src: 00:00:00:00:00:01 → eth_dst: 00:00:00:00:00:03</div>
+                </td>
+                <td><span class="action-port-pill primary">PORT 3</span> <span class="action-desc">Primary link → Switch s2</span></td>
+                <td>
+                  <div class="flow-insight-box">
+                    <span class="insight-pill baseline">SHORTEST PATH</span>
+                    <span>Default baseline OpenFlow entry. Direct link [s1 → s2] active during normal loads. Preempted automatically by P:20 when congested.</span>
+                  </div>
+                </td>
               </tr>
               <tr>
-                <td style="color:#38bdf8; font-weight:700;">s2 (0002)</td>
-                <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">100</span></td>
-                <td>in_port=3, eth_dst=10.0.0.3</td>
-                <td style="color:#34d399;">OUTPUT: port 1 (Deliver to h3)</td>
+                <td><span class="sw-badge s2">s2 (Egress)</span></td>
+                <td><span class="prio-badge baseline">P:10 [BASELINE]</span></td>
+                <td>
+                  <div class="match-flow">
+                    <span class="flow-host">h1 (10.0.0.1)</span>
+                    <span class="flow-arrow">➔</span>
+                    <span class="flow-host">h3 (10.0.0.3)</span>
+                  </div>
+                  <div class="match-raw">eth_src: 00:00:00:00:00:01 → eth_dst: 00:00:00:00:00:03</div>
+                </td>
+                <td><span class="action-port-pill egress">PORT 1</span> <span class="action-desc">Egress delivery → Target h3</span></td>
+                <td>
+                  <div class="flow-insight-box">
+                    <span class="insight-pill baseline">EGRESS DELIVERY</span>
+                    <span>Direct egress delivery rule forwarding packets arriving from primary wire to target host h3.</span>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -1793,6 +1967,117 @@
       `;
     }
 
+    // ---------------- Flow Table Presentation & Control Plane Insights ----------------
+    function formatSwitchBadge(sw) {
+      if (sw === 's1') return `<span class="sw-badge s1">s1 (Ingress)</span>`;
+      if (sw === 's2') return `<span class="sw-badge s2">s2 (Egress)</span>`;
+      if (sw === 's3') return `<span class="sw-badge s3">s3 (Bypass)</span>`;
+      return `<span class="sw-badge s1">${sw}</span>`;
+    }
+
+    function formatFlowMatch(match) {
+      if (!match) return '<span style="color:var(--text-muted);">* (Any)</span>';
+      let src = typeof match === 'object' ? match.eth_src : null;
+      let dst = typeof match === 'object' ? match.eth_dst : null;
+      if (!src && !dst) {
+        return `<span style="color:var(--text-muted);">${typeof match === 'object' ? JSON.stringify(match) : match}</span>`;
+      }
+      let srcName = src === '00:00:00:00:00:01' ? 'h1 (10.0.0.1)' : (src || 'any');
+      let dstName = dst === '00:00:00:00:00:03' ? 'h3 (10.0.0.3)' : (dst || 'any');
+      return `
+        <div class="match-flow">
+          <span class="flow-host">${srcName}</span>
+          <span class="flow-arrow">➔</span>
+          <span class="flow-host">${dstName}</span>
+        </div>
+        <div class="match-raw">eth_src: ${src || '*'} → eth_dst: ${dst || '*'}</div>
+      `;
+    }
+
+    function formatFlowAction(actions, sw, priority) {
+      if (!actions || (Array.isArray(actions) && actions.length === 0)) {
+        return '<span style="color:var(--text-muted);">DROP</span>';
+      }
+      let actStr = Array.isArray(actions) ? actions.join(', ') : String(actions);
+      let isPort4 = actStr.includes('port_4');
+      let isPort3 = actStr.includes('port_3');
+      let isPort2 = actStr.includes('port_2');
+      let isPort1 = actStr.includes('port_1');
+
+      if (sw === 's1') {
+        if (isPort4 || priority >= 20) {
+          return `<span class="action-port-pill bypass">PORT 4</span> <span class="action-desc">Bypass wire → Switch s3</span>`;
+        } else {
+          return `<span class="action-port-pill primary">PORT 3</span> <span class="action-desc">Primary link → Switch s2</span>`;
+        }
+      } else if (sw === 's3') {
+        return `<span class="action-port-pill bypass">PORT 2</span> <span class="action-desc">Transit link → Switch s2</span>`;
+      } else if (sw === 's2') {
+        return `<span class="action-port-pill egress">PORT 1</span> <span class="action-desc">Egress delivery → Target h3</span>`;
+      }
+      return `<span style="color:#34d399;">${actStr}</span>`;
+    }
+
+    function getFlowPriorityBadge(priority) {
+      if (priority >= 20) {
+        return `<span class="prio-badge override">P:20 [ACTIVE OVERRIDE]</span>`;
+      } else if (priority === 10) {
+        return `<span class="prio-badge baseline">P:10 [BASELINE]</span>`;
+      }
+      return `<span class="prio-badge baseline">P:${priority}</span>`;
+    }
+
+    function getFlowInsight(sw, priority, actions) {
+      if (priority >= 20) {
+        if (sw === 's1') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill reroute">CONGESTION OVERRIDE</span>
+              <span>EWMA load on Port 3 exceeded threshold (γ=0.85). Dynamic Dijkstra installed priority 20 preemption over baseline, diverting packets to s3 bypass with 0% drop.</span>
+            </div>
+          `;
+        } else if (sw === 's3') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill transit">DETOUR TRANSIT</span>
+              <span>Bypass relay receiving deflected burst on Port 1 and immediately pushing out Port 2 to egress s2 with zero queuing delay.</span>
+            </div>
+          `;
+        } else if (sw === 's2') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill egress">EGRESS ACCEPT</span>
+              <span>High-priority ingress from s3 bypass; seamlessly delivers packets directly to target host h3.</span>
+            </div>
+          `;
+        }
+      } else {
+        if (sw === 's1') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill baseline">SHORTEST PATH</span>
+              <span>Default baseline OpenFlow entry. Direct link [s1 → s2] active during normal loads. Preempted automatically by P:20 when congested.</span>
+            </div>
+          `;
+        } else if (sw === 's2') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill baseline">EGRESS DELIVERY</span>
+              <span>Direct egress delivery rule forwarding packets arriving from primary wire to target host h3.</span>
+            </div>
+          `;
+        } else if (sw === 's3') {
+          return `
+            <div class="flow-insight-box">
+              <span class="insight-pill transit">STANDBY RELAY</span>
+              <span>Bypass node idle in standby; dynamically activated during traffic spikes.</span>
+            </div>
+          `;
+        }
+      }
+      return `<div class="flow-insight-box">Active OpenFlow 1.3 flow mod</div>`;
+    }
+
     // ---------------- UI Master State Updater ----------------
     function updateUI(state) {
       if (!state) return;
@@ -1988,14 +2273,28 @@
       }
 
       if (flowEntries.length > 0) {
-        flowTbody.innerHTML = flowEntries.map(f => `
-          <tr>
-            <td style="color:#38bdf8; font-weight:700;">${f.sw || f.switch}</td>
-            <td><span style="background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:3px;">${f.priority || 100}</span></td>
-            <td>${f.match || 'eth_dst=10.0.0.3'}</td>
-            <td style="color:#34d399;">${f.action || 'OUTPUT'}</td>
-          </tr>
-        `).join('');
+        // Sort: Priority DESC, then switch s1, s3, s2
+        const swOrder = { 's1': 1, 's3': 2, 's2': 3 };
+        flowEntries.sort((a, b) => {
+          if ((b.priority || 0) !== (a.priority || 0)) {
+            return (b.priority || 0) - (a.priority || 0);
+          }
+          return (swOrder[a.sw] || 9) - (swOrder[b.sw] || 9);
+        });
+
+        flowTbody.innerHTML = flowEntries.map(f => {
+          const swKey = f.sw || f.switch || 's1';
+          const prio = f.priority != null ? f.priority : 10;
+          return `
+            <tr>
+              <td>${formatSwitchBadge(swKey)}</td>
+              <td>${getFlowPriorityBadge(prio)}</td>
+              <td>${formatFlowMatch(f.match)}</td>
+              <td>${formatFlowAction(f.actions || f.action, swKey, prio)}</td>
+              <td>${getFlowInsight(swKey, prio, f.actions || f.action)}</td>
+            </tr>
+          `;
+        }).join('');
       }
 
       // Update Transition Audit Logs

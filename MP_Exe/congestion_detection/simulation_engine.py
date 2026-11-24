@@ -64,8 +64,14 @@ class SimulatedDatapath:
                     for act in inst[1]:
                         if isinstance(act, tuple) and act[0] == "action_out":
                             actions.append(f"OUTPUT:port_{act[1]}")
+            prio = mod_data.get("priority", 0)
+            # Maintain active OpenFlow table: replace rule with same priority & match
+            self.flow_table = [
+                f for f in self.flow_table
+                if not (f.get("priority") == prio and f.get("match") == match_data)
+            ]
             self.flow_table.append({
-                "priority": mod_data.get("priority", 0),
+                "priority": prio,
                 "match": match_data,
                 "actions": actions or ["OUTPUT:NORMAL"],
             })
@@ -103,6 +109,8 @@ class SDNSimulationEngine:
 
         # Initial flow from h1 to h3
         self.initial_flow = self.ctrl.engine.compute_route("00:00:00:00:00:01", "00:00:00:00:00:03", now=0.0)
+        if self.initial_flow:
+            self.ctrl._install_path_flows(self.initial_flow, priority=10)
 
         # Cumulative byte counters per switch port: (dpid, port) -> bytes
         self.counters: Dict[tuple, int] = {
@@ -209,6 +217,8 @@ class SDNSimulationEngine:
                 "critical"
             )
         elif d3 and d3.event == Event.RECOVERY_CONFIRMED:
+            for sw in self.switches.values():
+                sw.flow_table = [f for f in sw.flow_table if f.get("priority", 0) <= 10]
             self._record_log(
                 "Recovery Confirmed (Restored)",
                 f"Switch 1 Port 3 normalized below {d3.t_exit:.2f}. Flow restored to primary: {current_path}",
@@ -395,9 +405,9 @@ class SDNSimulationEngine:
                 }
             },
             "flow_tables": {
-                "s1": self.switches[1].flow_table[-4:],
-                "s2": self.switches[2].flow_table[-4:],
-                "s3": self.switches[3].flow_table[-4:],
+                "s1": sorted(self.switches[1].flow_table, key=lambda f: f.get("priority", 0), reverse=True),
+                "s2": sorted(self.switches[2].flow_table, key=lambda f: f.get("priority", 0), reverse=True),
+                "s3": sorted(self.switches[3].flow_table, key=lambda f: f.get("priority", 0), reverse=True),
             },
             "recent_events": self.event_logs[:12],
             "history": self.history[-40:],
