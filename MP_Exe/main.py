@@ -3,8 +3,9 @@
 
 Usage:
     python main.py                 # Interactive menu
+    python main.py --ui            # Launch interactive Web UI dashboard (FastAPI + WebSockets)
     python main.py --simulate      # Run end-to-end discrete event simulation
-    python main.py --test          # Run full test suite (57 tests)
+    python main.py --test          # Run full test suite (58 tests)
     python main.py --synthetic     # Run 13 synthetic detector trace scenarios
     python main.py --info          # Display network topology and active configurations
     python main.py --controller    # Launch the Ryu OpenFlow 1.3 controller
@@ -14,14 +15,17 @@ import json
 import os
 import subprocess
 import sys
+import threading
+import time
 import unittest
+import webbrowser
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_tests():
     print("\n" + "=" * 65)
-    print("  RUNNING UNIT & INTEGRATION TEST SUITE (57 TESTS)")
+    print("  RUNNING UNIT & INTEGRATION TEST SUITE (58 TESTS)")
     print("=" * 65)
     loader = unittest.TestLoader()
     suite = loader.discover(start_dir=os.path.join(BASE_DIR, "tests"), top_level_dir=BASE_DIR)
@@ -44,6 +48,37 @@ def run_simulation():
     print("=" * 65)
     script = os.path.join(BASE_DIR, "scripts", "simulate_reroute.py")
     return subprocess.call([sys.executable, script], cwd=BASE_DIR)
+
+
+def run_ui(host="127.0.0.1", port=8000, auto_open=True):
+    print("\n" + "=" * 65)
+    print("  LAUNCHING SDN ADAPTIVE CONGESTION TELEMETRY DASHBOARD")
+    print("=" * 65)
+    print(f"[*] Dashboard URL: http://{host}:{port}")
+    print("[*] WebSocket Telemetry: ws://{host}:{port}/ws")
+    print("[*] Press Ctrl+C in terminal to stop the server.\n")
+
+    def open_browser():
+        time.sleep(1.2)
+        url = f"http://{host}:{port}"
+        print(f"[*] Opening browser: {url}")
+        webbrowser.open(url)
+
+    if auto_open:
+        threading.Thread(target=open_browser, daemon=True).start()
+
+    try:
+        import uvicorn
+        from server import app
+        uvicorn.run(app, host=host, port=port, log_level="info")
+        return 0
+    except ImportError:
+        print("[ERROR] 'uvicorn' or 'fastapi' not installed.")
+        print("Install with: pip install fastapi uvicorn")
+        return 1
+    except KeyboardInterrupt:
+        print("\nUI Server stopped.")
+        return 0
 
 
 def display_info():
@@ -94,7 +129,8 @@ def run_controller():
         return subprocess.call(cmd, cwd=BASE_DIR)
     except FileNotFoundError:
         print("\n[ERROR] 'ryu-manager' is not installed in the current environment.")
-        print("Note: Ryu natively runs in a Linux/WSL environment. On Windows, use the simulation mode:")
+        print("Note: Ryu natively runs in a Linux/WSL environment. On Windows, use the simulation/UI mode:")
+        print("      python main.py --ui")
         print("      python main.py --simulate")
         return 1
 
@@ -104,33 +140,40 @@ def interactive_menu():
         print("\n" + "=" * 65)
         print("  SDN ADAPTIVE CONGESTION & REROUTING SYSTEM")
         print("=" * 65)
-        print("1. Run End-to-End Traffic Rerouting Simulation")
-        print("2. Run All Unit & Integration Tests (57 tests)")
-        print("3. Run 13 Synthetic Detector Traces")
-        print("4. View Topology & System Information")
-        print("5. Launch Ryu OpenFlow Controller")
-        print("6. Exit")
+        print("1. Launch Interactive Web Dashboard UI (Panel Showcase)")
+        print("2. Run End-to-End Traffic Rerouting Simulation")
+        print("3. Run All Unit & Integration Tests (58 tests)")
+        print("4. Run 13 Synthetic Detector Traces")
+        print("5. View Topology & System Information")
+        print("6. Launch Ryu OpenFlow Controller")
+        print("7. Exit")
 
-        choice = input("\nEnter choice (1-6): ").strip()
+        choice = input("\nEnter choice (1-7): ").strip()
         if choice == "1":
-            run_simulation()
+            run_ui()
         elif choice == "2":
-            run_tests()
+            run_simulation()
         elif choice == "3":
-            run_synthetic()
+            run_tests()
         elif choice == "4":
-            display_info()
+            run_synthetic()
         elif choice == "5":
+            display_info()
+        elif choice == "6":
             run_controller()
-        elif choice == "6" or choice.lower() == "q":
+        elif choice == "7" or choice.lower() == "q":
             print("Exiting.")
             break
         else:
-            print("Invalid selection. Please enter a number 1-6.")
+            print("Invalid selection. Please enter a number 1-7.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="SDN Congestion Rerouting CLI")
+    parser = argparse.ArgumentParser(description="SDN Congestion Rerouting CLI & Web UI")
+    parser.add_argument("--ui", action="store_true", help="Launch interactive Web Dashboard UI")
+    parser.add_argument("--port", type=int, default=8000, help="Port for Web Dashboard (default: 8000)")
+    parser.add_argument("--host", type=str, default="127.0.0.1", help="Host binding (default: 127.0.0.1)")
+    parser.add_argument("--no-open", action="store_true", help="Do not automatically open browser on startup")
     parser.add_argument("--simulate", action="store_true", help="Run end-to-end discrete event simulation")
     parser.add_argument("--test", action="store_true", help="Run unit & integration test suite")
     parser.add_argument("--synthetic", action="store_true", help="Run synthetic trace scenarios")
@@ -139,7 +182,9 @@ def main():
 
     args = parser.parse_args()
 
-    if args.simulate:
+    if args.ui:
+        sys.exit(run_ui(host=args.host, port=args.port, auto_open=not args.no_open))
+    elif args.simulate:
         sys.exit(run_simulation())
     elif args.test:
         sys.exit(run_tests())
