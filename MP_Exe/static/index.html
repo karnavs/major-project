@@ -1215,9 +1215,9 @@
 
     <div class="header-status">
       <!-- Engine Pulse Capsule -->
-      <div class="engine-capsule running" id="engine-capsule">
+      <div class="engine-capsule stopped" id="engine-capsule">
         <span class="pulse-dot"></span>
-        <span id="engine-capsule-text">SDN CORE ONLINE</span>
+        <span id="engine-capsule-text">SDN CORE STANDBY</span>
       </div>
 
       <div class="sim-clock-pill">
@@ -1328,17 +1328,17 @@
           <div class="ws-header">
             <!-- Main Heading: Montserrat Black -->
             <span class="ws-title">MISSION CONTROL DECK</span>
-            <span class="ws-badge" id="ws-sim-status">ONLINE</span>
+            <span class="ws-badge" id="ws-sim-status">STANDBY</span>
           </div>
           <div class="ws-body">
             <!-- Turbine Engine Button + Step + Reset -->
             <div class="engine-action-row">
-              <button class="btn-engine running" id="btn-engine-toggle" onclick="toggleEngine()">
-                <svg class="turbine-icon spin" id="turbine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <button class="btn-engine stopped" id="btn-engine-toggle" onclick="toggleEngine()">
+                <svg class="turbine-icon" id="turbine-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <circle cx="12" cy="12" r="3" fill="currentColor"/>
                   <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                 </svg>
-                <span id="engine-btn-text">STOP ENGINE</span>
+                <span id="engine-btn-text">START ENGINE</span>
               </button>
               <button class="btn" onclick="stepSimulation()">Step (+1s)</button>
               <button class="btn" onclick="resetSimulation()">Reset</button>
@@ -1562,7 +1562,7 @@
 
     let ws = null;
     let currentState = null;
-    let isPlaying = true;
+    let isPlaying = false;
     let simSpeed = 1.0;
     let currentMode = 'sandbox';
     let currentArchView = 'adaptive';
@@ -1631,10 +1631,12 @@
         const speedFactor = Math.max(0.25, simSpeed);
 
         particles.forEach((p, idx) => {
-          p.progress += (p.baseSpeed * speedFactor);
-          if (p.progress >= 1.0) {
-            p.progress = 0;
-            p.droppedFired = false;
+          if (isPlaying) {
+            p.progress += (p.baseSpeed * speedFactor);
+            if (p.progress >= 1.0) {
+              p.progress = 0;
+              p.droppedFired = false;
+            }
           }
 
           const currentSegment = Math.min(Math.floor(p.progress * totalSegments), totalSegments - 1);
@@ -2388,6 +2390,15 @@
     async function stepSimulation() {
       const res = await fetch('/api/step', { method: 'POST' });
       const data = await res.json();
+      if (!isPlaying) {
+        particles.forEach((p, idx) => {
+          p.progress += 0.04;
+          if (p.progress >= 1.0) {
+            p.progress -= 1.0;
+            p.droppedFired = false;
+          }
+        });
+      }
       updateUI(data);
     }
 
@@ -2414,6 +2425,11 @@
     async function resetSimulation() {
       const res = await fetch('/api/reset', { method: 'POST' });
       const data = await res.json();
+      isPlaying = false;
+      particles.forEach((p, idx) => {
+        p.progress = (idx / PARTICLE_COUNT);
+        p.droppedFired = false;
+      });
       updateUI(data);
     }
 

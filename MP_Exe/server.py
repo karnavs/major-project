@@ -41,7 +41,7 @@ app.add_middleware(
 
 # Shared simulation engine instance
 engine = SDNSimulationEngine()
-engine.is_running = True
+engine.is_running = False
 
 connected_websockets: List[WebSocket] = []
 playback_task: asyncio.Task | None = None
@@ -127,7 +127,7 @@ async def api_step():
 @app.post("/api/reset")
 async def api_reset():
     engine.reset()
-    engine.is_running = True
+    engine.is_running = False
     await broadcast_state()
     return engine.get_state()
 
