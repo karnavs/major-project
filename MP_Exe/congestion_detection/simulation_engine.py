@@ -91,7 +91,7 @@ class SDNSimulationEngine:
         """Reset simulation state back to t=0."""
         self.time_s: float = 0.0
         self.is_running: bool = False
-        self.speed: float = 1.0
+        self.speed: float = 0.25
         self.offered_util: float = 0.10
         self.mode: str = "sandbox"  # 'sandbox' or 'scenario_70s'
 

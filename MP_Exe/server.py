@@ -53,7 +53,7 @@ class LoadRequest(BaseModel):
 
 
 class SpeedRequest(BaseModel):
-    speed: float = 1.0
+    speed: float = 0.25
 
 
 class ModeRequest(BaseModel):
